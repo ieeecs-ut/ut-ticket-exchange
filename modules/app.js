@@ -24,7 +24,7 @@ var init = _ => {
 };
 var main = _ => {
     /*
-        TODO: perform needed operations (after all modules have been initialized)
+        TODO: perform necessary operations after all modules have been initialized
     */
 };
 var api = {
