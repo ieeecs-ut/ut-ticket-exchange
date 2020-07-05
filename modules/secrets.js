@@ -1,8 +1,12 @@
 /* MODULE – SECRETS */
 // secret keys & passwords
+const module_id = "secrets";
 
 /* MODULE */
-const secrets = {
+var secrets; secrets = {
+    api: {
 
+    }
 };
+// export module
 module.exports = secrets;
