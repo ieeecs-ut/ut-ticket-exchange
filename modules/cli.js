@@ -2,59 +2,83 @@
 // command line interface
 
 /* IMPORTS */
-var m = null;
+const _util = require("util");
+const readline = require("readline");
 
-/* LOGS */
+/* INFRA */
+var m = null;
 var log = null;
 var err = null;
 
-/* DATA */
+
+
+/* MODULE */
 /*
     TODO: declare CLI-related variables (ie. states, data fields)
 */
+var input = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+var init = _ => {
+    /*
+        TODO: initialize module variables as well as command-line input events
+    */
+    input.on('line', (line) => {
+        line = line.trim();
+        if (line != '') {
+            line = line.split(' ');
+            if (line[0] == "testing") {
+                console.log("123");
+                if (line.length == 2) {
+                    m.app.example(line[1], result => {
+                        log(result);
+                    });
+                }
+            } else if (line[0] == "db") {
+                if (line.length > 1 && line[1] == "table") {
+                    if (line.length > 2) {
+                        m.db.example(line[2], result => {
+                            log(result);
+                        });
+                    }
+                }
+            } else if (line[0] == "modules") {
+                var output = _util.inspect(m, {
+                    showHidden: false, depth: 2, colors: true, compact: false
+                });
+                log(`modules\n${output}`);
+            } else if (line[0] == "clear") {
+                console.clear();
+            } else if (line[0] == "exit" || line[0] == "quit") {
+                m.app.exit();
+            }
+        }
+    });
+};
+var api = {
+    /*
+        TODO: create functions that allow other modules to interact with this one when necessary
+        (functions should take simple parameters, execute requested command-line operations/interactions, handle errors, and provide result data)
+    */
+    example: (name, resolve) => {
+        log(`received name ${name}`);
+        resolve(`hello, ${name}!`);
+    }
+};
 
-/* MODULE */
-var cli; cli = {
+
+
+/* EXPORT */
+module.exports = {
     id: null,
     init: id => {
-        cli.id = id;
+        module.exports.id = id;
         m = global.m;
         log = m.utils.logger(id, false);
         err = m.utils.logger(id, true);
         log("initializing");
-
-        m.utils.input.on('line', (line) => {
-            line = line.trim();
-            if (line != '') {
-                line = line.split(' ');
-                if (line[0] == "testing") {
-                    console.log("123");
-                    if (line.length == 2) {
-                        m.app.example(line[1], result => {
-                            log(result);
-                        });
-                    }
-                } else if (line[0] == "db") {
-                    if (line.length > 1 && line[1] == "read") {
-                        if (line.length > 2) {
-                            m.db.example(line[2], result => {
-                                log(result);
-                            });
-                        }
-                    }
-                }
-            }
-        });
-
-        /*
-            TODO: initialize module variables as well as command-line input events
-        */
+        init();
     },
-    api: {
-        /*
-            TODO: create functions that take simple parameters, execute requested command-line operations/interactions, handle errors, and provide result data
-        */
-    }
+    api: api
 };
-// export module
-module.exports = cli;

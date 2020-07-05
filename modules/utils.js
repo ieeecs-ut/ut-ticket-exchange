@@ -2,41 +2,56 @@
 // general-purpose utility functions
 
 /* IMPORTS */
-var m = null;
 const _util = require("util");
-const readline = require("readline");
 
-/* LOGS */
+/* INFRA */
+var m = null;
 var log = null;
 var err = null;
 
+
+
 /* MODULE */
-var utils; utils = {
+var api = {
+    /*
+        TODO: create convenient utility functions that encapsulate & parameterize commonly used/repeated code blocks
+    */
+};
+
+
+
+/* EXPORTS */
+module.exports = {
+    id: null,
     init: id => {
-        utils.id = id;
+        module.exports.id = id;
         m = global.m;
         log = m.utils.logger(id, false);
         err = m.utils.logger(id, true);
         log("initializing");
-        // initialize utilities
-
     },
     _enable_api: _ => {
+        var utils = module.exports;
+        var excluded = ["id", "api", "init", "_enable_api"];
         for (var u in utils) {
-            if (utils.hasOwnProperty(u) && u != "init")
+            if (utils.hasOwnProperty(u) && !excluded.includes(u))
                 utils.api[u] = utils[u];
+        }
+        for (var u in api) {
+            if (api.hasOwnProperty(u))
+                utils.api[u] = api[u];
         }
     },
     // returns a message/error logger
     logger: (id, as_error) => {
         var e = as_error ? true : false;
-        return (...args) => {
+        var logger_obj = (...args) => {
             var msg = "";
             for (var i = 0; i < args.length; i++) {
                 var arg = args[i];
                 if (typeof arg === 'object' && arg !== null)
                     arg = _util.inspect(arg, {
-                        showHidden: false, depth: null, colors: true
+                        showHidden: false, depth: logger_obj.depth, colors: true, compact: false
                     });
                 msg += `${arg}${i < args.length - 1 ? ' ' : ''}`;
             }
@@ -47,23 +62,15 @@ var utils; utils = {
                 msg = `[${id}] ${msg}`;
                 console.log(msg);
             }
-        }
+        };
+        logger_obj.depth = null;
+        return logger_obj;
     },
-    // CLI interaction tool
-    input: readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    }),
     // non-blocking delayed callback
     delay: (callback, timeout) => {
         setTimeout(_ => {
             process.nextTick(callback);
         }, timeout);
     },
-    api: {},
-    /*
-        TODO: create convenient utility functions that encapsulate & parameterize commonly used/repeated code blocks
-    */
+    api: {}
 };
-// export module
-module.exports = utils;

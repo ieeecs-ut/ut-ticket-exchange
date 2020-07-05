@@ -14,7 +14,12 @@ Skeleton code for the IEEE CS ticket exchange project.
 -   Start Node.js server
     -   ie. `node tickets.js`
 -   Try out CLI example in the node prompt
-    -   ie. in same terminal where script is executing and displaying output, type `testing`, or `testing <your_name>`, or `db read <collection/table_name>`
+    -   ie. in same terminal where script is executing and displaying output, type any of the following commands
+        -   `testing` or `testing <your_name>` to confirm it is working
+        -   `modules` to view the defined available module APIs
+        -   `db table <collection/table_name>` to query MongoDB for the contents of a table
+        -   `clear` to clear the console
+        -   `exit` or `quit` to shut down the server
     -   Observe which modules produce which specific logging messages, which indicates where the conceptual divisions between modules are
 -   Try out web example in a browser
     -   Go to `http://localhost:8000`
