@@ -12,7 +12,9 @@ var log = null;
 var err = null;
 
 /* DATA */
-// module data
+/*
+    TODO: declare application-related variables (ie. states, data fields)
+*/
 
 /* MODULE */
 var app; app = {
@@ -23,12 +25,23 @@ var app; app = {
         log = m.utils.logger(id, false);
         err = m.utils.logger(id, true);
         log("initializing");
+
+        /*
+            TODO: initialize module variables and anything else needed by the application
+        */
+
     },
     main: _ => {
         log("ready");
     },
     api: {
-
+        /*
+            TODO: create functions that take simple parameters, execute the requested operations, handle errors, and provide result data
+        */
+        example: (name, resolve) => {
+            log(`received name ${name}`);
+            resolve(`hello, ${name}!`);
+        }
     }
 };
 // export module

@@ -3,6 +3,7 @@
 
 /* IMPORTS */
 var m = null;
+const _util = require("util");
 const readline = require("readline");
 
 /* LOGS */
@@ -17,6 +18,8 @@ var utils; utils = {
         log = m.utils.logger(id, false);
         err = m.utils.logger(id, true);
         log("initializing");
+        // initialize utilities
+
     },
     _enable_api: _ => {
         for (var u in utils) {
@@ -57,7 +60,10 @@ var utils; utils = {
             process.nextTick(callback);
         }, timeout);
     },
-    api: {}
+    api: {},
+    /*
+        TODO: create convenient utility functions that encapsulate & parameterize commonly used/repeated code blocks
+    */
 };
 // export module
 module.exports = utils;
