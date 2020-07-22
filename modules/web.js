@@ -5,7 +5,6 @@
 const http = require("http");
 const express = require("express");
 const body_parser = require("body-parser");
-const app = require('./app');
 
 /* INFRA */
 var m = null;

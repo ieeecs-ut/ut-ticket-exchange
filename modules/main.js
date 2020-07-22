@@ -1,4 +1,4 @@
-/* MODULE – APPLICATION */
+/* MODULE – MAIN */
 // main application logic
 
 /* IMPORTS */

@@ -44,4 +44,4 @@ for (var module_id in modules) {
         typeof modules[module_id].init === 'function' && module_id != "utils")
         modules[module_id].init(module_id);
 }
-modules.utils.delay(modules.app.main, 500);
+modules.utils.delay(modules.main.main, 500);

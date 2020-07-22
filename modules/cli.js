@@ -61,10 +61,6 @@ var api = {
         TODO: create functions that allow other modules to interact with this one when necessary
         (functions should take simple parameters, execute requested command-line operations/interactions, handle errors, and provide result data)
     */
-    example: (name, resolve) => {
-        log(`received name ${name}`);
-        resolve(`hello, ${name}!`);
-    }
 };
 
 
