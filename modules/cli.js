@@ -31,7 +31,7 @@ var init = _ => {
             if (line[0] == "testing") {
                 console.log("123");
                 if (line.length == 2) {
-                    m.app.example(line[1], result => {
+                    m.main.example(line[1], result => {
                         log(result);
                     });
                 }
@@ -51,7 +51,7 @@ var init = _ => {
             } else if (line[0] == "clear") {
                 console.clear();
             } else if (line[0] == "exit" || line[0] == "quit") {
-                m.app.exit();
+                m.main.exit();
             }
         }
     });
