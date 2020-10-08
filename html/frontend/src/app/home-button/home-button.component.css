@@ -4,12 +4,16 @@ button {
    width: 100px;
    height: 75px;
    outline: none;
+   font-size: medium;
+   font-family: cursive;
 }
 
 button:hover {
    background-color: rgb(235, 125, 52);
+   border: transparent;
 }
 
 button:active {
    background-color: rgb(235, 162, 52);
+   border: transparent;
 }

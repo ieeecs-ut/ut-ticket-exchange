@@ -4,6 +4,7 @@ button {
    width: 100px;
    height: 75px;
    outline: none;
+   /* border-radius: 5px; */
 }
 
 button:hover {
