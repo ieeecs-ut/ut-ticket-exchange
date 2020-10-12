@@ -14,18 +14,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   { 
-    path: "login", 
-    component: LoginPageComponent, 
-    pathMatch: "full"
-  },
-  { 
     path: "listings", 
     component: DashboardComponent, 
-    pathMatch: "full"
-  },
-  {
-    path:"home",
-    component: HomeButtonComponent,
     pathMatch: "full"
   }
   // {
