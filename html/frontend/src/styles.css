@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+button {
+    background-color:whitesmoke;
+    border: transparent;
+    width: 100px;
+    height: 75px;
+    outline: none;
+    /* border-radius: 5px; */
+ }
+ 
+ button:hover {
+    background-color: rgb(235, 125, 52);
+ }
+ 
+ button:active {
+    background-color: rgb(235, 162, 52);
+ }
