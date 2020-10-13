@@ -10,7 +10,7 @@ import { HomeButtonComponent } from './home-button/home-button.component';
 const routes: Routes = [ 
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "login",
     pathMatch: 'full'
   },
   { 
