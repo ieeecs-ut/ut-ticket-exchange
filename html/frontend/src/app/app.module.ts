@@ -7,6 +7,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ContactUsButtonComponent } from './contact-us-button/contact-us-button.component';
 import { HomeButtonComponent } from './home-button/home-button.component';
+import { ContactmodalComponent } from './contactmodal/contactmodal.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { HomeButtonComponent } from './home-button/home-button.component';
     LoginPageComponent,
     DashboardComponent,
     ContactUsButtonComponent,
-    HomeButtonComponent
+    HomeButtonComponent,
+    ContactmodalComponent
   ],
   imports: [
     BrowserModule,
