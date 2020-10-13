@@ -45,7 +45,8 @@ async function main() {
          //    },
          // ])
          // await findOneUserByName(client, "Tester Testing6")
-         await findUsersWithMinimumAge(client, 18)
+         // await findUsersWithMinimumAge(client, 18)
+         await updateExistingUserByName(client, "Tester Testing3", { school: "Texas Tech" })
          databasesList = await client.db().admin().listDatabases();
          
          console.log("Databases:");
@@ -53,6 +54,19 @@ async function main() {
          await client.close();
       }
    });
+}
+
+async function updateExistingUserByName(client, userName, updatedUser) {
+   const result = await client.db("test").collection("users").updateOne(
+      { name: userName }, 
+      // Set new values for new or existing fields in the document
+      // Document that we pass will not replace existing doc - any old fields there not in the updated document passed will remain the same
+      { $set: updatedUser }
+   );
+
+   console.log(result.matchedCount + " documents matched the query criteria")
+   console.log(result.modifiedCount + " documents were updated")
+   // console.log(result)
 }
 
 async function addNewUser(client, newUser) {
@@ -91,4 +105,5 @@ async function findUsersWithMinimumAge(client, age) {
    const results = await cursor.toArray();
    console.log(results)
 }
+
 main().catch(console.err)
