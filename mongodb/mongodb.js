@@ -7,46 +7,12 @@ async function main() {
       if (err) {
          console.error(err);
       } else {
-         // await addNewUser(client, {
-         //    name: "Tester Testing1",
-         //    birthday: "June 1, 2005",
-         //    school: "UT Austin",
-         // })
-         // await addMultipleUsers(client, [
-         //    {
-         //       name: "Tester Testing8",
-         //       birthday: "May 9, 2005",
-         //       school: "Southern Methodist",
-         //       age: 16,
-         //    },
-         //    {
-         //       name: "Tester Testing9",
-         //       birthday: "May 10, 2005",
-         //       school: "Texas A&M",
-         //       age: 12,
-         //    },
-         //    {
-         //       name: "Tester Testing10",
-         //       birthday: "May 11, 2005",
-         //       school: "Rice",
-         //       age: 19,
-         //    },
-         //    {
-         //       name: "Tester Testing11",
-         //       birthday: "May 10, 2005",
-         //       school: "Texas A&M",
-         //       age: 25,
-         //    },
-         //    {
-         //       name: "Tester Testing12",
-         //       birthday: "May 11, 2005",
-         //       school: "Rice",
-         //       age: 17,
-         //    },
-         // ])
          // await findOneUserByName(client, "Tester Testing6")
          // await findUsersWithMinimumAge(client, 18)
-         await updateExistingUserByName(client, "Tester Testing3", { school: "Texas Tech" })
+         // await updateExistingUserByName(client, "Tester Testing3", { school: "Texas Tech" })
+         // await updateAllUsersToHaveAge(client)
+         // await deleteUserByAge(client, 11)
+         // await deleteUsersWithLesserAge(client, 11)
          databasesList = await client.db().admin().listDatabases();
          
          console.log("Databases:");
@@ -56,18 +22,55 @@ async function main() {
    });
 }
 
+// -------------------------------- DELETE ---------------------------------
+
+async function deleteUserByAge(client, userAge) {
+   const result = await client.db("test").collection("users").deleteOne(
+      {
+         age: userAge
+      }
+   );
+
+   console.log("The number of documents that were deleted were " + result.deletedCount)
+}
+
+async function deleteUsersWithLesserAge(client, userAge) {
+   const result = await client.db("test").collection("users").deleteMany(
+      {
+         age: { $lt: userAge }
+      }
+   );
+
+   console.log("The number of documents that were deleted were " + result.deletedCount)
+}
+
+// -------------------------------- UPDATE ---------------------------------
+
 async function updateExistingUserByName(client, userName, updatedUser) {
    const result = await client.db("test").collection("users").updateOne(
       { name: userName }, 
       // Set new values for new or existing fields in the document
       // Document that we pass will not replace existing doc - any old fields there not in the updated document passed will remain the same
-      { $set: updatedUser }
+      { $set: updatedUser },
+      // Replaces if a document with the name exists, otherwise it inserts the document
+      { upsert: true }
    );
 
    console.log(result.matchedCount + " documents matched the query criteria")
    console.log(result.modifiedCount + " documents were updated")
    // console.log(result)
 }
+
+async function updateAllUsersToHaveAge(client) {
+   const result = await client.db("test").collection("users").updateMany(
+      {age: { $exists: false }},
+      {$set: { age: 11 }}
+   )
+   console.log("The number of documents that needed to have an age field added was " + result.matchedCount)
+   console.log("The number of documents that were eventually updated was " + result.modifiedCount)
+}
+
+// ---------------------------- CREATE --------------------------------
 
 async function addNewUser(client, newUser) {
    const result = await client.db("test").collection("users").insertOne(newUser);
@@ -79,6 +82,8 @@ async function addMultipleUsers(client, newUsers) {
    console.log(result.insertedCount + " documents created, the IDs of the documents are:")
    console.log(result.insertedIds)
 }
+
+// ------------------------------ READ --------------------------------
 
 async function findOneUserByName(client, userName) {
    const result = await client.db("test").collection("users").findOne({ name: userName });
