@@ -6,8 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./main-buttons.component.css']
 })
 export class MainButtonsComponent implements OnInit {
-  @Input() route: string;
-  @Input() buttonName: string;
+  // @Input() route: string;
+  // @Input() buttonName: string;
 
   constructor() { }
 

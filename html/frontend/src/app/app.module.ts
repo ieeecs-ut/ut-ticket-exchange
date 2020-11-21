@@ -5,18 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { ContactUsButtonComponent } from './contact-us-button/contact-us-button.component';
-import { HomeButtonComponent } from './home-button/home-button.component';
 import { ContactmodalComponent } from './contactmodal/contactmodal.component';
+import { MainButtonsComponent } from './main-buttons/main-buttons.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     DashboardComponent,
-    ContactUsButtonComponent,
-    HomeButtonComponent,
-    ContactmodalComponent
+    ContactmodalComponent,
+    MainButtonsComponent
   ],
   imports: [
     BrowserModule,

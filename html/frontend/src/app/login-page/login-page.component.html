@@ -20,13 +20,17 @@
   <div class="top-header">
    <div> UT TICKET EXCHANGE </div>
    <img  src="../../assets/longhorn.png" width="20%"/>
-   <li><app-contact-us-button></app-contact-us-button></li>
-   <li><app-dashboard></app-dashboard></li>
-   <li><app-home-button></app-home-button></li>
+   <li><app-main-buttons [route]="'/home'" [buttonName]="'Contact Us'"></app-main-buttons></li>
+   <li><app-main-buttons [route]="'/listings'" [buttonName]="'Listings'"></app-main-buttons></li>
+   <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
   </div>
   <!-- <h1 style="position: absolute; margin-top: 8px; left: 20px;">UT TICKET EXCHANGE</h1>  -->
   <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
-    width="100%"/>
+    width="100%" style="display: block;"/>
+    <div style="position: absolute;  top: 10%; color: aqua;
+    ">
+      testing hello testing again
+    </div>
   <div class="BootstrapModal">
     <app-contactmodal></app-contactmodal>
   </div>
