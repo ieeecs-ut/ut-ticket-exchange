@@ -16,6 +16,16 @@ li a:hover {
   color: #BF5700;
 }
 
+li a:focus {
+  color: black;
+  background-color: #BF5700;
+}
+
+li a:active {
+  color: black;
+  background-color: #BF5700;
+}
+
 .hvr-grow {
   display: inline-block;
   vertical-align: middle;
@@ -41,9 +51,11 @@ li a:hover {
   font-weight: bold;
   margin-left: 1em;
 }
-.ModalButton:hover{
-  color: #BF5700;
-}
+
+/* .ModalButton:focus {
+  background-color: blueviolet;
+} */
+
 .ModalButton:focus,.btn:active {
   outline: none !important;
   box-shadow: none;
