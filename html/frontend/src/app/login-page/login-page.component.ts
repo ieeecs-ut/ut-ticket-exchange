@@ -17,7 +17,6 @@ export class LoginPageComponent implements OnInit {
       'width': window.innerWidth + 'px',
       'height': window.innerHeight + 'px'
     }
-
     return styles;
   }
   
