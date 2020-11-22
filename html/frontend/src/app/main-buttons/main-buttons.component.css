@@ -52,10 +52,6 @@ li a:active {
   margin-left: 1em;
 }
 
-/* .ModalButton:focus {
-  background-color: blueviolet;
-} */
-
 .ModalButton:focus,.btn:active {
   outline: none !important;
   box-shadow: none;

@@ -92,3 +92,8 @@ a {
    color: rgb(120, 120, 120);
    font-size: 20px; 
 }
+
+button {
+   background-color: #BF5700;
+   margin-top: 20px;
+}

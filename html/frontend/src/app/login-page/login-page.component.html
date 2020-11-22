@@ -1,23 +1,3 @@
-<!-- <div class="arial1">
-   <nav>
-      <a routerLink="/dashboard">Dashboard</a>
-   </nav> 
-</div> -->
-
-<!-- <div style="position: relative;"> -->
-  <!-- <div class="top-header">
-   <img src="../../assets/longhorn.png" width="20%"/>
-   <div style="color: #BF5700; font-weight: 600;"> UT Ticket Exchange </div>
-   <li><app-main-buttons [route]="'/login'" [buttonName]="'Contact Us'"></app-main-buttons></li>
-   <li><app-main-buttons [route]="'/listings'" [buttonName]="'Listings'"></app-main-buttons></li>
-   <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
-  </div> -->
-  <!-- <h1 style="position: absolute; margin-top: 8px; left: 20px;">UT TICKET EXCHANGE</h1>  -->
-  <!-- <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
-    width="100%" style="display: block;"/> -->
-    <!-- <div [ngStyle]="{backgroundImage:'url(../../assets/stadium_aerial.jpg)', 'height': ''}" >
-      <h1>Rose image</h1>
-   </div> -->
    <div [ngStyle]="getBackgroundStyles()" >
       <div class="top-header">
          <img src="../../assets/longhorn.png" width="20%"/>
@@ -37,7 +17,11 @@
             Created by UT Students, for UT Students.
          </div>
       </div>
-      <div style = "flex: 1;"> **Add other stuff here** </div>
+      <div style = "flex: 1;">
+         <img src="../../assets/ut_logo.png" width="50%" style="padding-top: 30px">
+          <br/>
+          <button>Sign in with UT EID</button>
+      </div>
    </div>
   <!-- <div>
     <app-contactmodal></app-contactmodal>
