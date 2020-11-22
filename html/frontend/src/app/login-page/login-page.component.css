@@ -75,11 +75,20 @@ a {
 
 .description {
    flex: 2;
-   text-align: center;
+   /* text-align: center; */
+   padding-left: 10%;
    vertical-align: middle;
+   align-content: center;
 }
 
 .description .big {
-   color: black;
-   font-size: large;
+   color: rgb(80, 80, 80);
+   font-size: 35px;
+   font-weight: 600;
+   line-height: 45px;
+}
+
+.description .small {
+   color: rgb(120, 120, 120);
+   font-size: 20px; 
 }

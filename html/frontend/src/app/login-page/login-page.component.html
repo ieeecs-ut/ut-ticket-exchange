@@ -1,46 +1,44 @@
-<!-- <p>login-page works!</p> -->
-<!-- <mdb-navbar></mdb-navbar> -->
-   <!-- <div >
-        <ul class="nav navbar-nav" routerLinkActive="active">
-            <li class="nav-item"><a class="nav-link" routerLink="home">Home</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="about">About</a></li>
-            <li class="nav-item"><a class="nav-link" routerLink="courses">Courses</a></li>
-        </ul>
-    </div> -->
-
-
 <!-- <div class="arial1">
    <nav>
       <a routerLink="/dashboard">Dashboard</a>
    </nav> 
 </div> -->
 
-
-<div style="position: relative">
-  <div class="top-header">
+<!-- <div style="position: relative;"> -->
+  <!-- <div class="top-header">
    <img src="../../assets/longhorn.png" width="20%"/>
-   <div style="color: #BF5700;"> UT TICKET EXCHANGE </div>
+   <div style="color: #BF5700; font-weight: 600;"> UT Ticket Exchange </div>
    <li><app-main-buttons [route]="'/login'" [buttonName]="'Contact Us'"></app-main-buttons></li>
    <li><app-main-buttons [route]="'/listings'" [buttonName]="'Listings'"></app-main-buttons></li>
    <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
-  </div>
+  </div> -->
   <!-- <h1 style="position: absolute; margin-top: 8px; left: 20px;">UT TICKET EXCHANGE</h1>  -->
-  <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
-    width="100%" style="display: block;"/>
-    <!-- <div style="position: absolute;  top: 10%; color: aqua;">
-      testing hello testing again
-    </div> -->
-    <div style="position: absolute; top: 20%; width: 100%; background-color: rgb(250, 250, 250, 0.8); height: 30%; display: flex;">
+  <!-- <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
+    width="100%" style="display: block;"/> -->
+    <!-- <div [ngStyle]="{backgroundImage:'url(../../assets/stadium_aerial.jpg)', 'height': ''}" >
+      <h1>Rose image</h1>
+   </div> -->
+   <div [ngStyle]="getBackgroundStyles()" >
+      <div class="top-header">
+         <img src="../../assets/longhorn.png" width="20%"/>
+         <div style="color: #BF5700; font-weight: 600;"> UT Ticket Exchange </div>
+         <li><app-main-buttons [route]="'/login'" [buttonName]="'Contact Us'"></app-main-buttons></li>
+         <li><app-main-buttons [route]="'/listings'" [buttonName]="'Listings'"></app-main-buttons></li>
+         <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
+      </div>
+   </div>
+    <div style="position: absolute; top: 20%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 40%; display: flex;">
       <div class="description">
          <div class="big">
-            Any date. Any game.
+            Any date. Any game. <br/>
             Buy and sell UT Tickets in minutes.
          </div>
-         Created by UT Students, for UT Students.
+         <div class="small">
+            Created by UT Students, for UT Students.
+         </div>
       </div>
-      <div style = "flex: 1;"> this is agaiun me and i amsteting </div>>
+      <div style = "flex: 1;"> **Add other stuff here** </div>
    </div>
   <!-- <div>
     <app-contactmodal></app-contactmodal>
   </div> -->
-</div>

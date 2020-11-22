@@ -7,7 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    console.log(window.innerWidth);
+  }
 
+  getBackgroundStyles() {
+    let styles = {
+      'backgroundImage': 'url(../../assets/stadium_aerial.jpg)',
+      'width': window.innerWidth + 'px',
+      'height': window.innerHeight + 'px'
+    }
+
+    return styles;
+  }
+  
   ngOnInit() { }
 }
