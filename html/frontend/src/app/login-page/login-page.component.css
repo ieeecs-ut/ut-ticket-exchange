@@ -78,7 +78,6 @@ a {
    /* text-align: center; */
    padding-left: 10%;
    vertical-align: middle;
-   align-content: center;
 }
 
 .description .big {
@@ -86,6 +85,7 @@ a {
    font-size: 35px;
    font-weight: 600;
    line-height: 45px;
+   padding-top: 5%;
 }
 
 .description .small {
