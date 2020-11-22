@@ -73,6 +73,10 @@ a {
    background-color: #8842d5; 
 }
 
+.signin {
+   flex: 1;
+}
+
 .description {
    flex: 2;
    /* text-align: center; */
@@ -96,4 +100,11 @@ a {
 button {
    background-color: #BF5700;
    margin-top: 20px;
+   border-radius: 6px;
+   border-color: transparent;
+   color: white;
+   height: 50px;
+   font-size: 13px;
+   font-weight: 500;
+   width: 190px;
 }
