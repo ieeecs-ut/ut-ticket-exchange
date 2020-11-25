@@ -1,4 +1,5 @@
-   <div [ngStyle]="getBackgroundStyles()" >
+<div style="position: relative;">
+   <div>
       <div class="top-header">
          <img src="../../assets/longhorn.png" width="20%"/>
          <div style="color: #BF5700; font-weight: 600;"> UT Ticket Exchange </div>
@@ -7,7 +8,10 @@
          <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
       </div>
    </div>
-    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 40%; display: flex;">
+  <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
+   width="100%" style="background-size: cover;"/>
+
+    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 330px; display: flex;">
       <div class="description">
          <div class="big">
             Any date. Any game. <br/>
@@ -18,11 +22,13 @@
          </div>
       </div>
       <div class="signin">
-         <img src="../../assets/ut_logo.png" width="50%" style="padding-top: 30px">
+         <img src="../../assets/ut_logo.png" style="padding-top: 30px; height: 175px">
           <br/>
-          <button>Sign in with UT EID</button>
+          <button style="width: 250px;">Sign in with UT EID</button>
       </div>
    </div>
-  <!-- <div>
+</div>
+  
+  <div>
     <app-contactmodal></app-contactmodal>
-  </div> -->
+  </div>

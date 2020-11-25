@@ -15,7 +15,11 @@ export class LoginPageComponent implements OnInit {
     let styles = {
       'backgroundImage': 'url(../../assets/stadium_aerial.jpg)',
       'width': window.innerWidth + 'px',
-      'height': window.innerHeight + 'px'
+      'height': window.innerHeight + 'px',
+      'cover': 'fit',
+      'background-size': 'cover',
+      'margin-right': 'auto',
+      "backgroundRepeat": 'no-repeat'
     }
     return styles;
   }
