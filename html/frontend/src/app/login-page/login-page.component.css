@@ -82,7 +82,13 @@ button {
    border-color: transparent;
    color: white;
    height: 50px;
-   font-size: 13px;
+   font-size: 15px;
    font-weight: 500;
-   width: 190px;
+   width: 250px;
+   outline: none;
+}
+
+button:active {
+   border-color: transparent;
+   background-color:#A34803;
 }
