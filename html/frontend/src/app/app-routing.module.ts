@@ -19,7 +19,7 @@ const routes: Routes = [
   },
   { 
     path: "listings", 
-    component: LoginPageComponent, 
+    component: DashboardComponent, 
     pathMatch: "full"
   },
   {
@@ -28,8 +28,8 @@ const routes: Routes = [
     pathMatch: "full"
   },
   {
-    path: "modal",
-    component: ContactmodalComponent,
+    path: "contact",
+    component: LoginPageComponent,
     pathMatch: "full" 
   }
   // {
