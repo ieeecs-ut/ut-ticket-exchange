@@ -9,27 +9,24 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [ 
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "login",
     pathMatch: 'full'
   },
   { 
-    path: "home", 
-    component: LoginPageComponent, 
-    pathMatch: "full"
-  },
-  { 
     path: "listings", 
-    component: LoginPageComponent, 
-    pathMatch: "full"
+    component: DashboardComponent, 
+    pathMatch: "full",
+    data: { title: "Dashboard" }
   },
   {
     path:"login",
     component: LoginPageComponent,
-    pathMatch: "full"
+    pathMatch: "full",
+    data: { title: "Home" }
   },
   {
-    path: "modal",
-    component: ContactmodalComponent,
+    path: "contact",
+    component: LoginPageComponent,
     pathMatch: "full" 
   }
   // {

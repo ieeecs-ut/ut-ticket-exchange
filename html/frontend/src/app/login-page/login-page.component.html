@@ -1,17 +1,18 @@
 <div style="position: relative; overflow: hidden;">
-   <div>
+   <!-- <div>
       <div class="top-header">
          <img src="../../assets/longhorn.png" width="20%"/>
          <div style="color: #BF5700; font-weight: 600;"> UT Ticket Exchange </div>
-         <li><app-main-buttons [route]="'/login'" [buttonName]="'Contact Us'"></app-main-buttons></li>
+         <li><app-main-buttons [route]="'/contact'" [buttonName]="'Contact Us'"></app-main-buttons></li>
          <li><app-main-buttons [route]="'/listings'" [buttonName]="'Listings'"></app-main-buttons></li>
          <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
       </div>
-   </div>
+   </div> -->
+   <app-nav-bar></app-nav-bar>
   <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
-   width="100%" style="background-size: cover;"/>
+   width="100%" style="overflow: hidden !important;"/>
 
-    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 330px; display: flex;">
+    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 330px; display: flex; overflow: hidden !important;" >
       <div class="description">
          <div class="big">
             Any date. Any game. <br/>
@@ -25,10 +26,12 @@
          <img src="../../assets/ut_logo.png" style="padding-top: 30px; height: 175px">
           <br/>
           <button>Sign in with UT EID</button>
+          <!-- <div *ngIf="true; else ElseBlock">Content to render when condition is true.</div>
+          <ng-template #ElseBlock><div> Testing </div></ng-template> -->
       </div>
    </div>
 </div>
-  
-  <div>
+
+  <div *ngIf="routeContact">
     <app-contactmodal></app-contactmodal>
   </div>
