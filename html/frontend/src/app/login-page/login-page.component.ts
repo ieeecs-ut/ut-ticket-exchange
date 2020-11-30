@@ -10,12 +10,19 @@ import { stringify } from 'querystring';
 export class LoginPageComponent implements OnInit {
 
   constructor() { 
-    // console.log(window.innerWidth);
+    // console.log(window.innerWidth)
     // console.log(history.state)
     // console.log(history.state[1])
+    var preventScrolling = document.createElement( "style" )
+		preventScrolling.textContent = `
+			body {
+				overflow: hidden !important ;
+			}
+		`;
+    document.body.appendChild(preventScrolling)
   }
 
-  currRoute : boolean = history.state[1] === 'c';
+  routeContact : boolean = history.state[1] === 'c';
 
   getBackgroundStyles() {
     let styles = {

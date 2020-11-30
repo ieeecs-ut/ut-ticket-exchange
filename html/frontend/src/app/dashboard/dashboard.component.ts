@@ -29,6 +29,11 @@ export class DashboardComponent implements OnInit {
 
   people : Student[] = PEOPLE;
 
+  currStyles = {
+    top: '50%',
+    position: 'absolute'
+  }
+
   constructor() { }
 
   ngOnInit() {
@@ -38,6 +43,7 @@ export class DashboardComponent implements OnInit {
     console.log("person seleccted")
     this.selectedPerson = person;
     console.log(this.selectedMajor)
+    this.currStyles['backgroundColor'] = 'blue'
   }
 
   changeMajors() {

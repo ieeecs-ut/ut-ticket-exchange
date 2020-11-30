@@ -1,23 +1,26 @@
-<div> From: {{ currTicket.from }}</div>
-<div> <span>id: </span> {{ currTicket.id }}</div>
-<div>
-   <label>name:
-     <input [(ngModel)]="currTicket.from" placeholder="name"/>
-   </label>
-</div>
+<app-nav-bar></app-nav-bar>
+<div [ngStyle]="currStyles">
+   <div> From: {{ currTicket.from }}</div>
+   <div> <span>id: </span> {{ currTicket.id }}</div>
+   <div>
+      <label>name:
+      <input [(ngModel)]="currTicket.from" placeholder="name"/>
+      </label>
+   </div>
 
-<div *ngFor="let person of people" (click)="setSelected(person)">
-   <div style="background-color: orange;"> {{ person.name }} </div>
-</div>
+   <div *ngFor="let person of people" (click)="setSelected(person)">
+      <div style="background-color: orange;"> {{ person.name }} </div>
+   </div>
 
-<div>
-   <select [(ngModel)]="selectedMajor">
-      <ng-container *ngFor="let maj of majors">
-         <option> {{ maj }} </option>
-      </ng-container>
-   </select>
-</div>
+   <div>
+      <select [(ngModel)]="selectedMajor">
+         <ng-container *ngFor="let maj of majors">
+            <option> {{ maj }} </option>
+         </ng-container>
+      </select>
+   </div>
 
-<div *ngIf="selectedPerson">
-   <input [(ngModel)]="selectedPerson.name" placeholder="Selected Name" />
+   <div *ngIf="selectedPerson">
+      <input [(ngModel)]="selectedPerson.name" placeholder="Selected Name" />
+   </div>
 </div>
