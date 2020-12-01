@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Ticket } from '../ticket'
 import { SportsComponent, Sports } from '../sports'
@@ -10,6 +10,9 @@ import { SportsComponent, Sports } from '../sports'
 })
 export class GameCardComponent implements OnInit {
   
+  // @Input() currTicket : Ticket;
+
+
   currTicket : Ticket = {
     id: 3,
     sport: Sports.Football,
@@ -19,7 +22,7 @@ export class GameCardComponent implements OnInit {
     price: 43.95,
     collegeOne: "UT Austin",
     collegeTwo: "Texas A&M",
-    time: "3:15 CST",
+    time: "3:15",
     location: "Texas A&M Stadium"
   }
 

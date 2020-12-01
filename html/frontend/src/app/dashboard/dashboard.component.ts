@@ -18,10 +18,10 @@ export class DashboardComponent implements OnInit {
     day: 14,
     month: 8,
     year: 2020,
-    price: 43.50,
+    price: 43.95,
     collegeOne: "UT Austin",
     collegeTwo: "Texas A&M",
-    time: "3:05 CST",
+    time: "3:15",
     location: "Texas A&M Stadium"
   }
 
