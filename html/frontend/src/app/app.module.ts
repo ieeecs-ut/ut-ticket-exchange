@@ -10,6 +10,7 @@ import { ContactmodalComponent } from './contactmodal/contactmodal.component';
 import { MainButtonsComponent } from './main-buttons/main-buttons.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
+import { GameCardComponent } from './game-card/game-card.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
     ContactmodalComponent,
     MainButtonsComponent,
     NavBarComponent,
-    AuthPageComponent
+    AuthPageComponent,
+    GameCardComponent
   ],
   imports: [
     BrowserModule,

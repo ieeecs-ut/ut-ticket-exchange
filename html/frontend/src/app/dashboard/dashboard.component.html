@@ -2,6 +2,15 @@
 <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
    width="100%"/>
 <div [ngStyle]="currStyles">
+   <div style="display: flex; width: 100%;">
+      <div style="flex: 1;">
+         hi
+      </div>
+      <div style="flex: 2">
+         hi
+      </div>   
+   </div>
+   <app-game-card></app-game-card>
    <div> From: {{ currTicket.from }}</div>
    <div> <span>id: </span> {{ currTicket.id }}</div>
    <div>
