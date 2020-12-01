@@ -19,7 +19,10 @@ export class DashboardComponent implements OnInit {
     month: 8,
     year: 2020,
     price: 43.50,
-    from: "John Smith"
+    collegeOne: "UT Austin",
+    collegeTwo: "Texas A&M",
+    time: "3:05 CST",
+    location: "Texas A&M Stadium"
   }
 
   majors = ['Computer Science', 'Electrical Engineering', 'Business', 'Biology']

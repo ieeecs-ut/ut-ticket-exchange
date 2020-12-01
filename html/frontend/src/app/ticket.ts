@@ -7,5 +7,8 @@ export interface Ticket {
    month: number;
    year: number;
    price: number;
-   from: string;
+   collegeOne: string;
+   collegeTwo: string;
+   time: string;
+   location: string;
 }

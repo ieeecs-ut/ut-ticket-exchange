@@ -5,7 +5,7 @@
             <mat-icon svgIcon="football_icon"></mat-icon>
          </div>
          <div style="flex: 4; text-align: center;">
-            UT Austin at Texas A&M
+            {{ currTicket.collegeOne }} at {{ currTicket.collegeTwo }}
          </div>
       </div>
       <!-- <mat-icon svgIcon="football_icon" style="margin-right: 10px;"></mat-icon> -->
@@ -14,13 +14,13 @@
    <div style="flex: 1;">
       <mat-icon svgIcon="calendar" style="margin-left: 20px; display: inline-block; margin-right: 10px; vertical-align: middle;"></mat-icon>
       <div style="background-color: white; height: 30px; width: 180px; border-radius: 5px; display: inline-block; vertical-align: middle; text-align: center; ">
-         10/26/20 3:05 CST
+         {{ currTicket.month }}/{{ currTicket.day }}/{{ currTicket.year }} {{ currTicket.time }}
       </div>
    </div>
    <div style="flex: 1;">
       <mat-icon svgIcon="location" style="margin-left: 20px; display: inline-block; margin-right: 10px; vertical-align: middle;"></mat-icon>
       <div style="background-color: white; height: 30px; width: 180px; border-radius: 5px; display: inline-block; vertical-align: middle; text-align: center; ">
-         Texas A&M Stadium
+         {{ currTicket.location }}
       </div>
    </div>
    <div style="flex: 1;">
@@ -28,7 +28,7 @@
          Bid
       </button>
       <div style="background-color: white; height: 30px; width: 160px; border-radius: 5px; display: inline-block; vertical-align: middle; text-align: center; margin-top: 10px; margin-left: 15px;" >
-         Highest Bid: $34.00
+         Highest Bid: ${{ currTicket.price }}
       </div>
    </div>
 </div>
