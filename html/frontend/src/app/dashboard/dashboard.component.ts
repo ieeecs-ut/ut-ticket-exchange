@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllEvents() {
-
+    
   }
 
 
