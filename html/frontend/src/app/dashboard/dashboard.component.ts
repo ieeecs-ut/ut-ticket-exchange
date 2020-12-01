@@ -13,7 +13,7 @@ import { Student, PEOPLE } from '../person'
 export class DashboardComponent implements OnInit {
 
   thisTicket : Ticket = {
-    id: 3,
+    id: "3",
     sport: Sports.Football,
     day: 14,
     month: 8,
@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
     location: "Texas A&M Stadium"
   }
 
-  sportEvents : Ticket[];
+  sportEvents : Ticket[] = [];
   
   currStyles = {
     top: '25%',
@@ -43,6 +43,13 @@ export class DashboardComponent implements OnInit {
 			}
 		`;
     document.body.appendChild(preventScrolling)
+    fetch("http://localhost:3000/events", {
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => res.json()).then(data => {
+      data.forEach(element => this.sportEvents.push(element))
+    })
+  
   }
 
   getTicketStr(ticket : Ticket) {
@@ -50,7 +57,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllEvents() {
-    
+
   }
 
 

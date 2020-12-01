@@ -1,7 +1,7 @@
 import { Sports } from './sports';
 
 export interface Ticket {
-   id: number;
+   id: string;
    sport: Sports;
    day: number;
    month: number;

@@ -11,8 +11,10 @@
       </div> 
       
    </div>
+   <div *ngFor="let event of sportEvents">
+      <app-game-card [ticketVal]="getTicketStr(event)"></app-game-card>
+   </div>
 
-   <app-game-card [ticketVal]="getTicketStr(thisTicket)"></app-game-card>
 
 
    <!-- <div> From: {{ currTicket.from }}</div>
