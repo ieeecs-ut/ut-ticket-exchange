@@ -30,8 +30,9 @@ export class DashboardComponent implements OnInit {
   people : Student[] = PEOPLE;
 
   currStyles = {
-    top: '50%',
-    position: 'absolute'
+    top: '25%',
+    position: 'absolute',
+    width: '100%'
   }
 
   constructor() { 

@@ -11,6 +11,8 @@ import { MainButtonsComponent } from './main-buttons/main-buttons.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { GameCardComponent } from './game-card/game-card.component';
+import { MatIconModule } from "@angular/material/icon";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { GameCardComponent } from './game-card/game-card.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    MatIconModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
