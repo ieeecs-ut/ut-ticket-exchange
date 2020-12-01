@@ -25,26 +25,17 @@ export class DashboardComponent implements OnInit {
     location: "Texas A&M Stadium"
   }
 
-  getTicketStr(ticket : Ticket) {
-    return JSON.stringify(ticket)
-  }
-
-  currTicket : string = JSON.stringify(this.thisTicket)
-
-  majors = ['Computer Science', 'Electrical Engineering', 'Business', 'Biology']
-
-  selectedPerson : Student;
-  selectedMajor : string;
-
-  people : Student[] = PEOPLE;
-
+  sportEvents : Ticket[];
+  
   currStyles = {
     top: '25%',
     position: 'absolute',
     width: '100%'
   }
 
-  constructor() { 
+  constructor() { }
+
+  ngOnInit() {
     var preventScrolling = document.createElement( "style" )
 		preventScrolling.textContent = `
 			body {
@@ -52,24 +43,29 @@ export class DashboardComponent implements OnInit {
 			}
 		`;
     document.body.appendChild(preventScrolling)
-    console.log("hi")
-    console.log(this.currTicket)
   }
 
-  ngOnInit() {
+  getTicketStr(ticket : Ticket) {
+    return JSON.stringify(ticket)
+  }
+
+  getAllEvents() {
+
   }
 
 
-  setSelected(person : Student) {
-    console.log("person seleccted")
-    this.selectedPerson = person;
-    console.log(this.selectedMajor)
-    this.currStyles['backgroundColor'] = 'blue'
-  }
+  // majors = ['Computer Science', 'Electrical Engineering', 'Business', 'Biology']
 
-  changeMajors() {
-    console.log("Change majors")
-    console.log()
-  }
+  // selectedPerson : Student;
+  // selectedMajor : string;
+
+  // people : Student[] = PEOPLE;
+
+
+  // setSelected(person : Student) {
+  //   this.selectedPerson = person;
+  //   console.log(this.selectedMajor)
+  //   this.currStyles['backgroundColor'] = 'blue'
+  // }
 
 }
