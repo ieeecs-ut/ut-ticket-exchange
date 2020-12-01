@@ -34,7 +34,15 @@ export class DashboardComponent implements OnInit {
     position: 'absolute'
   }
 
-  constructor() { }
+  constructor() { 
+    var preventScrolling = document.createElement( "style" )
+		preventScrolling.textContent = `
+			body {
+				overflow: hidden !important ;
+			}
+		`;
+    document.body.appendChild(preventScrolling)
+  }
 
   ngOnInit() {
   }

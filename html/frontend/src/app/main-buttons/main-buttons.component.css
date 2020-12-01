@@ -13,7 +13,7 @@ li a {
 }
 
 li a:hover {
-  color: #BF5700;
+  /* color: #BF5700; */
 }
 
 li a:focus {
@@ -42,7 +42,7 @@ li a:active {
   transform: scale(1.1);
 }
 .ModalButton {
-  background: none!important;
+  /* background: none!important; */
   text-decoration: none;
   border: none;
   padding: 0em;
