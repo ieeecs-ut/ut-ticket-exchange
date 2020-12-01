@@ -16,7 +16,16 @@ export class AppComponent {
       'football_icon',
       domSanitizer.bypassSecurityTrustResourceUrl("../assets/sports_football-24px.svg")
     )
+    matIconRegistry.addSvgIcon(
+      'calendar',
+      domSanitizer.bypassSecurityTrustResourceUrl("../assets/event-24px.svg")
+    )
+    matIconRegistry.addSvgIcon(
+      'location',
+      domSanitizer.bypassSecurityTrustResourceUrl("../assets/location_on-24px.svg")
+    )
   }
+    
 
   goToLogin() {
     this.router.navigate(['/login']); 

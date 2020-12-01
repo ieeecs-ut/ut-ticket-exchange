@@ -6,3 +6,15 @@
    display: flex;
    flex-direction: column;
 }
+
+button {
+   margin-top: 10px;
+   background-color: rgb(66, 66, 66);
+   color: white;
+   border-color: transparent;
+   outline: none;
+   width: 60px;
+   border-radius: 3px;
+   display: inline-block;
+   vertical-align: middle;
+}
