@@ -12,10 +12,6 @@ li a {
   font-weight: bold;
 }
 
-li a:hover {
-  /* color: #BF5700; */
-}
-
 li a:focus {
   color: black;
   background-color: #BF5700;
