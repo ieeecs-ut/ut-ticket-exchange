@@ -2,18 +2,12 @@
 <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
    width="100%"/>
 <div [ngStyle]="currStyles">
-   <div style="display: flex;">
-      <div style="flex: 1;">
-         hi
-      </div>
-      <div style="flex: 1">
-         hi
-      </div> 
-      
+   <div fxLayout="row wrap">
+      <app-game-card *ngFor="let event of sportEvents" [ticketVal]="getTicketStr(event)"></app-game-card>
    </div>
-   <div *ngFor="let event of sportEvents">
-      <app-game-card [ticketVal]="getTicketStr(event)"></app-game-card>
-   </div>
+</div>
+
+<app-bidding-modal></app-bidding-modal>
 
 
 

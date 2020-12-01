@@ -21,10 +21,10 @@
 * {
 
 
-  -webkit-font-smoothing: antialiased;
+  /* -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
   -o-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility; */
 }
 
 body {
@@ -55,7 +55,7 @@ body {
   background: #F9F9F9;
   padding: 25px;
   margin: 50px 0;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  /* box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24); */
 }
 
 #contact h3 {
@@ -97,10 +97,10 @@ fieldset {
 #contact input[type="tel"]:hover,
 #contact input[type="url"]:hover,
 #contact textarea:hover {
-  -webkit-transition: border-color 0.3s ease-in-out;
+  /* -webkit-transition: border-color 0.3s ease-in-out;
   -moz-transition: border-color 0.3s ease-in-out;
   transition: border-color 0.3s ease-in-out;
-  border: 1px solid #aaa;
+  border: 1px solid #aaa; */
 }
 
 #contact textarea {
@@ -121,10 +121,10 @@ fieldset {
 }
 
 #contact button[type="submit"]:hover {
-  background: #f8971f;
+  /* background: #f8971f;
   -webkit-transition: background 0.3s ease-in-out;
   -moz-transition: background 0.3s ease-in-out;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out; */
 }
 
 #contact button[type="submit"]:active {

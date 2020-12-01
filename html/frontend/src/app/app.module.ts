@@ -13,6 +13,8 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
 import { GameCardComponent } from './game-card/game-card.component';
 import { MatIconModule } from "@angular/material/icon";
 import { HttpClientModule } from "@angular/common/http";
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
 
 @NgModule({
   declarations: [
@@ -23,14 +25,16 @@ import { HttpClientModule } from "@angular/common/http";
     MainButtonsComponent,
     NavBarComponent,
     AuthPageComponent,
-    GameCardComponent
+    GameCardComponent,
+    BiddingModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
+    // FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

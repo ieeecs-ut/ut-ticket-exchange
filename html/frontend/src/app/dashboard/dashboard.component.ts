@@ -12,19 +12,6 @@ import { Student, PEOPLE } from '../person'
 
 export class DashboardComponent implements OnInit {
 
-  thisTicket : Ticket = {
-    id: "3",
-    sport: Sports.Football,
-    day: 14,
-    month: 8,
-    year: 2020,
-    price: 43.75,
-    collegeOne: "UT Austin",
-    collegeTwo: "Texas A&M",
-    time: "3:15",
-    location: "Texas A&M Stadium"
-  }
-
   sportEvents : Ticket[] = [];
   
   currStyles = {
@@ -43,13 +30,7 @@ export class DashboardComponent implements OnInit {
 			}
 		`;
     document.body.appendChild(preventScrolling)
-    fetch("http://localhost:3000/events", {
-      method: 'get',
-      headers: { 'Content-Type': 'application/json' }
-    }).then(res => res.json()).then(data => {
-      data.forEach(element => this.sportEvents.push(element))
-    })
-  
+    this.getAllEvents()
   }
 
   getTicketStr(ticket : Ticket) {
@@ -57,6 +38,19 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllEvents() {
+    fetch("http://localhost:3000/events", {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => res.json()).then(data => {
+      data.forEach(element => this.sportEvents.push(element))
+    })
+  }
+
+  updateHighestBid() {
+
+  }
+
+  updateUserBid() {
 
   }
 

@@ -6,9 +6,10 @@ export interface Ticket {
    day: number;
    month: number;
    year: number;
-   price: number;
+   highestPrice: number;
    collegeOne: string;
    collegeTwo: string;
    time: string;
    location: string;
+   bidder: string;
 }
