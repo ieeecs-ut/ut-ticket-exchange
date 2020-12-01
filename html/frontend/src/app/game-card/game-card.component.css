@@ -18,3 +18,11 @@ button {
    display: inline-block;
    vertical-align: middle;
 }
+
+button:hover {
+   cursor: pointer;
+}
+
+button:active {
+   background-color: rgb(90, 90, 90);
+}

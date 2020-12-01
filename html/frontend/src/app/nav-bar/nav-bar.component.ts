@@ -9,15 +9,18 @@ import { Component, OnInit } from '@angular/core';
 
 export class NavBarComponent implements OnInit {
 
+  colorStyles;
+
   constructor() { }
 
-  colorStyles = {
-    1: true,
-    2: false,
-    3: false
-  }
+
 
   ngOnInit() {
+    this.colorStyles = {
+      1: true,
+      2: false,
+      3: false
+    }
   }
 
   printColor(num : number) {

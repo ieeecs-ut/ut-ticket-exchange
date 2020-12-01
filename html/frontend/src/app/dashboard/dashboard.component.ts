@@ -18,11 +18,15 @@ export class DashboardComponent implements OnInit {
     day: 14,
     month: 8,
     year: 2020,
-    price: 43.05,
+    price: 43.75,
     collegeOne: "UT Austin",
     collegeTwo: "Texas A&M",
     time: "3:15",
     location: "Texas A&M Stadium"
+  }
+
+  getTicketStr(ticket : Ticket) {
+    return JSON.stringify(ticket)
   }
 
   currTicket : string = JSON.stringify(this.thisTicket)

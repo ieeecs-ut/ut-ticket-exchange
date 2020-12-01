@@ -6,7 +6,7 @@ a {
 }
 
 li a {
-  padding: 1em;
+  padding: 22px;
   font-size: 20px;
   font-family:'Trebuchet MS';
   font-weight: bold;
@@ -14,12 +14,12 @@ li a {
 
 li a:focus {
   color: black;
-  background-color: #BF5700;
+  /* background-color: #BF5700; */
 }
 
 li a:active {
   color: black;
-  background-color: #BF5700;
+  /* background-color: #BF5700; */
 }
 
 .hvr-grow {
@@ -38,7 +38,7 @@ li a:active {
   transform: scale(1.1);
 }
 .ModalButton {
-  /* background: none!important; */
+  background: none!important;
   text-decoration: none;
   border: none;
   padding: 0em;
@@ -51,4 +51,9 @@ li a:active {
 .ModalButton:focus,.btn:active {
   outline: none !important;
   box-shadow: none;
+}
+
+.background-color-set {
+  color: white;
+  background-color: #BF5700;
 }
