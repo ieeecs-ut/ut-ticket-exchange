@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Ticket } from '../ticket'
 import { SportsComponent, Sports } from '../sports'
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'app-game-card',
@@ -10,25 +11,34 @@ import { SportsComponent, Sports } from '../sports'
 })
 export class GameCardComponent implements OnInit {
   
-  // @Input() currTicket : Ticket;
+  @Input() ticketVal : string;
+
+  // currTicket : Ticket = {
+  //   id: 3,
+  //   sport: Sports.Football,
+  //   day: 14,
+  //   month: 8,
+  //   year: 2020,
+  //   price: 43.95,
+  //   collegeOne: "UT Austin",
+  //   collegeTwo: "Texas A&M",
+  //   time: "3:15",
+  //   location: "Texas A&M Stadium"
+  // }
+
+  currTicket : Ticket;
 
 
-  currTicket : Ticket = {
-    id: 3,
-    sport: Sports.Football,
-    day: 14,
-    month: 8,
-    year: 2020,
-    price: 43.95,
-    collegeOne: "UT Austin",
-    collegeTwo: "Texas A&M",
-    time: "3:15",
-    location: "Texas A&M Stadium"
+  constructor() { 
+    // console.log(this.ticketVal)
+    // this.currTicket = JSON.parse(this.ticketVal)
   }
 
-  constructor() { }
+
 
   ngOnInit() {
+    console.log(this.ticketVal)
+    this.currTicket = JSON.parse(this.ticketVal)
   }
 
 }

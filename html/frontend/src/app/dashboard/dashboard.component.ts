@@ -12,18 +12,20 @@ import { Student, PEOPLE } from '../person'
 
 export class DashboardComponent implements OnInit {
 
-  currTicket : Ticket = {
+  thisTicket : Ticket = {
     id: 3,
     sport: Sports.Football,
     day: 14,
     month: 8,
     year: 2020,
-    price: 43.95,
+    price: 43.05,
     collegeOne: "UT Austin",
     collegeTwo: "Texas A&M",
     time: "3:15",
     location: "Texas A&M Stadium"
   }
+
+  currTicket : string = JSON.stringify(this.thisTicket)
 
   majors = ['Computer Science', 'Electrical Engineering', 'Business', 'Biology']
 
@@ -46,10 +48,13 @@ export class DashboardComponent implements OnInit {
 			}
 		`;
     document.body.appendChild(preventScrolling)
+    console.log("hi")
+    console.log(this.currTicket)
   }
 
   ngOnInit() {
   }
+
 
   setSelected(person : Student) {
     console.log("person seleccted")
