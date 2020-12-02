@@ -62,6 +62,7 @@ module.exports = {
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
         });
+        express_api.use(express.static("html"));
         express_api.get("/", (req, res) => {
             res.sendFile(__dirname + "/html/index.html");
         });

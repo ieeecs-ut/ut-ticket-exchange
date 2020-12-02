@@ -1,1 +1,37 @@
-<li class="hvr-grow"><a routerLink="/listings">Listings</a></li>
+<app-nav-bar></app-nav-bar>
+<img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
+   width="100%"/>
+<div [ngStyle]="currStyles">
+   <div fxLayout="row wrap">
+      <app-game-card *ngFor="let event of sportEvents" [ticketVal]="getTicketStr(event)"></app-game-card>
+   </div>
+</div>
+
+<app-bidding-modal></app-bidding-modal>
+
+
+
+   <!-- <div> From: {{ currTicket.from }}</div>
+   <div> <span>id: </span> {{ currTicket.id }}</div>
+   <div>
+      <label>name:
+      <input [(ngModel)]="currTicket.from" placeholder="name"/>
+      </label>
+   </div>
+
+   <div *ngFor="let person of people" (click)="setSelected(person)">
+      <div style="background-color: orange;"> {{ person.name }} </div>
+   </div>
+
+   <div>
+      <select [(ngModel)]="selectedMajor">
+         <ng-container *ngFor="let maj of majors">
+            <option> {{ maj }} </option>
+         </ng-container>
+      </select>
+   </div>
+
+   <div *ngIf="selectedPerson">
+      <input [(ngModel)]="selectedPerson.name" placeholder="Selected Name" />
+   </div>
+</div> -->
