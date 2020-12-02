@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Ticket } from './../ticket';
+import { selectCurrTicket, State } from './../reducers/index';
+import { Store } from '@ngrx/store';
+import { Component, Input, OnInit } from '@angular/core';
+
 
 @Component({
   selector: 'app-bidding-modal',
@@ -7,7 +11,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BiddingModalComponent implements OnInit {
 
-  constructor() { }
+  @Input() info : string;
+
+  ticketStr : Ticket;
+
+  constructor(private store : Store<State>) {
+    // console.log(store)
+    let val = this.store.select(state => state.ticket).forEach((element) => this.ticketStr = element.currBid)
+    // console.log(this.store.select(state => state.ticket))
+    console.log("test")
+  }
+
+  body : string = "i am testing this to see if it works"
 
   ngOnInit() {
   }

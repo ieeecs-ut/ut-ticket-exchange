@@ -24,11 +24,14 @@
       </div>
    </div>
    <div style="flex: 1;">
-      <button data-toggle="modal" data-target="#exampleModalLong">
+      <button data-toggle="modal" data-target="#exampleModalLong" (click)="dispatchData()">
          Bid
       </button>
+      <app-bidding-modal [info]="ticketVal"></app-bidding-modal>
+
       <div style="background-color: white; height: 30px; width: 160px; border-radius: 5px; display: inline-block; vertical-align: middle; text-align: center; margin-top: 10px; margin-left: 15px; padding-top: 2px;" >
          Highest Bid: ${{ currTicket.highestPrice }}
       </div>
    </div>
 </div>
+

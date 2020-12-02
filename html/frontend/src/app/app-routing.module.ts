@@ -1,3 +1,4 @@
+import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -33,6 +34,11 @@ const routes: Routes = [
    {
      path: "auth",
      component: AuthPageComponent,
+     pathMatch: "full"
+   },
+   {
+     path: "bidding",
+     component: BiddingModalComponent,
      pathMatch: "full"
    }
   // {

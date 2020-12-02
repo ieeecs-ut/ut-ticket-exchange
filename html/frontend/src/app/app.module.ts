@@ -15,6 +15,12 @@ import { MatIconModule } from "@angular/material/icon";
 import { HttpClientModule } from "@angular/common/http";
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
+import { ModalModule } from 'angular-bootstrap-md'
+import { NgbModule, NgbModal, NgbModalRef, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -34,9 +40,14 @@ import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
     FormsModule,
     MatIconModule,
     HttpClientModule,
+    NgbModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    // ModalModule
     // FlexLayoutModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [BiddingModalComponent, GameCardComponent]
 })
 export class AppModule { }
