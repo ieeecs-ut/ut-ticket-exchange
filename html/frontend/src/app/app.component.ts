@@ -26,6 +26,10 @@ export class AppComponent {
       'location',
       domSanitizer.bypassSecurityTrustResourceUrl("../assets/location_on-24px.svg")
     )
+    matIconRegistry.addSvgIcon(
+      'checkmark',
+      domSanitizer.bypassSecurityTrustResourceUrl("../assets/check_circle-24px.svg")
+    )
   }
     
 

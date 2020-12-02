@@ -24,7 +24,11 @@ export class BiddingModalComponent implements OnInit {
 
   body : string = "i am testing this to see if it works"
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  getSport(index : number) {
+    const arrSports = ["Football", "Volleyball", "Baseball", "Basketball", "Athletics"]
+    return arrSports[index-1]
   }
 
 }
