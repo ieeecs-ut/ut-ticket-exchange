@@ -15,7 +15,7 @@ export class DashboardComponent implements OnInit {
   sportEvents : Ticket[] = [];
   
   currStyles = {
-    top: '25%',
+    top: '20%',
     position: 'absolute',
     width: '100%'
   }

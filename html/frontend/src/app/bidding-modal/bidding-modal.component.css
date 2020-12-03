@@ -17,11 +17,12 @@ h6 {
    text-align: left;
    display: inline-block;
    flex: 6;
-   padding-bottom: 50px;
+   padding-bottom: 30px;
 }
 
 input{
    outline: none !important;
+   margin-left: 5px;
 }
 
 button {
