@@ -29,10 +29,12 @@ input {
 
 button {
    background-color: #BF5700;
+   margin: auto;
+   border-radius: 5px;
    height: 50px;
    width: 600px;
-   margin: auto;
-   display: flex;
-   border-radius: 5px;
    color: white;
+   font-weight: 500;
+   font-size: 20px;
+   margin-bottom: 30px;
 }
