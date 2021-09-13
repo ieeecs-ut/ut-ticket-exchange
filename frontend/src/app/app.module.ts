@@ -13,7 +13,7 @@ import { AuthPageComponent } from './auth-page/auth-page.component';
 import { GameCardComponent } from './game-card/game-card.component';
 import { MatIconModule } from "@angular/material/icon";
 import { HttpClientModule } from "@angular/common/http";
-import { FlexLayoutModule } from '@angular/flex-layout';
+// import { FlexLayoutModule } from '@angular/flex-layout';
 import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
 import { ModalModule } from 'angular-bootstrap-md'
 import { NgbModule, NgbModal, NgbModalRef, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';

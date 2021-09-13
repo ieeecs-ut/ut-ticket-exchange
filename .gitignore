@@ -1,2 +1,43 @@
-node_modules/
-*.DS_STORE
+# gitignore
+
+# system
+.DS_Store
+*.DS_Store
+Thumbs.db
+
+# backend
+backend/node_modules
+
+# frontend
+frontend/node_modules
+frontend/dist
+frontend/tmp
+frontend/out-tsc
+frontend/bazel-out
+frontend/chrome-profiler-events.json
+frontend/speed-measure-plugin.json
+
+# vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# general
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
