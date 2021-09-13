@@ -9,7 +9,10 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@angular/flex-layout": "^11.0.0-beta.33",
         "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "mongodb": "^3.6.2"
     }

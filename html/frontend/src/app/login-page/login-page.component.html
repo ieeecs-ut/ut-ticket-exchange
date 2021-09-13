@@ -10,9 +10,9 @@
    </div> -->
    <app-nav-bar></app-nav-bar>
   <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
-   width="100%" style="overflow: hidden !important;"/>
+   width="100%"/>
 
-    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 330px; display: flex; overflow: hidden !important;" >
+    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 330px; display: flex;" >
       <div class="description">
          <div class="big">
             Any date. Any game. <br/>
@@ -25,7 +25,9 @@
       <div class="signin">
          <img src="../../assets/ut_logo.png" style="padding-top: 30px; height: 175px">
           <br/>
-          <button>Sign in with UT EID</button>
+          <button routerLink='/auth'>
+               Sign in with UT EID
+          </button>
           <!-- <div *ngIf="true; else ElseBlock">Content to render when condition is true.</div>
           <ng-template #ElseBlock><div> Testing </div></ng-template> -->
       </div>

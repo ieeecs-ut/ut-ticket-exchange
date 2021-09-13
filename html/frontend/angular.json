@@ -115,6 +115,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "frontend"
+    }
+  },
+  "defaultProject": "frontend",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

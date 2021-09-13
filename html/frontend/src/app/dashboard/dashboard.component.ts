@@ -12,43 +12,61 @@ import { Student, PEOPLE } from '../person'
 
 export class DashboardComponent implements OnInit {
 
-  currTicket : Ticket = {
-    id: 3,
-    sport: Sports.Football,
-    day: 14,
-    month: 8,
-    year: 2020,
-    price: 43.50,
-    from: "John Smith"
-  }
-
-  majors = ['Computer Science', 'Electrical Engineering', 'Business', 'Biology']
-
-  selectedPerson : Student;
-  selectedMajor : string;
-
-  people : Student[] = PEOPLE;
-
+  sportEvents : Ticket[] = [];
+  
   currStyles = {
-    top: '50%',
-    position: 'absolute'
+    top: '25%',
+    position: 'absolute',
+    width: '100%'
   }
 
   constructor() { }
 
   ngOnInit() {
+    var preventScrolling = document.createElement( "style" )
+		preventScrolling.textContent = `
+			body {
+				overflow: hidden !important ;
+			}
+		`;
+    document.body.appendChild(preventScrolling)
+    this.getAllEvents()
   }
 
-  setSelected(person : Student) {
-    console.log("person seleccted")
-    this.selectedPerson = person;
-    console.log(this.selectedMajor)
-    this.currStyles['backgroundColor'] = 'blue'
+  getTicketStr(ticket : Ticket) {
+    return JSON.stringify(ticket)
   }
 
-  changeMajors() {
-    console.log("Change majors")
-    console.log()
+  getAllEvents() {
+    fetch("http://localhost:3000/events", {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    }).then(res => res.json()).then(data => {
+      data.forEach(element => this.sportEvents.push(element))
+    })
   }
+
+  updateHighestBid() {
+
+  }
+
+  updateUserBid() {
+
+  }
+
+
+  // majors = ['Computer Science', 'Electrical Engineering', 'Business', 'Biology']
+
+  // selectedPerson : Student;
+  // selectedMajor : string;
+
+  // people : Student[] = PEOPLE;
+
+
+  // setSelected(person : Student) {
+  //   this.selectedPerson = person;
+  //   console.log(this.selectedMajor)
+  //   this.currStyles['backgroundColor'] = 'blue'
+  // }
 
 }

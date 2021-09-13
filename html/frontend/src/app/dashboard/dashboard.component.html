@@ -1,6 +1,17 @@
 <app-nav-bar></app-nav-bar>
+<img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
+   width="100%"/>
 <div [ngStyle]="currStyles">
-   <div> From: {{ currTicket.from }}</div>
+   <div fxLayout="row wrap">
+      <app-game-card *ngFor="let event of sportEvents" [ticketVal]="getTicketStr(event)"></app-game-card>
+   </div>
+</div>
+
+<app-bidding-modal></app-bidding-modal>
+
+
+
+   <!-- <div> From: {{ currTicket.from }}</div>
    <div> <span>id: </span> {{ currTicket.id }}</div>
    <div>
       <label>name:
@@ -23,4 +34,4 @@
    <div *ngIf="selectedPerson">
       <input [(ngModel)]="selectedPerson.name" placeholder="Selected Name" />
    </div>
-</div>
+</div> -->
