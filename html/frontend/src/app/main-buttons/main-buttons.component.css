@@ -20,8 +20,8 @@ li a:focus {
 }
 
 li a:active {
-  color: black;
-  /* background-color: #BF5700; */
+  color: white;
+  background-color: rgba(191, 87, 0, 0.25);
 }
 
 .hvr-grow {
@@ -58,4 +58,5 @@ li a:active {
 
 .background-color-set {
   background-color: #bf5700;
+  color: white;
 }
