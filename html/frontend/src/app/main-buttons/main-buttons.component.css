@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&display=swap");
 
 a {
   text-decoration: none;
@@ -7,23 +7,25 @@ a {
 
 li a {
   padding: 1em;
-  font-size: 20px;
-  font-family:'Trebuchet MS';
-  font-weight: bold;
+  font-size: 19px;
+  font-family: "Trebuchet MS";
+  font-weight: normal;
+  /* text-transform: uppercase; */
+  letter-spacing: 1px;
 }
 
 li a:hover {
-  color: #BF5700;
+  color: #bf5700;
 }
 
 li a:focus {
-  color: black;
-  background-color: #BF5700;
+  color: white;
+  background-color: #bf5700;
 }
 
 li a:active {
-  color: black;
-  background-color: #BF5700;
+  color: white;
+  background-color: #bf5700;
 }
 
 .hvr-grow {
@@ -37,22 +39,25 @@ li a:active {
   -webkit-transition-property: transform;
   transition-property: transform;
 }
-.hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
 .ModalButton {
-  background: none!important;
+  background: none !important;
   text-decoration: none;
   border: none;
   padding: 0em;
   font-size: 20px;
-  font-family:'Trebuchet MS';
+  font-family: "Trebuchet MS";
   font-weight: bold;
   margin-left: 1em;
 }
 
-.ModalButton:focus,.btn:active {
+.ModalButton:focus,
+.btn:active {
   outline: none !important;
   box-shadow: none;
 }
