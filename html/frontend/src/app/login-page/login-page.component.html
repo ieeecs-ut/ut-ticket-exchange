@@ -1,5 +1,5 @@
-<div style="position: relative; overflow: hidden;">
-   <!-- <div>
+<div style="position: relative; overflow: hidden">
+  <!-- <div>
       <div class="top-header">
          <img src="../../assets/longhorn.png" width="20%"/>
          <div style="color: #BF5700; font-weight: 600;"> UT Ticket Exchange </div>
@@ -8,32 +8,43 @@
          <li><app-main-buttons [route]="'/login'" [buttonName]="'Home'"></app-main-buttons></li>
       </div>
    </div> -->
-   <app-nav-bar></app-nav-bar>
-  <img src="../../assets/stadium_aerial.jpg" alt="UT Background Image" 
-   width="100%"/>
+  <app-nav-bar></app-nav-bar>
+  <img
+    src="../../assets/stadium_aerial.jpg"
+    alt="UT Background Image"
+    width="100%"
+  />
 
-    <div style="position: absolute; top: 25%; width: 100%; background-color: rgb(250, 250, 250, 0.85); height: 330px; display: flex;" >
-      <div class="description">
-         <div class="big">
-            Any date. Any game. <br/>
-            Buy and sell UT Tickets in minutes.
-         </div>
-         <div class="small">
-            Created by UT Students, for UT Students.
-         </div>
+  <div
+    style="
+      position: absolute;
+      top: 25%;
+      width: 100%;
+      background-color: rgb(250, 250, 250, 0.85);
+      height: 330px;
+      display: flex;
+    "
+  >
+    <div class="description">
+      <div class="big">
+        Any date. Any game. <br />
+        Buy and sell UT Tickets in minutes.
       </div>
-      <div class="signin">
-         <img src="../../assets/ut_logo.png" style="padding-top: 30px; height: 175px">
-          <br/>
-          <button routerLink='/auth'>
-               Sign in with UT EID
-          </button>
-          <!-- <div *ngIf="true; else ElseBlock">Content to render when condition is true.</div>
+      <div class="small">Created by UT Students, for UT Students.</div>
+    </div>
+    <div class="signin">
+      <img
+        src="../../assets/ut_logo.png"
+        style="padding-top: 33px; height: 175px; margin-top: 14.5px"
+      />
+      <br />
+      <button routerLink="/auth">Sign In with UT Email</button>
+      <!-- <div *ngIf="true; else ElseBlock">Content to render when condition is true.</div>
           <ng-template #ElseBlock><div> Testing </div></ng-template> -->
-      </div>
-   </div>
+    </div>
+  </div>
 </div>
 
-  <div *ngIf="routeContact">
-    <app-contactmodal></app-contactmodal>
-  </div>
+<div *ngIf="routeContact">
+  <app-contactmodal></app-contactmodal>
+</div>

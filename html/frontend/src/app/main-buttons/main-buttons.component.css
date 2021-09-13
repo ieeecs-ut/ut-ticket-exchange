@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;700&display=swap");
 
 a {
   text-decoration: none;
@@ -7,9 +7,11 @@ a {
 
 li a {
   padding: 24px;
-  font-size: 20px;
-  font-family:'Trebuchet MS';
-  font-weight: bold;
+  font-size: 19px;
+  font-family: "Trebuchet MS";
+  font-weight: normal;
+  /* text-transform: uppercase; */
+  letter-spacing: 1px;
 }
 
 li a:focus {
@@ -18,8 +20,8 @@ li a:focus {
 }
 
 li a:active {
-  color: black;
-  /* background-color: #BF5700; */
+  color: white;
+  background-color: rgba(191, 87, 0, 0.25);
 }
 
 .hvr-grow {
@@ -38,21 +40,23 @@ li a:active {
   transform: scale(1.1);
 } */
 .ModalButton {
-  background: none!important;
+  background: none !important;
   text-decoration: none;
   border: none;
   padding: 0em;
   font-size: 20px;
-  font-family:'Trebuchet MS';
+  font-family: "Trebuchet MS";
   font-weight: bold;
   margin-left: 1em;
 }
 
-.ModalButton:focus,.btn:active {
+.ModalButton:focus,
+.btn:active {
   outline: none !important;
   box-shadow: none;
 }
 
 .background-color-set {
-  background-color: #BF5700;
+  background-color: #bf5700;
+  color: white;
 }
