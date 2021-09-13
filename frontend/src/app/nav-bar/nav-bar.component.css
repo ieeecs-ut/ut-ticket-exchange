@@ -36,8 +36,8 @@
 
 .top-header-title {
   color: #bf5700;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.8px;
   margin-top: 3px;
-  font-family: "Trebuchet MS";
+  font-family: "Trebuchet MS", Verdana, Geneva, Tahoma, sans-serif;
 }
