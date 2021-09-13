@@ -1,19 +1,15 @@
-<<<<<<< HEAD
 button {
-   background-color:whitesmoke;
-   border: transparent;
-   width: 100px;
-   height: 75px;
-   outline: none;
+  background-color: whitesmoke;
+  border: transparent;
+  width: 100px;
+  height: 75px;
+  outline: none;
 }
 
 button:hover {
-   background-color: rgb(235, 125, 52);
+  background-color: rgb(235, 125, 52);
 }
 
 button:active {
-   background-color: rgb(235, 162, 52);
+  background-color: rgb(235, 162, 52);
 }
-=======
-
->>>>>>> a72c3b4afdd79482470bd834568798ab72a4d86a

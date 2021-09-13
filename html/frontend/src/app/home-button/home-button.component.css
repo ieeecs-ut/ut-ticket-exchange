@@ -1,23 +1,19 @@
-<<<<<<< HEAD
 button {
-   background-color:whitesmoke;
-   border: transparent;
-   width: 100px;
-   height: 75px;
-   outline: none;
-   font-size: medium;
-   font-family: cursive;
+  background-color: whitesmoke;
+  border: transparent;
+  width: 100px;
+  height: 75px;
+  outline: none;
+  font-size: medium;
+  font-family: cursive;
 }
 
 button:hover {
-   background-color: rgb(235, 125, 52);
-   border: transparent;
+  background-color: rgb(235, 125, 52);
+  border: transparent;
 }
 
 button:active {
-   background-color: rgb(235, 162, 52);
-   border: transparent;
+  background-color: rgb(235, 162, 52);
+  border: transparent;
 }
-=======
-
->>>>>>> a72c3b4afdd79482470bd834568798ab72a4d86a
