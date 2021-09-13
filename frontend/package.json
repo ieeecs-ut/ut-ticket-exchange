@@ -19,6 +19,7 @@
     "@angular/localize": "^9.1.13",
     "@angular/platform-browser-dynamic": "~9.1.13",
     "@angular/router": "~9.1.13",
+    "@auth0/auth0-angular": "^1.6.1",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
     "@ngrx/schematics": "^10.1.0",
     "@ngrx/store": "^10.1.0",
