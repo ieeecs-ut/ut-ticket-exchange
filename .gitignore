@@ -6,10 +6,10 @@
 Thumbs.db
 
 # backend
-# backend/node_modules
+backend/node_modules
 
 # frontend
-# frontend/node_modules
+frontend/node_modules
 frontend/dist
 frontend/tmp
 frontend/out-tsc

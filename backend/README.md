@@ -1,8 +1,8 @@
-# ticket exchange (skeleton)
+# UT Ticket Exchange Backend
 
-Skeleton code for the IEEE CS ticket exchange project.
+Backend for IEEE CS ticket exchange project.
 
-## how to run
+## how to run (code skeleton)
 
 -   Install/setup Node.js & MongoDB
 -   Clone this repository
