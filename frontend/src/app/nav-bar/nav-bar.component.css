@@ -28,12 +28,13 @@
 }
 
 .top-header li {
-  padding-top: 22px;
+  padding-top: 27px;
   float: right;
   font-size: large;
   font-family: fantasy;
   display: inline;
   margin-top: 0px;
+  /* height: 100%; */
 }
 
 .top-header-title {
@@ -44,4 +45,5 @@
   margin-top: 3px;
   opacity: 0.95;
   font-family: "Trebuchet MS", Verdana, Geneva, Tahoma, sans-serif;
+  margin-top: 16px;
 }

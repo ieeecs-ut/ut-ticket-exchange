@@ -11,7 +11,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [ 
   {
     path: "",
-    redirectTo: "login",
+    redirectTo: "home",
     pathMatch: 'full'
   },
   { 
@@ -21,7 +21,7 @@ const routes: Routes = [
     data: { title: "Dashboard" }
   },
   {
-    path:"login",
+    path:"home",
     component: LoginPageComponent,
     pathMatch: "full",
     data: { title: "Home" }
@@ -29,7 +29,8 @@ const routes: Routes = [
   {
     path: "contact",
     component: LoginPageComponent,
-    pathMatch: "full" 
+    pathMatch: "full" ,
+    data: { title: "Contact" }
   },
    {
      path: "auth",

@@ -19,7 +19,7 @@ export class BiddingModalComponent implements OnInit {
     // console.log(store)
     let val = this.store.select(state => state.ticket).forEach((element) => this.ticketStr = element.currBid)
     // console.log(this.store.select(state => state.ticket))
-    console.log("test")
+    // console.log("test")
   }
 
   body : string = "i am testing this to see if it works"

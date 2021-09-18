@@ -22,7 +22,7 @@ constructor(public gl: Globals) {
 
     this.globals = gl;
     this.globals.loginPageLoaded = true;
-    console.log('login page loaded');
+    // console.log('login page loaded');
 
     this.innerHeight = window.innerHeight;
 

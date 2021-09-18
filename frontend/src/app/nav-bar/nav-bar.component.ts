@@ -30,16 +30,21 @@ export class NavBarComponent implements OnInit {
     if (this.globals.loginPageLoaded == true) {
       let buttonElem : any = document.querySelector("#contactUsNavButton .navButtonLink");
       if (buttonElem != null && (window.location.pathname.split('/')[1] === 'contact')) {
-        setTimeout(_ => {
-          buttonElem.click();
-        }, 150);
+        setTimeout((_ => {
+          // console.log('contactPageLoaded', this.globals.contactPageLoaded);
+          if (this.globals.contactPageLoaded === false) {
+            this.globals.contactPageLoaded = true;
+            // console.log('and', this.globals.contactPageLoaded);
+            buttonElem.click();
+          }
+        }).bind(this), 150);
       }
     }
   }
 
   printColor(num : number) {
-    console.log("printing color...")
-    console.log(num)
+    // console.log("printing color...")
+    // console.log(num)
     this.colorStyles[1] = false
     this.colorStyles[2] = false
     this.colorStyles[3] = false

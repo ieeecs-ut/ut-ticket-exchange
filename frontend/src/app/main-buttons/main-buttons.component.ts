@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Globals } from '../globals';
 
 @Component({
   selector: 'app-main-buttons',
@@ -9,8 +10,9 @@ export class MainButtonsComponent implements OnInit {
   @Input() route: string;
   @Input() buttonName: string;
   @Input() currColor: string;
+  globals : any;
 
-  constructor() { }
+  constructor(public gl: Globals) { this.globals = gl; }
 
   getBackgroundColor() {
     let color = this.currColor ? '#BF5700' : 'white'
@@ -27,6 +29,13 @@ export class MainButtonsComponent implements OnInit {
       // 'margin-left': '1em',
     }
     return buttonStyle
+  }
+
+  linkOnClick() {
+    // console.log(this.route);
+    if (this.route == '/contact') {
+      this.globals.contactPageLoaded = true;
+    }
   }
 
   ngOnInit() {

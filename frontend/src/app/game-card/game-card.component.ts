@@ -29,7 +29,7 @@ export class GameCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.ticketVal)
+    // console.log(this.ticketVal)
     this.currTicket = JSON.parse(this.ticketVal)
   }
 
@@ -41,7 +41,7 @@ export class GameCardComponent implements OnInit {
       }
     }
     this.store.dispatch(currAction)
-    console.log("hello")
+    // console.log("hello")
   }
 
   // openModal() {
