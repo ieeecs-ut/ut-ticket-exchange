@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthPageComponent implements OnInit {
 
+  registerMode : boolean = false;
+
   constructor() { }
 
   ngOnInit() {

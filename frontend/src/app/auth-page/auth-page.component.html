@@ -1,14 +1,79 @@
 <div class="top-bar">
-   <img src="../../assets/logo2.png" width="20%" class="texas-img"/>
-</div>
-<div class="signin-text">
-   Sign in with your UT EID
+  <img class="logo-img" src="../../assets/longhorn-white.png" />
+  <div class="top-header-title" style="font-size: 34px">UT Ticket Exchange</div>
+  <img src="../../assets/logo2.png" class="texas-img" />
 </div>
 
-<div style="text-align: center;">
-   <input> <br/>
-   <input> <br/>
-   <button> SIGN IN </button> <br/>
-   <div style="color: #BF5700; font-weight: 500;"> If you have forgotten your UT EID or password, please click <a href="https://idmanager.its.utexas.edu/eid_self_help/?fp="> here</a>. </div>
+<div
+  style="
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: -1;
+  "
+></div>
+
+<ng-container *ngIf="!registerMode; else registerText">
+  <div class="signin-text auth-text-font-B">Sign In to Ticket Exchange</div>
+</ng-container>
+<ng-template #registerText>
+  <div class="signin-text auth-text-font-B">Sign Up for Ticket Exchange</div>
+</ng-template>
+
+<div style="text-align: center">
+  <input type="email" placeholder="UT Email Address" class="auth-input-class" />
+
+  <div style="height: 15px"></div>
+
+  <ng-container *ngIf="!registerMode; else registerInput">
+    <input
+      type="password"
+      placeholder="Account Password"
+      class="auth-input-class"
+    />
+  </ng-container>
+  <ng-template #registerInput>
+    <input
+      type="password"
+      placeholder="New Account Password"
+      class="auth-input-class"
+    />
+  </ng-template>
+
+  <b
+    style="
+      font-size: 13px;
+      color: #b00c0c;
+      opacity: 0.9;
+      margin-top: 6px;
+      display: block;
+      letter-spacing: 0.8px;
+    "
+    >^ DO&nbsp;<i style="font-size: 14px">NOT</i>&nbsp;&nbsp;USE YOUR UT EMAIL
+    ACCOUNT PASSWORD HERE! ^</b
+  >
+  <div style="height: 15px"></div>
+
+  <ng-container *ngIf="!registerMode; else registerButton">
+    <button class="auth-text-font-B auth-button-sign">SIGN IN</button>
+  </ng-container>
+  <ng-template #registerButton>
+    <button class="auth-text-font-B auth-button-sign">SIGN UP</button>
+  </ng-template>
+
+  <br />
+  <div style="color: #bf5700; font-weight: 500" class="auth-text-font-A">
+    Forgot your password? Email us
+    <a routerLink="/contact"> here</a>.<br />
+    Forgot your email? Please visit UTexas
+    <a
+      target="_blank"
+      href="https://idmanager.its.utexas.edu/eid_self_help/?fp="
+    >
+      help</a
+    >.<br />
+  </div>
 </div>
- 
