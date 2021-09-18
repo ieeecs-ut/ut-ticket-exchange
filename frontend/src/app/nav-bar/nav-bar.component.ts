@@ -1,5 +1,6 @@
 import { stringify } from 'querystring';
 import { Component, OnInit } from '@angular/core';
+import { Globals } from '../globals';
 
 @Component({
   selector: 'app-nav-bar',
@@ -10,8 +11,11 @@ import { Component, OnInit } from '@angular/core';
 export class NavBarComponent implements OnInit {
 
   colorStyles;
+  globals : any;
 
-  constructor() { }
+  constructor(public gl: Globals) {
+    this.globals = gl;
+  }
 
 
 
@@ -20,6 +24,16 @@ export class NavBarComponent implements OnInit {
       1: true,
       2: false,
       3: false
+    }
+
+
+    if (this.globals.loginPageLoaded == true) {
+      let buttonElem : any = document.querySelector("#contactUsNavButton .navButtonLink");
+      if (buttonElem != null && (window.location.pathname.split('/')[1] === 'contact')) {
+        setTimeout(_ => {
+          buttonElem.click();
+        }, 150);
+      }
     }
   }
 

@@ -3,17 +3,23 @@ import { Router } from "@angular/router";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Globals } from './globals';
+
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ Globals ]
 })
 export class AppComponent {
   title = 'frontend';
 
-  constructor(private router: Router, matIconRegistry : MatIconRegistry, domSanitizer: DomSanitizer) {
+  constructor(private router: Router, matIconRegistry : MatIconRegistry, domSanitizer: DomSanitizer, public globals: Globals) {
+
+    globals.loginPageLoaded = false;
+
     matIconRegistry.addSvgIcon(
       'football_icon',
       domSanitizer.bypassSecurityTrustResourceUrl("../assets/sports_football-24px.svg")

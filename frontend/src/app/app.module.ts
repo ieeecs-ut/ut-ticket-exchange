@@ -11,9 +11,11 @@ import { MainButtonsComponent } from './main-buttons/main-buttons.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
 import { GameCardComponent } from './game-card/game-card.component';
+import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { MatIconModule } from "@angular/material/icon";
 import { HttpClientModule } from "@angular/common/http";
 // import { FlexLayoutModule } from '@angular/flex-layout';
+import { AuthModule } from '@auth0/auth0-angular';
 import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
 import { ModalModule } from 'angular-bootstrap-md'
 import { NgbModule, NgbModal, NgbModalRef, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -32,7 +34,8 @@ import { environment } from '../environments/environment';
     NavBarComponent,
     AuthPageComponent,
     GameCardComponent,
-    BiddingModalComponent
+    BiddingModalComponent,
+    AuthButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,10 @@ import { environment } from '../environments/environment';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     // ModalModule
     // FlexLayoutModule
+    AuthModule.forRoot({
+      domain: 'dev-t18v2qg3.us.auth0.com',
+      clientId: 'N3yiZjcwmSQaHgmBK0ill0JVp90ygkq3'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

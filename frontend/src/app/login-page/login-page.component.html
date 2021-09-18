@@ -9,11 +9,15 @@
       </div>
    </div> -->
   <app-nav-bar></app-nav-bar>
-  <img
+
+  <!-- <img
     src="../../assets/stadium_aerial.jpg"
     alt="UT Background Image"
     width="100%"
-  />
+    style="opacity: 0; display: block; z-index 0;"
+  /> -->
+
+  <div [style.height.px]="innerHeight" [style.width.%]="100"></div>
 
   <div
     style="
@@ -38,7 +42,8 @@
         style="padding-top: 33px; height: 175px; margin-top: 14.5px"
       />
       <br />
-      <button routerLink="/auth">Sign In with UT Email</button>
+      <app-auth-button></app-auth-button>
+      <!-- <button routerLink="/auth">Sign In with UT Email</button> -->
       <!-- <div *ngIf="true; else ElseBlock">Content to render when condition is true.</div>
           <ng-template #ElseBlock><div> Testing </div></ng-template> -->
     </div>

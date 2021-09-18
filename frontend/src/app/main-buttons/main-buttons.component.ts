@@ -29,9 +29,6 @@ export class MainButtonsComponent implements OnInit {
     return buttonStyle
   }
 
-
-
-
   ngOnInit() {
   }
 
