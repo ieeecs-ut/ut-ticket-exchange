@@ -1,6 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+@font-face {
+  font-family: ArethaRegular;
+  src: url("assets/Aretha-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: ArethaMedium;
+  src: url("assets/Aretha-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: ArethaBold;
+  src: url("assets/Aretha-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: ArethaLight;
+  src: url("assets/Aretha-Light.otf") format("opentype");
+}
+
 body {
   background: url(./assets/stadium_aerial.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -9,5 +29,11 @@ body {
   background-size: cover;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

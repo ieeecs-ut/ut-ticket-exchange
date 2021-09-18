@@ -7,8 +7,10 @@ button {
   height: 50px;
   font-size: 15px;
   font-weight: 500;
-  width: 250px;
+  width: 205px;
   outline: none;
+  margin-left: 20px;
+  letter-spacing: 1px;
 }
 
 button:active {

@@ -41,7 +41,9 @@ const routes: Routes = [
      path: "bidding",
      component: BiddingModalComponent,
      pathMatch: "full"
-   }
+   },
+   { path: '**', redirectTo: '/home', pathMatch: 'full' },
+
   // {
 
   //   component: ContactUsButtonComponent
