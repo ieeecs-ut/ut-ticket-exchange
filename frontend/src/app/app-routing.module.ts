@@ -15,10 +15,10 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   { 
-    path: "listings", 
+    path: "exchange", 
     component: DashboardComponent, 
     pathMatch: "full",
-    data: { title: "Dashboard" }
+    data: { title: "Exchange" }
   },
   {
     path:"home",
@@ -35,11 +35,6 @@ const routes: Routes = [
    {
      path: "auth",
      component: AuthPageComponent,
-     pathMatch: "full"
-   },
-   {
-     path: "bidding",
-     component: BiddingModalComponent,
      pathMatch: "full"
    },
    { path: '**', redirectTo: '/home', pathMatch: 'full' },

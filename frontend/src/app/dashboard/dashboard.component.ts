@@ -38,12 +38,12 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllEvents() {
-    fetch("http://localhost:3000/events", {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    }).then(res => res.json()).then(data => {
-      data.forEach(element => this.sportEvents.push(element))
-    })
+    // fetch("http://localhost:3000/events", {
+    //   method: 'GET',
+    //   headers: { 'Content-Type': 'application/json' }
+    // }).then(res => res.json()).then(data => {
+    //   data.forEach(element => this.sportEvents.push(element))
+    // })
   }
 
   updateHighestBid() {
