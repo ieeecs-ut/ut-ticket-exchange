@@ -1,5 +1,5 @@
 {
-    "name": "ticket-xc-skel",
+    "name": "ticket-xc-backend",
     "version": "1.0.0",
     "description": "",
     "main": "tickets.js",
@@ -9,7 +9,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@angular/flex-layout": "^11.0.0-beta.33",
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
