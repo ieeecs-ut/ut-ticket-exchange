@@ -1,0 +1,188 @@
+    *
+
+// block.js v3.2.0
+
+// custom blocks
+!break
+    init
+        {
+            return Block('span').add('br');
+        }
+    load
+        {
+            data('val', val => {
+                for (var i = 1; i < val; i++)
+                    block.add('br');
+            });
+        }
+!text
+    init
+        {
+            return Block('span');
+        }
+    load
+        {
+            data('val', val => {
+                block.node().appendChild(document.createTextNode(val));
+            });
+            data('html', html => {
+                block.html(html);
+            });
+        }
+!image
+    init
+        {
+            return Block('div');
+        }
+    load
+        {
+            var src = data('src');
+            var height = data('height');
+            var width = data('width');
+            var alt = data('alt');
+            if (src != null) {
+                block.css('background-image', "url('" + src + "')")
+                    .css('background-repeat', 'no-repeat')
+                    .css('background-size', 'contain')
+                ;
+            }
+            if (height !== null) block.css('height', height);
+            if (width !== null) block.css('width', width);
+            if (alt !== null) block.attribute('title', alt);
+        }
+!switch
+    init
+        {
+            var block;
+            block = Block('div')
+                .key('state', false)
+                .css({
+                    width: 'auto',
+                    height: '30px',
+                    cursor: 'pointer',
+                    margin: '5px 10px',
+                    fontSize: '17px'
+                })
+                .add(Block('block', 'label')
+                    .css({
+                        width: 'auto',
+                        minWidth: '70px',
+                        float: 'left',
+                        marginRight: '10px',
+                        cursor: 'inherit',
+                        fontSize: 'inherit',
+                        display: 'none'
+                    })
+                    .__child('content')
+                        .css('text-align', 'left')
+                        .__parent()
+                    .add(Block('text', 1)
+                        .data('Label 1: ')
+                    )
+                    .on('click', (e, b, d) => {
+                        if (block.key('enabled')) {
+                            block.key('state', (!block.key('state')));
+                            block.on('modified');
+                        }
+                    })
+                )
+                .add(Block('div', 'main')
+                    .css({
+                        width: '65px',
+                        height: '100%',
+                        position: 'relative',
+                        cursor: 'inherit',
+                        display: 'inline-block'
+                    })
+                    .add(Block('div', 'bg')
+                        .css({
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '16px',
+                            backgroundColor: '#e4e4e4',
+                            position: 'absolute',
+                            top: '0',
+                            left: '0',
+                            zIndex: '1',
+                            transition: 'background-color 0.2s ease-in-out'
+                        })
+                    )
+                    .add(Block('block', 'circle')
+                        .css({
+                            width: '30px',
+                            height: '100%',
+                            position: 'absolute',
+                            top: '0.5px',
+                            left: '1px',
+                            zIndex: '2',
+                            transition: 'left 0.2s ease-in-out'
+                        })
+                        .add(Block('div')
+                            .css({
+                                width: '75%',
+                                height: '75%',
+                                borderRadius: '100%',
+                                backgroundColor: 'white',
+                                margin: '0 auto'
+                            })
+                        )
+                    )
+                    .on('click', (e, b, d) => {
+                        if (block.key('enabled')) {
+                            block.key('state', (!block.key('state')));
+                            block.on('modified');
+                        }
+                    })
+                )
+                .on('updateUI', (e, b, d) => {
+                    if (block.key('state')) {
+                        block.child('main/circle').css({
+                            left: '34px'
+                        }).sibling('bg').css({
+                            backgroundColor: '#558fed'
+                        });
+                    } else {
+                        block.child('main/circle').css({
+                            left: '1px',
+                        }).sibling('bg').css({
+                            backgroundColor: '#e4e4e4'
+                        });
+                    }
+                })
+                .on('modified', (e, b, d) => {
+                    block.on('updateUI');
+                })
+                .key('enabled', true)
+                .on('enable', (e, b, d) => {
+                    block.key('enabled', true);
+                    block.css({
+                        opacity: '1',
+                        cursor: 'pointer'
+                    });
+                    e.stopPropagation();
+                })
+                .on('disable', (e, b, d) => {
+                    block.key('enabled', false);
+                    block.css({
+                        opacity: '0.6',
+                        cursor: 'default'
+                    });
+                    e.stopPropagation();
+                })
+            ;
+            return block;
+        }
+    load
+        {
+            data('val', (val) => {
+                var v = (val == 'on');
+                if (block.key('state') != v) {
+                    block.key('state', v);
+                    block.on('modified', { locked: true });
+                }
+            });
+            data('label', (label) => {
+                block.child('label/text').html('').data(label);
+                block.child('label').css('display', 'inline-table');
+            });
+        }
