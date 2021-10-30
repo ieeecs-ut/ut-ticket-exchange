@@ -1,6 +1,10 @@
 {
   "name": "ticket-xc-frontend",
   "version": "1.0.0",
+  "description": "UT Ticket Exchange frontend",
+  "author": "IEEE Computer Society @ UT Austin",
+  "license": "ISC",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +13,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^12.2.6",
     "@angular/common": "~12.2.6",

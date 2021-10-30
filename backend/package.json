@@ -1,18 +1,23 @@
 {
     "name": "ticket-xc-backend",
     "version": "1.0.0",
-    "description": "",
+    "description": "UT Ticket Exchange backend",
+    "author": "IEEE Computer Society @ UT Austin",
+    "license": "ISC",
+    "private": true,
     "main": "tickets.js",
     "scripts": {
-        "test": "node tickets.js dev"
+        "test": "nodemon tickets.js --development",
+        "start": "node tickets.js --production"
     },
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "mongodb": "^3.6.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.14"
     }
 }

@@ -14,7 +14,7 @@ const body_parser = require("body-parser");
 /* ENVIRONMENT */
 // set up environment
 global.args = process.argv.slice(2);
-global.env = process.argv.slice(2)[0] == "prod" ? "prod" : "dev";
+global.env = process.argv.slice(2)[0] == "--production" ? "prod" : "dev";
 global.http_port = global.env == "dev" ? 8000 : 80;
 global.mdb_port = global.env == "dev" ? 27017 : 3000;
 global.mdb_db = "ticket-xc";
