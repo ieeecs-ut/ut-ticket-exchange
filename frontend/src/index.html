@@ -5,7 +5,8 @@
     <title>UT Ticket Exchange</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="assets/favicon.png" />
+    <!-- <link rel="icon" type="image/x-icon" href="favicon.ico" /> -->
+    <link rel="icon" type="image/png" href="img/favicon.png" />
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -16,9 +17,15 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     />
-      <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
   <body class="mat-typography">
     <app-root></app-root>
     <script
@@ -38,41 +45,3 @@
     ></script>
   </body>
 </html>
-
-<!-- <html>
-   <head>
-      <title>Angular JS Controller</title>
-      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js">
-      </script>
-   </head>
-   
-   <body>
-      <h2>AngularJS Sample Application</h2>
-      
-      <div ng-app = "testApp" ng-controller = "studentController">
-         Enter first name: <input type = "text" ng-model = "student.firstName"><br>
-         <br>
-         Enter last name: <input type = "text" ng-model = "student.lastName"><br>
-         <br>
-         You are entering: {{student.fullName()}}
-      </div>
-      
-      <script>
-         var mainApp = angular.module("testApp", []);
-         
-         mainApp.controller('studentController', function($scope) {
-            $scope.student = {
-               firstName: "",
-               lastName: "",
-               
-               fullName: function() {
-                  var studentObject;
-                  studentObject = $scope.student;
-                  return studentObject.firstName + " " + studentObject.lastName;
-               }
-            };
-         });
-      </script>
-      
-   </body>
-</html> -->

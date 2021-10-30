@@ -1,8 +1,5 @@
 // import { Student } from './../person';
 import { Component, OnInit } from '@angular/core';
-import { Ticket } from '../ticket'
-import { SportsComponent, Sports } from '../sports'
-import { Student, PEOPLE } from '../person'
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +9,6 @@ import { Student, PEOPLE } from '../person'
 
 export class DashboardComponent implements OnInit {
 
-  sportEvents : Ticket[] = [];
   
   currStyles = {
     top: '20%',
@@ -33,10 +29,6 @@ export class DashboardComponent implements OnInit {
     this.getAllEvents()
   }
 
-  getTicketStr(ticket : Ticket) {
-    return JSON.stringify(ticket)
-  }
-
   getAllEvents() {
     // fetch("http://localhost:3000/events", {
     //   method: 'GET',
@@ -44,14 +36,6 @@ export class DashboardComponent implements OnInit {
     // }).then(res => res.json()).then(data => {
     //   data.forEach(element => this.sportEvents.push(element))
     // })
-  }
-
-  updateHighestBid() {
-
-  }
-
-  updateUserBid() {
-
   }
 
 

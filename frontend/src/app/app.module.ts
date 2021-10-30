@@ -8,11 +8,8 @@ import { ContactmodalComponent } from './contactmodal/contactmodal.component';
 import { MainButtonsComponent } from './main-buttons/main-buttons.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { AuthPageComponent } from './auth-page/auth-page.component';
-import { GameCardComponent } from './game-card/game-card.component';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
-import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
 import { environment } from '../environments/environment';
-import { reducers, metaReducers } from './reducers';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -33,8 +30,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MainButtonsComponent,
     NavBarComponent,
     AuthPageComponent,
-    GameCardComponent,
-    BiddingModalComponent,
     AuthButtonComponent
   ],
   imports: [
@@ -44,7 +39,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatIconModule,
     HttpClientModule,
     NgbModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     BrowserAnimationsModule,
     StoreModule.forRoot({}, {}),
@@ -52,6 +46,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [BiddingModalComponent, GameCardComponent]
+  entryComponents: []
 })
 export class AppModule { }

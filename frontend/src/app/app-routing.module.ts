@@ -1,4 +1,3 @@
-import { BiddingModalComponent } from './bidding-modal/bidding-modal.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -38,11 +37,7 @@ const routes: Routes = [
      pathMatch: "full"
    },
    { path: '**', redirectTo: '/home', pathMatch: 'full' },
-
-  // {
-
-  //   component: ContactUsButtonComponent
-  // }
+   
 ];
 
 @NgModule({

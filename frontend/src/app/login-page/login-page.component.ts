@@ -41,7 +41,7 @@ constructor(public gl: Globals) {
 
   getBackgroundStyles() {
     let styles = {
-      'backgroundImage': 'url(../../assets/stadium_aerial.jpg)',
+      'backgroundImage': 'url(../../img/stadium_aerial.jpg)',
       'width': window.innerWidth + 'px',
       'height': window.innerHeight + 'px',
       'cover': 'fit',

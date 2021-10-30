@@ -1,7 +1,9 @@
 <div class="top-bar">
-  <img class="logo-img" src="../../assets/longhorn-white.png" />
+  <a routerLink="/home"
+    ><img class="logo-img" src="../../img/longhorn-white.png"
+  /></a>
   <div class="top-header-title" style="font-size: 34px">UT Ticket Exchange</div>
-  <img src="../../assets/logo2.png" class="texas-img" />
+  <img src="../../img/logo2.png" class="texas-img" />
 </div>
 
 <div
@@ -16,12 +18,18 @@
   "
 ></div>
 
+<div style="height: 20px; width: 10px"></div>
+
+<!-- <br /> -->
+
 <ng-container *ngIf="!registerMode; else registerText">
   <div class="signin-text auth-text-font-B">Sign In to Ticket Exchange</div>
 </ng-container>
 <ng-template #registerText>
   <div class="signin-text auth-text-font-B">Sign Up for Ticket Exchange</div>
 </ng-template>
+
+<div style="height: 4px; width: 10px"></div>
 
 <div style="text-align: center">
   <input type="email" placeholder="UT Email Address" class="auth-input-class" />
@@ -38,42 +46,86 @@
   <ng-template #registerInput>
     <input
       type="password"
-      placeholder="New Account Password"
+      placeholder="New Password"
       class="auth-input-class"
     />
   </ng-template>
 
   <b
     style="
-      font-size: 13px;
+      font-size: 11px;
       color: #b00c0c;
       opacity: 0.9;
       margin-top: 6px;
       display: block;
       letter-spacing: 0.8px;
     "
-    >^ DO&nbsp;<i style="font-size: 14px">NOT</i>&nbsp;&nbsp;USE YOUR UT EMAIL
+    >^ DO&nbsp;<i style="font-size: 12px">NOT</i>&nbsp;&nbsp;USE YOUR UT EMAIL
     ACCOUNT PASSWORD HERE! ^</b
   >
   <div style="height: 15px"></div>
 
   <ng-container *ngIf="!registerMode; else registerButton">
-    <button class="auth-text-font-B auth-button-sign">SIGN IN</button>
+    <button
+      (click)="signInButtonClick()"
+      class="auth-text-font-B auth-button-sign"
+    >
+      SIGN IN
+    </button>
   </ng-container>
   <ng-template #registerButton>
-    <button class="auth-text-font-B auth-button-sign">SIGN UP</button>
+    <button
+      (click)="signUpButtonClick()"
+      class="auth-text-font-B auth-button-sign"
+    >
+      SIGN UP
+    </button>
   </ng-template>
 
   <br />
   <div style="color: #bf5700; font-weight: 500" class="auth-text-font-A">
-    Forgot your password? Email us
-    <a routerLink="/contact"> here</a>.<br />
-    Forgot your email? Please visit UTexas
+    <ng-container *ngIf="!registerMode; else emptyForgotMsg">
+      <div>
+        Forgot your password? Email us <a href="/contact"> here</a>.<br />
+      </div>
+    </ng-container>
+    <ng-template #emptyForgotMsg> </ng-template>
+
+    Forgot your email? Visit UTexas
     <a
       target="_blank"
       href="https://idmanager.its.utexas.edu/eid_self_help/?fp="
     >
       help</a
-    >.<br />
+    >.
+
+    <div style="width: 10px; height: 25px"></div>
+
+    <div class="errorMsg" style="display: none">
+      <div style="width: 10px; height: 15px"></div>
+      <b style="color: #b5180d">Error during sign-in/sign-up.</b>
+    </div>
+
+    <div style="width: 10px; height: 45px"></div>
+
+    <ng-container *ngIf="!registerMode; else registerSignInMessage">
+      <div class="switchViewMsg" style="width: 380px">
+        <h2 style="letter-spacing: 0.82px; font-size: 20px">
+          <span style="font-weight: normal">Don't have an account?</span
+          >&nbsp;<a [routerLink]="" (click)="viewSignUp()"><b>Sign Up</b></a>
+        </h2>
+      </div>
+    </ng-container>
+    <ng-template #registerSignInMessage>
+      <div class="switchViewMsg" style="width: 330px">
+        <h2 style="letter-spacing: 0.82px; font-size: 20px">
+          <span style="font-weight: normal">Have an account?</span>&nbsp;<a
+            [routerLink]=""
+            (click)="viewSignIn()"
+            ><b>Sign In</b></a
+          >
+        </h2>
+      </div>
+    </ng-template>
   </div>
 </div>

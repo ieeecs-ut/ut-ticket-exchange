@@ -5,8 +5,6 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Globals } from './globals';
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,19 +20,19 @@ export class AppComponent {
 
     matIconRegistry.addSvgIcon(
       'football_icon',
-      domSanitizer.bypassSecurityTrustResourceUrl("../assets/sports_football-24px.svg")
+      domSanitizer.bypassSecurityTrustResourceUrl("../img/sports_football-24px.svg")
     )
     matIconRegistry.addSvgIcon(
       'calendar',
-      domSanitizer.bypassSecurityTrustResourceUrl("../assets/event-24px.svg")
+      domSanitizer.bypassSecurityTrustResourceUrl("../img/event-24px.svg")
     )
     matIconRegistry.addSvgIcon(
       'location',
-      domSanitizer.bypassSecurityTrustResourceUrl("../assets/location_on-24px.svg")
+      domSanitizer.bypassSecurityTrustResourceUrl("../img/location_on-24px.svg")
     )
     matIconRegistry.addSvgIcon(
       'checkmark',
-      domSanitizer.bypassSecurityTrustResourceUrl("../assets/check_circle-24px.svg")
+      domSanitizer.bypassSecurityTrustResourceUrl("../img/check_circle-24px.svg")
     )
   }
     

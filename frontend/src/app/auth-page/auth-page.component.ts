@@ -7,11 +7,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthPageComponent implements OnInit {
 
-  registerMode : boolean = false;
+  registerMode : boolean;
 
-  constructor() { }
+  constructor() {
+    this.registerMode = false;
+  }
 
   ngOnInit() {
+    this.registerMode = true;
+  }
+
+  signInButtonClick() {
+    console.log("sign in");
+  }
+
+  signUpButtonClick() {
+    console.log("sign up");
+  }
+
+  viewSignIn() {
+    console.log(this.registerMode);
+    this.registerMode = false;
+    console.log(this.registerMode);
+  }
+
+  viewSignUp() {
+    console.log(this.registerMode);
+    this.registerMode = true;
+    console.log(this.registerMode);
   }
 
 }

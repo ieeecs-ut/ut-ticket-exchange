@@ -14,8 +14,8 @@
   filter: invert(1);
 
   position: absolute;
-  top: 0;
-  right: 25px;
+  top: -1px;
+  right: 32px;
 }
 
 .top-bar .logo-img {
@@ -23,7 +23,7 @@
   left: 27px;
   top: 11px;
   height: 45px;
-  width: 94px;
+  width: 92px;
   opacity: 0.97;
 }
 
@@ -42,8 +42,9 @@
 .signin-text {
   font-weight: bold;
   text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   padding-bottom: 40px;
+  opacity: 0.9;
 }
 
 input {
@@ -97,9 +98,35 @@ button {
   font-weight: bolder;
   letter-spacing: 1.2px;
   opacity: 1;
-  font-family: ArethaRegular, "Trebuchet MS", Verdana, Geneva, Tahoma,
-    sans-serif;
+  font-family: ArethaLight, "Trebuchet MS", Verdana, Geneva, Tahoma, sans-serif;
   top: 24px;
-  left: 145px;
+  left: 140px;
   position: absolute;
+}
+
+.switchViewMsg {
+  background-color: #f6f6f6;
+  width: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 14px;
+  padding-bottom: 1px;
+  margin: 0 auto;
+  border-radius: 4px;
+  border: 1px solid #f5f5f5;
+  color: #333;
+}
+
+.errorMsg {
+  height: 60px;
+  min-width: 100px;
+  max-width: 400px;
+  width: auto;
+  background-color: #ffd9d9;
+  border: 1px solid #b5180d;
+  opacity: 0.88;
+  margin: 0 auto;
+  padding-top: 18px;
+  border-radius: 2px;
+  font-size: 16px;
 }

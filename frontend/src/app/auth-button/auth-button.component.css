@@ -6,11 +6,11 @@ button {
   color: white;
   height: 50px;
   font-size: 15px;
-  font-weight: 500;
-  width: 205px;
+  font-weight: 400;
+  width: 196px;
   outline: none;
   margin-left: 20px;
-  letter-spacing: 1px;
+  letter-spacing: 1.1px;
 }
 
 button:active {
