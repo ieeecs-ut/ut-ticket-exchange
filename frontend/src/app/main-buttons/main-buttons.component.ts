@@ -36,6 +36,9 @@ export class MainButtonsComponent implements OnInit {
     if (this.route == '/contact') {
       this.globals.contactPageLoaded = true;
     }
+    setTimeout(_ => {
+      this.globals.exc.reload_view();
+    }, 50);
   }
 
   ngOnInit() {

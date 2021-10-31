@@ -1,5 +1,7 @@
 // import { Student } from './../person';
 import { Component, OnInit } from '@angular/core';
+import { Globals } from '../globals';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -16,9 +18,18 @@ export class DashboardComponent implements OnInit {
     width: '100%'
   }
 
-  constructor() { }
+  globals : any;
+  innerHeight: any;
+  
+  constructor(public gl: Globals) {
+    this.globals = gl;
+    this.innerHeight = window.innerHeight;
+  }
 
   ngOnInit() {
+
+    this.innerHeight = window.innerHeight;
+
     var preventScrolling = document.createElement( "style" )
 		preventScrolling.textContent = `
 			body {

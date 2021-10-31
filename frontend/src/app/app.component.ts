@@ -17,6 +17,7 @@ export class AppComponent {
   constructor(private router: Router, matIconRegistry : MatIconRegistry, domSanitizer: DomSanitizer, public globals: Globals) {
 
     globals.loginPageLoaded = false;
+    globals.exc = window['exc'] ? window['exc'] : null;
 
     matIconRegistry.addSvgIcon(
       'football_icon',
@@ -40,4 +41,12 @@ export class AppComponent {
   goToLogin() {
     this.router.navigate(['/login']); 
   }
+
+  ngAfterViewInit()	{
+    console.log("initializing exchange client");
+    this.globals.exc.initialize(_ => {
+      console.log("initialized exchange client");
+    });
+  }
+
 }

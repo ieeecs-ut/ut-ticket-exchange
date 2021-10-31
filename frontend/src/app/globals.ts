@@ -4,4 +4,5 @@ import { Injectable } from '@angular/core';
 export class Globals {
   loginPageLoaded: boolean = false;
   contactPageLoaded: boolean = false;
+  exc: any = null;
 }

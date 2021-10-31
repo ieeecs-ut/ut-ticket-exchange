@@ -1,0 +1,19 @@
+    *
+
+// ut ticket exchange
+
+// exchange client ui
+
+exchange
+    css
+        opacity 0
+        display block
+        background-color red
+        margin-top 200px
+    div stuff
+        css
+            height 60px
+            width 170px
+            background-color blue
+        text text
+            val hello
