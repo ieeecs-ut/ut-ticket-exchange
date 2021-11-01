@@ -4,8 +4,7 @@
 /* EXPORTS */
 module.exports = {
     api: {
-        /*
-            TODO: any secret keys or passwords should be stored and accessed here securely
-        */
+        // any secret keys or passwords should be stored and accessed here securely
+        jwt_key: global.config.secret
     }
 };

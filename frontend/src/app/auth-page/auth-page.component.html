@@ -32,7 +32,12 @@
 <div style="height: 4px; width: 10px"></div>
 
 <div style="text-align: center">
-  <input type="email" placeholder="UT Email Address" class="auth-input-class" />
+  <input
+    type="email"
+    placeholder="UT Email Address"
+    class="auth-input-class"
+    [(ngModel)]="emailAddress"
+  />
 
   <div style="height: 15px"></div>
 
@@ -41,6 +46,7 @@
       type="password"
       placeholder="Account Password"
       class="auth-input-class"
+      [(ngModel)]="password"
     />
   </ng-container>
   <ng-template #registerInput>
@@ -48,6 +54,7 @@
       type="password"
       placeholder="New Password"
       class="auth-input-class"
+      [(ngModel)]="newPassword"
     />
   </ng-template>
 
@@ -101,9 +108,9 @@
 
     <div style="width: 10px; height: 25px"></div>
 
-    <div class="errorMsg" style="display: none">
-      <div style="width: 10px; height: 15px"></div>
-      <b style="color: #b5180d">Error during sign-in/sign-up.</b>
+    <div class="errorMsg" [style.display]="showErrorMsg ? 'block' : 'none'">
+      <!-- <div style="width: 10px; height: 15px"></div> -->
+      <b style="color: #b5180d">{{ errorMessageVal }}</b>
     </div>
 
     <div style="width: 10px; height: 45px"></div>

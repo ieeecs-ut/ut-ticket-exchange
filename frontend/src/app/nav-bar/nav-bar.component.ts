@@ -12,9 +12,13 @@ export class NavBarComponent implements OnInit {
 
   colorStyles;
   globals : any;
+  authenticated : boolean;
+  showExchangeButton : boolean;
 
   constructor(public gl: Globals) {
     this.globals = gl;
+    this.authenticated = false;
+    this.showExchangeButton = true;
   }
 
 
@@ -38,6 +42,18 @@ export class NavBarComponent implements OnInit {
         }).bind(this), 150);
       }
     }
+
+    this.globals.exc.authenticate((result, error) => {
+      if (error != null || !result.hasOwnProperty('email')) {
+        this.authenticated = false;
+        this.showExchangeButton = false;
+        console.error('Authentication Error:', error.message ? error.message : error);
+      } else {
+        this.authenticated = true;
+        this.showExchangeButton = true;
+        console.log("authenticated as " + result.email);
+      }
+    });
   }
 
   printColor(num : number) {

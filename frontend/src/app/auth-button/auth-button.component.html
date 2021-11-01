@@ -8,6 +8,8 @@
   <button (click)="auth.loginWithRedirect()">Sign In</button>
 </ng-template> -->
 
-<button routerLink="/auth">Sign In / Sign Up</button>
+<button [routerLink]="authButtonRoute" (click)="authButtonClick()">
+  {{ authButtonText }}
+</button>
 
 <!-- <button (click)="doStuff()">Sign In / Sign Up</button> -->

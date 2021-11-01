@@ -21,7 +21,7 @@ window.utils = {
         type: function (v, t) { return (typeof v == t); }
     },
     cookie: (id, val, date) => {
-        if (util.is.unset(val))
+        if (utils.is.unset(val))
             document.cookie.split('; ').forEach(cookie => {
                 if (cookie.substring(0, id.length) == id)
                     val = cookie.substring(id.length + 1);
@@ -33,12 +33,12 @@ window.utils = {
                 id +
                 '=' +
                 val +
-                (util.is.set(date) ? '; expires=' + date : '');
+                (utils.is.set(date) ? '; expires=' + date : '');
         }
-        return util.is.unset(val) ? null : val;
+        return utils.is.unset(val) ? null : val;
     },
     delete_cookie: id => {
-        util.cookie(id, '', 'Thu, 01 Jan 1970 00:00:00 GMT');
+        utils.cookie(id, '', 'Thu, 01 Jan 1970 00:00:00 GMT');
     },
     sha256: (str, callback) => {
         if (callback) callback(window.sha256(str));
@@ -110,7 +110,7 @@ window.utils = {
     is_alphanum_str: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
     is_alphanum: (str) => { // check if alphanumeric
         for (var i = 0; i < str.length; i++) {
-            if (!util.is_alphanum_str.includes(str[i]))
+            if (!utils.is_alphanum_str.includes(str[i]))
                 return false;
         }
         return true;
@@ -128,13 +128,13 @@ window.utils = {
             object[path[0]] = value;
             return object;
         } else if (path.length > 1)
-            return util.set(object[path[0]], path.slice(1), value);
+            return utils.set(object[path[0]], path.slice(1), value);
     },
     get: (object, path) => { // recursively get field from within object
         // nb. see note in above function "set" for path format
         if (path.length == 1)
             return object[path[0]]
         else if (path.length > 1)
-            return util.get(object[path[0]], path.slice(1));
+            return utils.get(object[path[0]], path.slice(1));
     }
 };

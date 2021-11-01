@@ -1,0 +1,6 @@
+{
+    "http_port": 80,
+    "mdb_port": 27017,
+    "mdb_db": "ticket-xc",
+    "secret": "exchange!"
+}

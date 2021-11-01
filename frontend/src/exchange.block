@@ -7,9 +7,16 @@
 exchange
     css
         opacity 0
+        transition opacity 0.3s ease
         display block
         background-color red
         margin-top 200px
+    :show
+        css
+            opacity 1
+    :hide
+        css
+            opacity 0
     div stuff
         css
             height 60px

@@ -10,9 +10,13 @@ export class MainButtonsComponent implements OnInit {
   @Input() route: string;
   @Input() buttonName: string;
   @Input() currColor: string;
+  blockViewLoadDelay : number;
   globals : any;
 
-  constructor(public gl: Globals) { this.globals = gl; }
+  constructor(public gl: Globals) {
+    this.globals = gl;
+    this.blockViewLoadDelay = gl.exc.blockViewLoadDelay;
+  }
 
   getBackgroundColor() {
     let color = this.currColor ? '#BF5700' : 'white'
@@ -36,9 +40,13 @@ export class MainButtonsComponent implements OnInit {
     if (this.route == '/contact') {
       this.globals.contactPageLoaded = true;
     }
-    setTimeout(_ => {
-      this.globals.exc.reload_view();
-    }, 50);
+    if ((`${this.buttonName}`).trim() == "Exchange") {
+      setTimeout(_ => {
+        this.globals.exc.reload_view();
+      }, this.blockViewLoadDelay);
+    } else {
+      this.globals.exc.hide_view();
+    }
   }
 
   ngOnInit() {

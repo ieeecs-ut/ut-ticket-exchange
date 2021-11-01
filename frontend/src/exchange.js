@@ -6,6 +6,8 @@ var ex = null;
 ex = {
 
     /* client fields */
+    api_url: `${window.location.protocol}//${window.location.host}/api`,
+    api_cookie_exp: '__indefinite__',
     ngroot: "exchange-ng-root",
     ui: Block('div', 'exchange'),
     log: utils.logger('exchange'),
@@ -13,11 +15,14 @@ ex = {
 
     /* client methods */
     load_view: (next) => {
-        document.getElementById(ex.ngroot).appendChild(ex.ui.node());  // ex.ui.fill(ex.ngroot_node);
+        var block_view_root = document.getElementById(ex.ngroot);
+        if (block_view_root) {
+            ex.ui.fill(block_view_root);
+            utils.delay(_ => {
+                ex.ui.on('show');
+            }, 100);
+        }
         Block.queries();
-        utils.delay(_ => {
-            ex.ui.css('opacity', '1');
-        }, 100);
         utils.delay(_ => {
             Block.queries();
             utils.delay(_ => {
@@ -35,31 +40,141 @@ ex = {
                     ex.log('ui blocks loaded');
                     ex.load_view(_ => {
                         ex.log('ready');
-                        // setTimeout(ex.api.cookie_login, 100);
+                        setTimeout(ex.api.cookie_login, 100);
                         if (next) next();
                     });
                 }, 'exchange', 'jQuery');
             }, 'lib/block-3.2.0', 'jQuery');
-        }, 100);
+        }, ex.api.blockViewLoadDelay);
     },
 
     /* client api */
     api: {
+        blockViewLoadDelay: 650,
         initialize: next => {
             ex.init(_ => {
                 utils.delay(_ => {
                     if (next) next();
-                }, 100);
+                }, 10);
             });
         },
         reload_view: next => {
             ex.load_view(next);
         },
-
+        hide_view: next => {
+            ex.ui.on('hide');
+            if (next) next();
+        },
+        login: (token, redirect = true) => {
+            utils.delete_cookie('token');
+            utils.cookie('token', token, ex.api_cookie_exp);
+            if (redirect) {
+                utils.delay(_ => {
+                    window.location = `${window.location.protocol}//${window.location.host}/exchange`;
+                }, 100);
+            }
+        },
         cookie_login: _ => {
             ex.log("resuming session");
             return;
-        }
+        },
+        logout: (redirect = true) => {
+            utils.delete_cookie('token');
+            if (redirect) window.location = `${window.location.protocol}//${window.location.host}/`;
+        },
+        get_token: _ => {
+            var cookie = utils.cookie('token');
+            if (cookie) return cookie;
+            return null;
+        },
+        sign_in: (email_address, password, next) => {
+            utils.sha256(password, (hashed_password) => {
+                $.ajax({
+                    url: `${ex.api_url}/sign_in`,
+                    method: 'post',
+                    data: {
+                        email_address: email_address,
+                        password: hashed_password
+                    },
+                    success: (result, status, xhr) => {
+                        ex.log(result);
+                        next(result.token, null);
+                    },
+                    error: (xhr, status, error) => {
+                        var errorData = {
+                            error: error,
+                            message: null
+                        };
+                        if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                            errorData.message = (`${xhr.responseJSON.message}`).trim();
+                            ex.err(errorData.message);
+                        }
+                        ex.err(error);
+                        next(null, errorData);
+                    }
+                });
+            });
+        },
+        sign_up: (email_address, new_password, next) => {
+            utils.sha256(new_password, (hashed_password) => {
+                $.ajax({
+                    url: `${ex.api_url}/sign_up`,
+                    method: 'post',
+                    data: {
+                        email_address: email_address,
+                        new_password: hashed_password
+                    },
+                    success: (result, status, xhr) => {
+                        ex.log(result);
+                        next(result.token, null);
+                    },
+                    error: (xhr, status, error) => {
+                        var errorData = {
+                            error: error,
+                            message: null
+                        };
+                        if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                            errorData.message = (`${xhr.responseJSON.message}`).trim();
+                            ex.err(errorData.message);
+                        }
+                        ex.err(error);
+                        next(null, errorData);
+                    }
+                });
+            });
+        },
+        authenticate: resolve => {
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            $.ajax({
+                url: `${ex.api_url}/auth`,
+                method: 'post',
+                headers: { "Authorization": `Bearer ${token}` },
+                success: (response, status, xhr) => {
+                    if (!response || !response.hasOwnProperty('email')) {
+                        ex.err(response);
+                        return resolve(null, { message: "Email missing in response" });
+                    }
+                    return resolve({
+                        email: response.email,
+                        token: token
+                    }, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
     }
 
 };

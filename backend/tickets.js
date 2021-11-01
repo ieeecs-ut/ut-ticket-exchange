@@ -1,5 +1,4 @@
 /* UT TICKET EXCHANGE */
-// n.b. this code is just a skeleton
 
 /* IMPORTS */
 // import built-in & npm modules
@@ -15,9 +14,10 @@ const body_parser = require("body-parser");
 // set up environment
 global.args = process.argv.slice(2);
 global.env = process.argv.slice(2)[0] == "--production" ? "prod" : "dev";
-global.http_port = global.env == "dev" ? 8000 : 80;
-global.mdb_port = global.env == "dev" ? 27017 : 3000;
-global.mdb_db = "ticket-xc";
+global.config = JSON.parse(fs.readFileSync('./config.json', { encoding: 'utf8', flag: 'r' }));
+global.http_port = global.env == "dev" ? 8000 : global.config.http_port;
+global.mdb_port = global.env == "dev" ? 27017 : global.config.mdb_port;
+global.mdb_db = global.config.mdb_db;
 
 /* MODULES */
 // import application modules
