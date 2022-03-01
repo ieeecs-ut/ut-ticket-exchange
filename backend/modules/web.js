@@ -78,6 +78,18 @@ var init = _ => {
             });
         });
     });
+    express_api.post("/api/auth_alt", (req, res) => {
+        // authenticate token
+        req.user = web_verify_token(req.body.auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.user_exists(req.user.email, (result) => {
+            if (result === null) return return_error(req, res, 500, "Database error");
+            if (result == false) return return_error(req, res, 400, "User not found");
+            return return_data(req, res, {
+                email: req.user.email
+            });
+        });
+    });
 };
 var cors_handler = (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -101,6 +113,16 @@ var return_data = (req, res, data) => {
 };
 var generate_token = (email) => {
     return jwt.sign({ email: (`${email}`).trim() }, m.secrets.jwt_key, { algorithm: 'HS256' });
+};
+var web_verify_token = (token) => {
+    var result = null;
+    try {
+        result = jwt.verify(token, m.secrets.jwt_key);
+    } catch (e) {
+        log(`error verifying token "${token}":`, (e.message ? e.message : e));
+        result = null;
+    }
+    return result;
 };
 var api = {
     // create functions that allow other modules to interact with this one when necessary

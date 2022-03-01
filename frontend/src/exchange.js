@@ -6,7 +6,7 @@ var ex = null;
 ex = {
 
     /* client fields */
-    api_url: `${window.location.protocol}//${window.location.host}/api`,
+    api_url: `${window.location.protocol}//${window.location.hostname}:${window.location.port === '4200' ? '8000' : window.location.port}/api`, // `${window.location.protocol}//${window.location.host}/api`,
     api_cookie_exp: '__indefinite__',
     ngroot: "exchange-ng-root",
     ui: Block('div', 'exchange'),
@@ -143,14 +143,19 @@ ex = {
                 });
             });
         },
-        authenticate: resolve => {
+        authenticate: (resolve, alt = true) => {
             var token = ex.api.get_token();
             if (!token || token.trim().length <= 0)
                 return resolve(null, { message: "Invalid token" });
+            var body = {};
+            var headers = {};
+            if (alt === false) headers = { "Authorization": `Bearer ${token}` };
+            else body = { 'auth': `${token}` };
             $.ajax({
-                url: `${ex.api_url}/auth`,
+                url: `${ex.api_url}/auth${alt === true ? '_alt' : ''}`,
                 method: 'post',
-                headers: { "Authorization": `Bearer ${token}` },
+                headers: headers,
+                data: body,
                 success: (response, status, xhr) => {
                     if (!response || !response.hasOwnProperty('email')) {
                         ex.err(response);
