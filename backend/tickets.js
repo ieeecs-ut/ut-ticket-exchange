@@ -18,6 +18,7 @@ global.config = JSON.parse(fs.readFileSync('./config.json', { encoding: 'utf8', 
 global.http_port = global.env == "dev" ? 8000 : global.config.http_port;
 global.mdb_port = global.env == "dev" ? 27017 : global.config.mdb_port;
 global.mdb_db = global.config.mdb_db;
+global.root_path = __dirname;
 
 /* MODULES */
 // import application modules

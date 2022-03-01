@@ -50,7 +50,7 @@ export class AuthButtonComponent {
       } else {
         this.authenticated = true;
         this.authButtonRoute = "/exchange";
-        this.authButtonText = "Go To Exchange";
+        this.authButtonText = "Enter Exchange";
         console.log("authenticated as " + result.email);
       }
     });

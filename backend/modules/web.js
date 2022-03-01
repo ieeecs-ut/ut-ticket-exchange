@@ -79,6 +79,11 @@ var init = _ => {
         });
     });
 };
+var cors_handler = (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+};
 var return_error = (req, res, code, msg) => {
     res.status(code);
     res.setHeader('content-type', 'application/json');
@@ -118,14 +123,10 @@ module.exports = {
         http_server = http.Server(express_api);
         express_api.use(express.json());
         express_api.use(express.urlencoded({ extended: true }));
-        express_api.use((req, res, next) => {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            next();
-        });
-        express_api.use(express.static("html"));
+        express_api.use(cors_handler);
+        // express_api.use(express.static("html"));
         express_api.get("/", (req, res) => {
-            res.sendFile(__dirname + "/html/index.html");
+            res.sendFile(global.root_path + "/demo.html");
         });
         module.exports.api.exit = resolve => {
             log("exit");
