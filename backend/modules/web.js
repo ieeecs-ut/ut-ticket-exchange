@@ -35,7 +35,7 @@ var init = _ => {
         if (!req.body.password || (`${req.body.password}`).trim().length <= 0)
             return return_error(req, res, 400, "Invalid password");
 
-        m.db.user_exists(req.body.email_address, (result) => {
+        m.db.user_exists(req.body.email_address, null, (result) => {
             if (result === null) return return_error(req, res, 500, "Database error");
             if (result == false) return return_error(req, res, 400, "User not found");
             m.db.validate_login(req.body.email_address, req.body.password, (result) => {
@@ -56,12 +56,12 @@ var init = _ => {
         if (!req.body.new_password || (`${req.body.new_password}`).trim().length <= 0)
             return return_error(req, res, 400, "Invalid new password");
 
-        m.db.user_exists(req.body.email_address, (result) => {
+        m.db.user_exists(req.body.email_address, null, (result) => {
             if (result === null) return return_error(req, res, 500, "Database error");
             if (result == true) return return_error(req, res, 400, "E-mail already taken");
-            m.db.create_user(req.body.email_address, req.body.new_password, (result) => {
-                if (result === null) return return_error(req, res, 500, "Database error");
-                if (result == false) return return_error(req, res, 500, "Failed to create user");
+            m.db.create_user(req.body.email_address, req.body.new_password, (status, result) => {
+                if (status === null || result === null) return return_error(req, res, 500, "Database error");
+                if (status == false || result === false) return return_error(req, res, 500, "Failed to create user");
                 var token = generate_token(req.body.email_address);
                 return return_data(req, res, {
                     token: token
@@ -70,7 +70,7 @@ var init = _ => {
         });
     });
     express_api.post("/api/auth", express_jwt({ secret: m.secrets.jwt_key, algorithms: ['HS256'] }), (req, res) => {
-        m.db.user_exists(req.user.email, (result) => {
+        m.db.user_exists(req.user.email, null, (result) => {
             if (result === null) return return_error(req, res, 500, "Database error");
             if (result == false) return return_error(req, res, 400, "User not found");
             return return_data(req, res, {
@@ -82,7 +82,7 @@ var init = _ => {
         // authenticate token
         req.user = web_verify_token(req.body.auth);
         if (req.user == null) return return_error(req, res, 401, "Unauthorized");
-        m.db.user_exists(req.user.email, (result) => {
+        m.db.user_exists(req.user.email, null, (result) => {
             if (result === null) return return_error(req, res, 500, "Database error");
             if (result == false) return return_error(req, res, 400, "User not found");
             return return_data(req, res, {

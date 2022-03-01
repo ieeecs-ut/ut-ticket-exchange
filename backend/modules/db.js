@@ -54,14 +54,14 @@ var api = {
         }, (error1, result1) => {
             if (error1) {
                 err(`error creating user with email ${email}`, error1.message ? error1.message : error1);
-                resolve(null);
+                resolve(false, error1);
             } else {
-                resolve(true);
+                resolve(true, result1.insertedId);
             }
         });
     },
     get_user: (id, resolve) => {
-        mongo_api.collection('project').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
+        mongo_api.collection('user').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
             if (e) {
                 err(`error finding user ${id}`, e.message ? e.message : e);
                 resolve(false, e);
@@ -86,7 +86,7 @@ var api = {
                         $set: update
                     }, (e2, result2) => {
                         if (e2) {
-                            err(`error updating project ${id}`, e2.message ? e2.message : e2);
+                            err(`error updating user ${id}`, e2.message ? e2.message : e2);
                             resolve(false, e2);
                         } else {
                             mongo_api.collection('user').findOne({ _id: mongo_oid(id) }, (e3, result3) => {
@@ -116,20 +116,19 @@ var api = {
             }
         });
     },
-    user_exists: (email, resolve) => {
-        mongo_api.collection('user').find({
-            email: email
-        }, (error1, cursor1) => {
+    user_exists: (email = '', id = '', resolve) => {
+        var _find = {};
+        if (email != '') _find['email'] = email;
+        if (id != '') _find['_id'] = mongo_oid(id);
+        mongo_api.collection('user').find(_find, (error1, cursor1) => {
             if (error1) {
-                err(`error finding user with email ${email}`, error1.message ? error1.message : error1);
+                err(`error finding user with id/email ${id}/${email}`, error1.message ? error1.message : error1);
                 resolve(null);
             } else {
                 cursor1.count().then(c => {
-                    if (c <= 0) {
+                    if (c <= 0)
                         resolve(false);
-                    } else {
-                        resolve(true);
-                    }
+                    else resolve(true);
                 });
             }
         });
@@ -155,10 +154,107 @@ var api = {
     },
 
     // buy_order
+    create_buy_order: () => {
+
+    },
 
     // sell_order
+    create_sell_order: () => {
+
+    },
 
     // game
+    create_game: (sport, date, time, location, gender, resolve) => {
+        var ts_now = (new Date()).getTime();
+        mongo_api.collection('game').insertOne({
+            sport: sport,
+            date: date,
+            time: time,
+            location: location,
+            gender: gender,
+            ts_updated: ts_now,
+            ts_created: ts_now,
+        }, (error1, result1) => {
+            if (error1) {
+                err(`error creating game with sport/date ${sport}/${date}`, error1.message ? error1.message : error1);
+                resolve(false, error1);
+            } else {
+                resolve(true, result1.insertedId);
+            }
+        });
+    },
+    get_game: (id, resolve) => {
+        mongo_api.collection('game').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
+            if (e) {
+                err(`error finding game ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) resolve(true, result1);
+                else resolve(null, result1);
+            }
+        });
+    },
+    update_game: (id, update, resolve) => {
+        var ts_now = (new Date()).getTime();
+        mongo_api.collection('game').findOne({ _id: mongo_oid(id) }, (e, result1) => {
+            if (e) {
+                err(`error finding game ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (!result1) resolve(null, result1);
+                else {
+                    if (!update.hasOwnProperty('ts_updated'))
+                        update.ts_updated = ts_now;
+                    mongo_api.collection('game').updateOne({ _id: mongo_oid(id) }, {
+                        $set: update
+                    }, (e2, result2) => {
+                        if (e2) {
+                            err(`error updating game ${id}`, e2.message ? e2.message : e2);
+                            resolve(false, e2);
+                        } else {
+                            mongo_api.collection('game').findOne({ _id: mongo_oid(id) }, (e3, result3) => {
+                                if (e3) {
+                                    err(`error finding game ${id} after update`, e3.message ? e3.message : e3);
+                                    resolve(false, e3);
+                                } else {
+                                    if (!result3) resolve(null, result3);
+                                    else resolve(true, result3);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    },
+    delete_game: (id, resolve) => {
+        mongo_api.collection('game').deleteOne({ _id: mongo_oid(id) }, (e, coll1) => {
+            if (e) {
+                err(`error finding game ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (!coll1 || coll1.result.n != 1)
+                    resolve(null, coll1);
+                else resolve(true, coll1);
+            }
+        });
+    },
+    game_exists: (id = '', resolve) => {
+        var _find = {};
+        if (id != '') _find['_id'] = mongo_oid(id);
+        mongo_api.collection('game').find(_find, (error1, cursor1) => {
+            if (error1) {
+                err(`error finding game with id ${id}`, error1.message ? error1.message : error1);
+                resolve(null);
+            } else {
+                cursor1.count().then(c => {
+                    if (c <= 0)
+                        resolve(false);
+                    else resolve(true);
+                });
+            }
+        });
+    },
 
 };
 
