@@ -6,6 +6,8 @@
   background-color: rgba(255, 255, 255);
   padding-right: 20px;
   z-index: 100;
+  -webkit-box-shadow: rgb(50 50 50 / 30%) 0px 2px 4px;
+  box-shadow: rgb(50 50 50 / 30%) 0px 2px 4px;
 }
 
 .top-header img {

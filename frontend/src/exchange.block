@@ -9,18 +9,113 @@ exchange
         opacity 0
         transition opacity 0.3s ease
         display block
-        background-color red
-        margin-top 200px
+        margin-top 80px
+        width 100%
+        margin-left auto
+        margin-right auto
     :show
         css
             opacity 1
     :hide
         css
             opacity 0
-    div stuff
+    @query window height != 0
+        {
+            var h = window.innerHeight - 80 - 10;
+            if (window.innerWidth <= 875) h = h * 1.8;
+            block.css('height', `${h}px`);
+        }
+    @query window width > 1600
         css
-            height 60px
-            width 170px
-            background-color blue
-        text text
-            val hello
+            width 83%
+    @query window width <= 1600
+        css
+            width 87%
+    @query window width <= 1400
+        css
+            width 90%
+    @query window width <= 1200
+        css
+            width 95%
+    @query window width <= 1000
+        css
+            width 100%
+    block left
+        css
+            height 95%
+            width 50%
+            display inline-table
+        @query window width > 875
+            css
+                width 50%
+                height 95%
+        @query window width <= 875
+            css
+                width 100%
+                height 50%
+        div panel
+            class exchange-panel
+            @query window width > 1600
+                css
+                    width 85%
+            @query window width <= 1600
+                css
+                    width 90%
+            @query window width <= 1400
+                css
+                    width 90%
+            @query window width <= 1000
+                css
+                    width 95%
+            div title
+                css
+                    padding-top 35px
+                    height 100px
+                h1 text
+                    html Buy
+                    css
+                        text-transform uppercase
+                        font-size 40px
+                        color #333
+                        letter-spacing 4px
+    block right
+        css
+            height 95%
+            width 50%
+            margin-top 0
+            display inline-table
+        @query window width > 875
+            css
+                width 50%
+                height 95%
+                margin-top 0
+        @query window width <= 875
+            css
+                width 100%
+                height 50%
+                margin-top -80px
+        div panel
+            class exchange-panel
+            @query window width > 1600
+                css
+                    width 85%
+            @query window width <= 1600
+                css
+                    width 90%
+            @query window width <= 1400
+                css
+                    width 90%
+            @query window width <= 1000
+                css
+                    width 95%
+            div title
+                css
+                    padding-top 35px
+                    height 100px
+                h1 text
+                    html Sell
+                    css
+                        text-transform uppercase
+                        font-size 40px
+                        color #333
+                        letter-spacing 4px
