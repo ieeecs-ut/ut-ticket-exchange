@@ -18,6 +18,7 @@ var mongo_port = null;
 var mongo_dbname = null;
 var mongo_client = null;
 var mongo_api = null;
+var mongo_oid = mongodb.ObjectId;
 var init = _ => {
     // initialize module variables as well as mongodb database
 
@@ -118,8 +119,8 @@ var api = {
     },
     user_exists: (email = '', id = '', resolve) => {
         var _find = {};
-        if (email != '') _find['email'] = email;
-        if (id != '') _find['_id'] = mongo_oid(id);
+        if (email != '' && email != null) _find['email'] = email;
+        if (id != '' && id != null) _find['_id'] = mongo_oid(id);
         mongo_api.collection('user').find(_find, (error1, cursor1) => {
             if (error1) {
                 err(`error finding user with id/email ${id}/${email}`, error1.message ? error1.message : error1);
@@ -154,39 +155,74 @@ var api = {
     },
 
     // buy_order
-    create_buy_order: () => {
-
-    },
-
-    // sell_order
-    create_sell_order: () => {
-
-    },
-
-    // game
-    create_game: (sport, date, time, location, gender, resolve) => {
+    create_buy_order: (event_id, sell_order_id, ts_click, comments, resolve) => {
         var ts_now = (new Date()).getTime();
-        mongo_api.collection('game').insertOne({
-            sport: sport,
-            date: date,
-            time: time,
-            location: location,
-            gender: gender,
+        mongo_api.collection('buy_order').insertOne({
+            event: event_id,
+            sell_order: sell_order_id,
+            comments: comments,
+            ts_click: ts_click,
             ts_updated: ts_now,
             ts_created: ts_now,
         }, (error1, result1) => {
             if (error1) {
-                err(`error creating game with sport/date ${sport}/${date}`, error1.message ? error1.message : error1);
+                err(`error creating event with event/sport/date ${event_id}/${sport}/${date}`, error1.message ? error1.message : error1);
                 resolve(false, error1);
             } else {
                 resolve(true, result1.insertedId);
             }
         });
     },
-    get_game: (id, resolve) => {
-        mongo_api.collection('game').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
+
+    // sell_order
+    create_sell_order: (event_id, price, seats, comments, resolve) => {
+        var ts_now = (new Date()).getTime();
+        mongo_api.collection('sell_order').insertOne({
+            event: event_id,
+            price: price,
+            seats: seats,
+            comments: comments,
+            ts_updated: ts_now,
+            ts_created: ts_now,
+        }, (error1, result1) => {
+            if (error1) {
+                err(`error creating event with event/sport/date ${event_id}/${sport}/${date}`, error1.message ? error1.message : error1);
+                resolve(false, error1);
+            } else {
+                resolve(true, result1.insertedId);
+            }
+        });
+    },
+
+    // event
+    create_event: (sport, playing, name, date, time, city, venue, gender, resolve) => {
+        var ts_now = (new Date()).getTime();
+        mongo_api.collection('event').insertOne({
+            sport: sport,
+            playing: playing,
+            name: name,
+            date: date,
+            time: time,
+            location: {
+                city: city,
+                venue: venue,
+            },
+            gender: gender,
+            ts_updated: ts_now,
+            ts_created: ts_now,
+        }, (error1, result1) => {
+            if (error1) {
+                err(`error creating event with sport/date ${sport}/${date}`, error1.message ? error1.message : error1);
+                resolve(false, error1);
+            } else {
+                resolve(true, result1.insertedId);
+            }
+        });
+    },
+    get_event: (id, resolve) => {
+        mongo_api.collection('event').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
             if (e) {
-                err(`error finding game ${id}`, e.message ? e.message : e);
+                err(`error finding event ${id}`, e.message ? e.message : e);
                 resolve(false, e);
             } else {
                 if (result1) resolve(true, result1);
@@ -194,27 +230,27 @@ var api = {
             }
         });
     },
-    update_game: (id, update, resolve) => {
+    update_event: (id, update, resolve) => {
         var ts_now = (new Date()).getTime();
-        mongo_api.collection('game').findOne({ _id: mongo_oid(id) }, (e, result1) => {
+        mongo_api.collection('event').findOne({ _id: mongo_oid(id) }, (e, result1) => {
             if (e) {
-                err(`error finding game ${id}`, e.message ? e.message : e);
+                err(`error finding event ${id}`, e.message ? e.message : e);
                 resolve(false, e);
             } else {
                 if (!result1) resolve(null, result1);
                 else {
                     if (!update.hasOwnProperty('ts_updated'))
                         update.ts_updated = ts_now;
-                    mongo_api.collection('game').updateOne({ _id: mongo_oid(id) }, {
+                    mongo_api.collection('event').updateOne({ _id: mongo_oid(id) }, {
                         $set: update
                     }, (e2, result2) => {
                         if (e2) {
-                            err(`error updating game ${id}`, e2.message ? e2.message : e2);
+                            err(`error updating event ${id}`, e2.message ? e2.message : e2);
                             resolve(false, e2);
                         } else {
-                            mongo_api.collection('game').findOne({ _id: mongo_oid(id) }, (e3, result3) => {
+                            mongo_api.collection('event').findOne({ _id: mongo_oid(id) }, (e3, result3) => {
                                 if (e3) {
-                                    err(`error finding game ${id} after update`, e3.message ? e3.message : e3);
+                                    err(`error finding event ${id} after update`, e3.message ? e3.message : e3);
                                     resolve(false, e3);
                                 } else {
                                     if (!result3) resolve(null, result3);
@@ -227,10 +263,10 @@ var api = {
             }
         });
     },
-    delete_game: (id, resolve) => {
-        mongo_api.collection('game').deleteOne({ _id: mongo_oid(id) }, (e, coll1) => {
+    delete_event: (id, resolve) => {
+        mongo_api.collection('event').deleteOne({ _id: mongo_oid(id) }, (e, coll1) => {
             if (e) {
-                err(`error finding game ${id}`, e.message ? e.message : e);
+                err(`error finding event ${id}`, e.message ? e.message : e);
                 resolve(false, e);
             } else {
                 if (!coll1 || coll1.result.n != 1)
@@ -239,12 +275,12 @@ var api = {
             }
         });
     },
-    game_exists: (id = '', resolve) => {
+    event_exists: (id = '', resolve) => {
         var _find = {};
         if (id != '') _find['_id'] = mongo_oid(id);
-        mongo_api.collection('game').find(_find, (error1, cursor1) => {
+        mongo_api.collection('event').find(_find, (error1, cursor1) => {
             if (error1) {
-                err(`error finding game with id ${id}`, error1.message ? error1.message : error1);
+                err(`error finding event with id ${id}`, error1.message ? error1.message : error1);
                 resolve(null);
             } else {
                 cursor1.count().then(c => {

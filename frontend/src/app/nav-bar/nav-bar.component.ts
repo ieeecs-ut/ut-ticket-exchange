@@ -18,7 +18,7 @@ export class NavBarComponent implements OnInit {
   constructor(public gl: Globals) {
     this.globals = gl;
     this.authenticated = false;
-    this.showExchangeButton = true;
+    this.showExchangeButton = false;
   }
 
 
