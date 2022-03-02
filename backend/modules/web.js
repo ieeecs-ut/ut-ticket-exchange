@@ -1,6 +1,9 @@
 /* MODULE – WEB SERVER */
 // http web server
 
+// TODO: prevent multiple active buy orders from one user on the same event
+// TODO: add orders section to sell panel to view current sell orders (show it first then swap it with the form from figma on a button click? or find a way to show both)
+
 /* IMPORTS */
 const http = require("http");
 const express = require("express");

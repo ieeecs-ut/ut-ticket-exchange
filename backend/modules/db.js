@@ -156,18 +156,25 @@ var api = {
     },
 
     // buy_order
-    create_buy_order: (event_id, sell_order_id, ts_click, comments, resolve) => {
+    create_buy_order: (user_id, event_id, ts_click, comments, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('buy_order').insertOne({
+            user: user_id,
             event: event_id,
-            sell_order: sell_order_id,
             comments: comments,
+            sell_order_match: null,
+            match_status: 'pending',
+            /*  "pending"  (unmatched)
+                "locked"   (matched to sell order)
+                "complete" (seller or buyer confirmed sale)
+             or "rejected" (seller or buyer rejected/time expired)
+            */
             ts_click: ts_click,
             ts_updated: ts_now,
             ts_created: ts_now,
         }, (error1, result1) => {
             if (error1) {
-                err(`error creating event with event/sport/date ${event_id}/${sport}/${date}`, error1.message ? error1.message : error1);
+                err(`error creating buy order with event${event_id}`, error1.message ? error1.message : error1);
                 resolve(false, error1);
             } else {
                 resolve(true, result1.insertedId);
@@ -248,18 +255,21 @@ var api = {
     },
 
     // sell_order
-    create_sell_order: (event_id, price, seats, comments, resolve) => {
+    create_sell_order: (user_id, event_id, price, seats, comments, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('sell_order').insertOne({
+            user: user_id,
             event: event_id,
             price: price,
             seats: seats,
             comments: comments,
+            locked: false, // set to true when matched with buy order, set to false if buy order rejected/expires
+            ts_locked: -1,
             ts_updated: ts_now,
             ts_created: ts_now,
         }, (error1, result1) => {
             if (error1) {
-                err(`error creating event with event/sport/date ${event_id}/${sport}/${date}`, error1.message ? error1.message : error1);
+                err(`error creating sell order with event ${event_id}`, error1.message ? error1.message : error1);
                 resolve(false, error1);
             } else {
                 resolve(true, result1.insertedId);
@@ -340,9 +350,10 @@ var api = {
     },
 
     // event
-    create_event: (sport, playing, name, date, time, city, venue, gender, resolve) => {
+    create_event: (user_id, sport, playing, name, date, time, city, venue, gender, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('event').insertOne({
+            user: user_id,
             sport: sport,
             playing: playing,
             name: name,
