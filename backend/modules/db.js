@@ -44,6 +44,7 @@ var api = {
             }
         });
     },
+
     // user
     create_user: (email, new_password, resolve) => {
         var ts_now = (new Date()).getTime();
@@ -173,6 +174,78 @@ var api = {
             }
         });
     },
+    get_buy_order: (id, resolve) => {
+        mongo_api.collection('buy_order').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
+            if (e) {
+                err(`error finding buy_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) resolve(true, result1);
+                else resolve(null, result1);
+            }
+        });
+    },
+    update_buy_order: (id, update, resolve) => {
+        var ts_now = (new Date()).getTime();
+        mongo_api.collection('buy_order').findOne({ _id: mongo_oid(id) }, (e, result1) => {
+            if (e) {
+                err(`error finding buy_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (!result1) resolve(null, result1);
+                else {
+                    if (!update.hasOwnProperty('ts_updated'))
+                        update.ts_updated = ts_now;
+                    mongo_api.collection('buy_order').updateOne({ _id: mongo_oid(id) }, {
+                        $set: update
+                    }, (e2, result2) => {
+                        if (e2) {
+                            err(`error updating buy_order ${id}`, e2.message ? e2.message : e2);
+                            resolve(false, e2);
+                        } else {
+                            mongo_api.collection('buy_order').findOne({ _id: mongo_oid(id) }, (e3, result3) => {
+                                if (e3) {
+                                    err(`error finding buy_order ${id} after update`, e3.message ? e3.message : e3);
+                                    resolve(false, e3);
+                                } else {
+                                    if (!result3) resolve(null, result3);
+                                    else resolve(true, result3);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    },
+    delete_buy_order: (id, resolve) => {
+        mongo_api.collection('buy_order').deleteOne({ _id: mongo_oid(id) }, (e, coll1) => {
+            if (e) {
+                err(`error finding buy_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (!coll1 || coll1.result.n != 1)
+                    resolve(null, coll1);
+                else resolve(true, coll1);
+            }
+        });
+    },
+    buy_order_exists: (id, resolve) => {
+        var _find = {};
+        _find['_id'] = mongo_oid(id);
+        mongo_api.collection('buy_order').find(_find, (error1, cursor1) => {
+            if (error1) {
+                err(`error finding buy_order with id ${id}`, error1.message ? error1.message : error1);
+                resolve(null);
+            } else {
+                cursor1.count().then(c => {
+                    if (c <= 0)
+                        resolve(false);
+                    else resolve(true);
+                });
+            }
+        });
+    },
 
     // sell_order
     create_sell_order: (event_id, price, seats, comments, resolve) => {
@@ -190,6 +263,78 @@ var api = {
                 resolve(false, error1);
             } else {
                 resolve(true, result1.insertedId);
+            }
+        });
+    },
+    get_sell_order: (id, resolve) => {
+        mongo_api.collection('sell_order').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
+            if (e) {
+                err(`error finding sell_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) resolve(true, result1);
+                else resolve(null, result1);
+            }
+        });
+    },
+    update_sell_order: (id, update, resolve) => {
+        var ts_now = (new Date()).getTime();
+        mongo_api.collection('sell_order').findOne({ _id: mongo_oid(id) }, (e, result1) => {
+            if (e) {
+                err(`error finding sell_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (!result1) resolve(null, result1);
+                else {
+                    if (!update.hasOwnProperty('ts_updated'))
+                        update.ts_updated = ts_now;
+                    mongo_api.collection('sell_order').updateOne({ _id: mongo_oid(id) }, {
+                        $set: update
+                    }, (e2, result2) => {
+                        if (e2) {
+                            err(`error updating sell_order ${id}`, e2.message ? e2.message : e2);
+                            resolve(false, e2);
+                        } else {
+                            mongo_api.collection('sell_order').findOne({ _id: mongo_oid(id) }, (e3, result3) => {
+                                if (e3) {
+                                    err(`error finding sell_order ${id} after update`, e3.message ? e3.message : e3);
+                                    resolve(false, e3);
+                                } else {
+                                    if (!result3) resolve(null, result3);
+                                    else resolve(true, result3);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    },
+    delete_sell_order: (id, resolve) => {
+        mongo_api.collection('sell_order').deleteOne({ _id: mongo_oid(id) }, (e, coll1) => {
+            if (e) {
+                err(`error finding sell_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (!coll1 || coll1.result.n != 1)
+                    resolve(null, coll1);
+                else resolve(true, coll1);
+            }
+        });
+    },
+    sell_order_exists: (id, resolve) => {
+        var _find = {};
+        _find['_id'] = mongo_oid(id);
+        mongo_api.collection('sell_order').find(_find, (error1, cursor1) => {
+            if (error1) {
+                err(`error finding sell_order with id ${id}`, error1.message ? error1.message : error1);
+                resolve(null);
+            } else {
+                cursor1.count().then(c => {
+                    if (c <= 0)
+                        resolve(false);
+                    else resolve(true);
+                });
             }
         });
     },
@@ -275,9 +420,9 @@ var api = {
             }
         });
     },
-    event_exists: (id = '', resolve) => {
+    event_exists: (id, resolve) => {
         var _find = {};
-        if (id != '') _find['_id'] = mongo_oid(id);
+        _find['_id'] = mongo_oid(id);
         mongo_api.collection('event').find(_find, (error1, cursor1) => {
             if (error1) {
                 err(`error finding event with id ${id}`, error1.message ? error1.message : error1);
