@@ -278,9 +278,32 @@ exchange
                             text value
                                 html <span class="placeholder_text">Please select an event or list a new event above.</span>
                                 css
-                                    letter-spacing 1px
                                     top -1.5px
                                     position relative
+                                @query window width > 1350
+                                    css
+                                        font-size 14px
+                                        letter-spacing 1px
+                                @query window width <= 1350
+                                    css
+                                        font-size 12px
+                                        letter-spacing 0.8px
+                                @query window width <= 1150
+                                    css
+                                        font-size 9px
+                                        letter-spacing 0.7px
+                                @query window width <= 935
+                                    css
+                                        font-size 12px
+                                        letter-spacing 0.8px
+                                @query window width <= 510
+                                    css
+                                        font-size 9px
+                                        letter-spacing 0.6px
+                                @query window width <= 430
+                                    css
+                                        font-size 9px
+                                        letter-spacing 0.5px
                         div two_wrap
                             css
                                 margin-top 12px
@@ -337,7 +360,7 @@ exchange
                                         left -1px
                                     @query window width != 0
                                         {
-                                            block.css('width', (block.parent().$().width() - block.sibling('label').$().width()) + 'px');
+                                            block.css('width', (block.parent().$().width() - block.sibling('label').$().width() - 2) + 'px');
                                         }
                             div comments
                                 css
@@ -364,6 +387,14 @@ exchange
                                         font-size 12px
                                         letter-spacing 0.8px
                                     placeholder Lorem ipsum dolor sit amet...
+                                    @query window width > 935
+                                        {
+                                            block.css('height', '53px');
+                                        }
+                                    @query window width <= 935
+                                        {
+                                            block.css('height', '42px');
+                                        }
                 block sell_button
                     class exchange-orange_button
                     css
