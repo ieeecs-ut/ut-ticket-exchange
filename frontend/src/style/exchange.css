@@ -42,3 +42,9 @@ div.exchange-orange_button:hover {
 div.exchange-orange_button:active {
   opacity: 0.8;
 }
+span.placeholder_text {
+  color: #333;
+  opacity: 0.9;
+  font-style: italic;
+  font-weight: 100;
+}

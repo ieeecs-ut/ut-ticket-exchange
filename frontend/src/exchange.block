@@ -22,7 +22,7 @@ exchange
     @query window height != 0
         {
             var h = window.innerHeight - 80 - 10;
-            if (window.innerWidth <= 875) h = h * 1.8;
+            if (window.innerWidth <= 935) h = h * 1.8;
             block.css('height', `${h}px`);
         }
     @query window width > 1600
@@ -45,11 +45,11 @@ exchange
             height 95%
             width 50%
             display inline-table
-        @query window width > 875
+        @query window width > 935
             css
                 width 50%
                 height 95%
-        @query window width <= 875
+        @query window width <= 935
             css
                 width 100%
                 height 50%
@@ -121,12 +121,12 @@ exchange
             width 50%
             margin-top 0
             display inline-table
-        @query window width > 875
+        @query window width > 935
             css
                 width 50%
                 height 95%
                 margin-top 0
-        @query window width <= 875
+        @query window width <= 935
             css
                 width 100%
                 height 50%
@@ -184,10 +184,113 @@ exchange
                     height 42%
                     position relative
                     margin 0 auto
-                div form_content
+                div form_wrap
                     css
                         width 100%
                         height calc(100% - 60px - 10px)
+                    div form_content
+                        css
+                            width calc(100% - 40px)
+                            height 100%
+                            margin 0 auto
+                        div event
+                            css
+                                margin-top 2px
+                                text-align left
+                            text label
+                                html Event:&nbsp;&nbsp;
+                                css
+                                    font-size 19px
+                                    letter-spacing 1.5px
+                                    color #111
+                                    font-weight 200
+                            text value
+                                html <span class="placeholder_text">Please select an event or list a new event above.</span>
+                                css
+                                    letter-spacing 1px
+                                    top -1.5px
+                                    position relative
+                        div two_wrap
+                            css
+                                margin-top 12px
+                                vertical-align top
+                            div price
+                                css
+                                    width calc(50% + 10px)
+                                    display inline-block
+                                    text-align left
+                                text label
+                                    html Price:&nbsp;&nbsp;
+                                    css
+                                        font-size 19px
+                                        letter-spacing 1.5px
+                                        color #111
+                                        font-weight 200
+                                input input
+                                    placeholder $00.00
+                                    css
+                                        text-align center
+                                        border 1px solid #eee
+                                        border-radius 2px
+                                        padding 3px 5px
+                                        box-sizing border-box
+                                        position relative
+                                        top -1.5px
+                                        left -1px
+                                    @query window width != 0
+                                        {
+                                            block.css('width', (block.parent().$().width() - block.sibling('label').$().width() - 20) + 'px');
+                                        }
+                            div seats
+                                css
+                                    width calc(50% - 10px)
+                                    display inline-block
+                                    text-align left
+                                text label
+                                    html Seats:&nbsp;&nbsp;
+                                    css
+                                        font-size 19px
+                                        letter-spacing 1.5px
+                                        color #111
+                                        font-weight 200
+                                input input
+                                    placeholder 0F
+                                    css
+                                        text-align center
+                                        border 1px solid #eee
+                                        border-radius 2px
+                                        padding 3px 5px
+                                        box-sizing border-box
+                                        position relative
+                                        top -1.5px
+                                        left -1px
+                                    @query window width != 0
+                                        {
+                                            block.css('width', (block.parent().$().width() - block.sibling('label').$().width()) + 'px');
+                                        }
+                            div comments
+                                css
+                                    margin-top 8px
+                                    text-align left
+                                text label
+                                    html Comments:&nbsp;&nbsp;
+                                    css
+                                        font-size 19px
+                                        letter-spacing 1.5px
+                                        color #111
+                                        font-weight 200
+                                textarea input
+                                    css
+                                        margin-top 5px
+                                        display block
+                                        width 100%
+                                        height 53px
+                                        resize none
+                                        border 1px solid #eee
+                                        padding 3px 8px
+                                        box-sizing border-box
+                                        border-radius 3px
+                                    placeholder Lorem ipsum dolor sit amet...
                 block sell_button
                     class exchange-orange_button
                     css
@@ -205,7 +308,6 @@ exchange
                             letter-spacing 3.5px
                             color white
                             font-weight 200
-
             div orders
                 css
                     width 100%
