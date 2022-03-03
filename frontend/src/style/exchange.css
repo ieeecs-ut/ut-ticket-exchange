@@ -21,3 +21,24 @@ div.exchange-panel {
   -webkit-box-shadow: rgb(64 64 64 / 10%) 2px 2px 5px 2px;
   box-shadow: rgb(64 64 64 / 10%) 2px 2px 5px 2px;
 }
+
+div.exchange-panel-content {
+  box-sizing: border-box;
+  height: calc(100% - 24px - 20px);
+  width: calc(100% - (42px * 1.8));
+  background-color: #fdfdfd;
+  margin: 5px auto 0 auto;
+  border: 0.5px solid #eee;
+  border-radius: 3px;
+}
+
+div.exchange-orange_button {
+  opacity: 0.97;
+  transition: opacity 0.2s ease;
+}
+div.exchange-orange_button:hover {
+  opacity: 0.87;
+}
+div.exchange-orange_button:active {
+  opacity: 0.8;
+}
