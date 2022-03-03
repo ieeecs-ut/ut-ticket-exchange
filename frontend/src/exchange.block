@@ -89,6 +89,7 @@ exchange
                 css
                     width 100%
                     height 56%
+                    position relative
                 div title
                     css
                         padding-left 42px
@@ -98,6 +99,26 @@ exchange
                         css
                             font-size 24px
                             letter-spacing 2px
+                block date_selector
+                    css
+                        position absolute
+                        top -4px
+                        height 28px
+                        width 140px
+                        right 42px
+                    input input
+                        css
+                            height 22px
+                            width 140px
+                            cursor pointer
+                        type date
+                        {
+                            block.attribute('value', utils.ts_to_string(Date.now()));
+                        }
+                        :input
+                            {
+                                console.log('select buy panel event search date: ' + block.node().value);
+                            }
                 div content
                     class exchange-panel-content
             div orders
@@ -167,6 +188,7 @@ exchange
                 css
                     width 100%
                     height 58%
+                    position relative
                 div title
                     css
                         padding-left 42px
@@ -176,6 +198,55 @@ exchange
                         css
                             font-size 24px
                             letter-spacing 2px
+                block date_selector
+                    css
+                        position absolute
+                        top -4px
+                        height 28px
+                        width 140px
+                    @query window width != 0
+                        {
+                            block.css('right', (block.sibling('list_event_button').$().width() + 44 + 10) + 'px');
+                        }
+                    input input
+                        css
+                            height 22px
+                            width 140px
+                            cursor pointer
+                        type date
+                        {
+                            block.attribute('value', utils.ts_to_string(Date.now()));
+                        }
+                        :input
+                            {
+                                console.log('select sell panel event search date: ' + block.node().value);
+                            }
+                div list_event_button
+                    class exchange-orange_button
+                    css
+                        position absolute
+                        top -4px
+                        right 44px
+                        width auto
+                        height 28px
+                    button button
+                        css
+                            height 100%
+                            width 100%
+                            background-color #BF5700
+                            border-radius 4px
+                            border 1px solid #BA662F
+                            text-transform lowercase
+                            color white
+                            letter-spacing 1px
+                            font-weight 400
+                            padding 0 25px
+                            font-size 14px
+                        html List New Event
+                        :click
+                            {
+                                console.log("list new event");
+                            }
                 div content
                     class exchange-panel-content
             div sell_form
@@ -290,6 +361,8 @@ exchange
                                         padding 3px 8px
                                         box-sizing border-box
                                         border-radius 3px
+                                        font-size 12px
+                                        letter-spacing 0.8px
                                     placeholder Lorem ipsum dolor sit amet...
                 block sell_button
                     class exchange-orange_button
@@ -307,7 +380,11 @@ exchange
                             border-radius 4px
                             letter-spacing 3.5px
                             color white
-                            font-weight 200
+                            font-weight 400
+                        :click
+                            {
+                                console.log("sell ticket");
+                            }
             div orders
                 css
                     width 100%

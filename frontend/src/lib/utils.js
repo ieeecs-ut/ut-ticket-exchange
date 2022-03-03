@@ -136,5 +136,12 @@ window.utils = {
             return object[path[0]]
         else if (path.length > 1)
             return utils.get(object[path[0]], path.slice(1));
+    },
+    ts_to_string: (timestamp) => {
+        var date_obj = new Date(timestamp);
+        const offset = date_obj.getTimezoneOffset();
+        date_obj = new Date(date_obj.getTime() - (offset * 60 * 1000));
+        return date_obj.toISOString().split('T')[0];
+        // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
     }
 };
