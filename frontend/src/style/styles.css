@@ -35,3 +35,57 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+/* bootbox color integration */
+button.btn.btn-primary.bootbox-accept {
+  background-color: #bf5700;
+  border: 1px solid #ba662f;
+  outline: none;
+}
+button.btn.btn-primary.bootbox-accept:hover {
+  background-color: #af4700;
+  outline: none;
+}
+.modal_text_input_label {
+  font-size: 18px;
+  width: 115px;
+  display: inline-block;
+  margin-left: 10px;
+}
+.modal_text_input {
+  font-size: 18px;
+  margin: 1px 0;
+  width: calc(100% - 140px);
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+select.modal_select_input {
+  font-size: 18px;
+  margin: 1px 0;
+  width: calc(100% - 140px);
+  padding: 5px 10px;
+  box-sizing: border-box;
+}
+.modal_title {
+  font-size: 25px;
+}
+h5.modal-title {
+  margin-top: 6px;
+}
+div.modal-dialog div.modal-footer button.bootbox-cancel {
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  padding: 8px 22px;
+  font-size: 13px;
+  /* outline: none; */
+}
+div.modal-dialog div.modal-footer button.bootbox-accept {
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  padding: 8px 22px;
+  font-size: 13px;
+  /* outline: none; */
+}
+span.modal_text_input_label {
+  letter-spacing: 1px;
+}

@@ -30,6 +30,8 @@ div.exchange-panel-content {
   margin: 5px auto 0 auto;
   border: 0.5px solid #eee;
   border-radius: 3px;
+  padding: 10px 10px;
+  overflow: auto;
 }
 
 div.exchange-orange_button {
@@ -47,4 +49,10 @@ span.placeholder_text {
   opacity: 0.9;
   font-style: italic;
   font-weight: 100;
+}
+
+span.event-detail-label {
+  font-weight: 500;
+  display: inline-block;
+  width: 70px;
 }

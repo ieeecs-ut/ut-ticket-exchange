@@ -2,7 +2,308 @@
 
 // ut ticket exchange
 
-// exchange client ui
+// custom view types
+!event-item
+    init
+        {
+            var block = Block('block');
+            block
+                .key('detail_height', '115')
+                .css({
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '3px',
+                    backgroundColor: 'white',
+                    border: '1px solid #f2f2f2',
+                    margin: '0 auto 0.7px auto',
+                })
+                .add(Block('div', 'content')
+                    .css({
+                        height: '45px',
+                        width: '100%',
+                        margin: '0 auto',
+                        boxSizing: 'border-box',
+                        position: 'relative',
+                        borderRadius: '3px'
+                    })
+                    .add(Block('block', 'img')
+                        .css({
+                            height: '45px',
+                            width: '45px',
+                            position: 'absolute',
+                            top: '-1px',
+                            left: '10px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                src: '/img/event_b.png',
+                                height: '24px',
+                                width: '24px',
+                                css: {
+                                    margin: '0 auto',
+                                    opacity: '0.75'
+                                }
+                            })
+                        )
+                    )
+                    .add(Block('block', 'fill')
+                        .__child('content')
+                            .css('text-align', 'left')
+                            .__parent()
+                        .css({
+                            fontSize: '15px',
+                            letterSpacing: '-0.1px',
+                            //fontWeight: '300',
+                            fontWeight: '400',
+                        })
+                        .key('date_text_size', '16px')
+                        .query('window width >= 1365', function (event, block, data) {
+                            block.css('font-size', '14px');
+                            block.key('date_text_size', '15px');
+                        })
+                        .query('window width < 1365', function (event, block, data) {
+                            block.css('font-size', '12px');
+                            block.key('date_text_size', '14px');
+                        })
+                        .query('window width < 1150', function (event, block, data) {
+                            block.css('font-size', '10px');
+                            block.key('date_text_size', '12px');
+                        })
+                        .query('window width < 935', function (event, block, data) {
+                            block.css('font-size', '14px');
+                            block.key('date_text_size', '15px');
+                        })
+                        .query('window width < 650', function (event, block, data) {
+                            block.css('font-size', '12px');
+                            block.key('date_text_size', '14px');
+                        })
+                        .query('window width < 500', function (event, block, data) {
+                            block.css('font-size', '10px');
+                            block.key('date_text_size', '12px');
+                        })
+                        .add(Block('text', 1)
+                            .css({
+                                paddingLeft: '65px',
+                                paddingRight: '44px',
+                                cursor: 'pointer'
+                            })
+                            .html('_')
+                            .on('click', (e, b, d) => {
+                                b.parent(2).on('toggle_showing');
+                                e.stopPropagation();
+                            })
+                        )
+                        .on('update', (e, b, d) => {
+                            var event_summary_text = `<span style='font-weight: 600; font-size: ${block.key('date_text_size')};'>MM/YY</span>&nbsp;&nbsp;–&nbsp;&nbsp;G Sport Team vs Team @ City (Name)`;
+                            b.child('text').html(event_summary_text);
+                        })
+                        .on('update')
+                    )
+                    .add(Block('block', 'arrow')
+                        .css({
+                            height: '45px',
+                            width: '45px',
+                            position: 'absolute',
+                            top: '0px',
+                            right: '4px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                src: '/img/right_b.png',
+                                height: '28px',
+                                width: '28px',
+                                css: {
+                                    margin: '0 auto',
+                                    opacity: '0.75',
+                                    transform: 'rotate(180deg)',
+                                    transition: 'transform 0.15s ease',
+                                    cursor: 'pointer'
+                                }
+                            })
+                            .on('click', (e, b, d) => {
+                                b.parent(2).on('toggle_showing');
+                                e.stopPropagation();
+                            })
+                        )
+                    )
+                )
+                .add(Block('div', 'detail')
+                    .css({
+                        display: 'none',
+                        height: '1px',
+                        width: '100%',
+                        transition: 'height 0.15s ease',
+                        textAlign: 'left',
+                        boxSizing: 'border-box',
+                        padding: '0 35px',
+                        fontSize: '13px',
+                        letterSpacing: '0.8px',
+                        overflow: 'hidden',
+                        lineHeight: '18px',
+                        fontWeight: '300',
+                        position: 'relative'
+                    })
+                    .add(Block('div', 'what')
+                        .add(Block('text', 'label')
+                            .html('What:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('G Sport (Name)')
+                        )
+                    )
+                    .add(Block('div', 'who')
+                        .add(Block('text', 'label')
+                            .html('Who:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('Team vs Team')
+                        )
+                    )
+                    .add(Block('div', 'where')
+                        .add(Block('text', 'label')
+                            .html('Where:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('City, ST (Venue)')
+                        )
+                    )
+                    .add(Block('div', 'when')
+                        .add(Block('text', 'label')
+                            .html('When:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('HH:MM @ MM/DD/YYYY')
+                        )
+                    )
+                    .add(Block('div', 'price')
+                        .css({
+                            marginTop: '5px',
+                            height: '24px',
+                        })
+                        .add(Block('div', 'label_wrap')
+                            .css({
+                                width: '50%',
+                                textAlign: 'left',
+                                verticalAlign: 'bottom',
+                                display: 'inline-block'
+                            })
+                            .add(Block('text', 'label')
+                                .key('text_val_long', 'Last Available Price:&nbsp;')
+                                .key('text_val_short', 'Last Price:&nbsp;')
+                                .html('Last Available Price:&nbsp;')
+                                .css({
+                                    width: 'auto',
+                                })
+                                .class('event-detail-label')
+                                .query('window width > 1300', function (event, block, data) {
+                                    block.html(block.key('text_val_long'));
+                                })
+                                .query('window width <= 1300', function (event, block, data) {
+                                    block.html(block.key('text_val_short'));
+                                })
+                                .query('window width <= 935', function (event, block, data) {
+                                    block.html(block.key('text_val_long'));
+                                })
+                                .query('window width <= 600', function (event, block, data) {
+                                    block.html(block.key('text_val_short'));
+                                })
+                            )
+                        )
+                        .add(Block('block', 'hr_wrap')
+                            .css({
+                                display: 'none'
+                            })
+                            .add(Block('hr', 1)
+                                .css({
+                                    width: '100%',
+                                    opacity: '0.5',
+                                })
+                            )
+                        )
+                        .add(Block('div', 'value_wrap')
+                            .css({
+                                textAlign: 'right',
+                                width: '50%',
+                                verticalAlign: 'bottom',
+                                display: 'inline-block',
+                                fontStyle: 'italic'
+                            })
+                            .add(Block('text', 1)
+                                .data('$00.00')
+                                .css({
+                                    fontSize: '19px',
+                                    fontWeight: '500',
+                                })
+                            )
+                        )
+                    )
+                    .add(Block('block', 'select_button')
+                        .class('exchange-orange_button')
+                        .css({
+                            position: 'absolute',
+                            top: '0',
+                            right: '35px',
+                            bottom: '55px',
+                            height: 'calc(100% - 55px)',
+                            width: 'auto',
+                            minWidth: '117px',
+                        })
+                        .add(Block('button', 1)
+                            .html('Select')
+                            .css({
+                                textTransform: 'lowercase',
+                                height: '42px',
+                                width: '117px',
+                                fontSize: '20px',
+                                color: 'white',
+                                backgroundColor: 'rgb(191, 87, 0)',
+                                border: '1px solid rgb(186, 102, 47)',
+                                borderRadius: '4px',
+                                letterSpacing: '2px',
+                                fontWeight: '400',
+                            })
+                            .on('click', function (event, block, data) {
+                                console.log('select');
+                            })
+                        )
+                    )
+                )
+                .key('showing', 'no')
+                .on('toggle_showing', (e, b, d) => {
+                    if (block.key('showing') === 'yes')
+                        block.on('hide');
+                    else block.on('show');
+                    e.stopPropagation();
+                })
+                .on('hide', (e, b, d) => {
+                    block.child('content/arrow/image').css('transform', 'rotate(180deg)');
+                    block.child('detail').css('height', '1px');
+                    setTimeout(_ => { block.child('detail').css('display', 'none'); }, 170);
+                    block.css('margin-bottom', '0.7px');
+                    block.key('showing', 'no');
+                    e.stopPropagation();
+                })
+                .on('show', (e, b, d) => {
+                    block.child('content/arrow/image').css('transform', 'rotate(90deg)');
+                    block.child('detail').css('display', 'block');
+                    setTimeout(_ => { block.child('detail').css('height', `${block.key('detail_height')}px`); }, 10);
+                    block.css('margin-bottom', '4px');
+                    block.key('showing', 'yes');
+                    e.stopPropagation();
+                })
+            ;
+            return block;
+        }
+    load
+        {
+            //data('');
+        }
+
+// exchange client ui view tree
 
 exchange
     css
@@ -69,8 +370,8 @@ exchange
                     width 95%
             div title
                 css
-                    padding-top 45px
-                    height 100px
+                    padding-top 40px
+                    height 105px
                 h1 text
                     html Buy
                     css
@@ -168,8 +469,8 @@ exchange
                     width 95%
             div title
                 css
-                    padding-top 45px
-                    height 100px
+                    padding-top 40px
+                    height 105px
                 h1 text
                     html Sell
                     css
@@ -242,13 +543,19 @@ exchange
                             font-weight 400
                             padding 0 25px
                             font-size 14px
-                        html List New Event
+                        html List Event
                         :click
                             {
-                                console.log("list new event");
+                                window.ex.ui_modal.new_event();
                             }
                 div content
                     class exchange-panel-content
+                    event-item item_example1
+                        css
+                            //
+                    event-item item_example2
+                        css
+                            //
             div sell_form
                 css
                     width calc(100% - 42px * 1.8)
@@ -369,7 +676,7 @@ exchange
                                 text label
                                     html Comments:&nbsp;&nbsp;
                                     css
-                                        font-size 19px
+                                        font-size 16px
                                         letter-spacing 1.5px
                                         color #111
                                         font-weight 200

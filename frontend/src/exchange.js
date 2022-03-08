@@ -48,6 +48,67 @@ ex = {
         }, ex.api.blockViewLoadDelay);
     },
 
+    // ui modal
+    ui_modal: {
+        generic_confirm: (title, message, callback) => {
+            bootbox.confirm({
+                centerVertical: true,
+                title: `<span class="modal_title">${title}</span>`,
+                message: (`${message}`),
+                callback: callback
+            })
+        },
+        new_event: _ => {
+            bootbox.confirm({
+                centerVertical: true,
+                title: '<span class="modal_title">List A New Event</span>',
+                message: `<div id='new_event_display_modal'>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Sport:</span>&nbsp;` +
+                    `<input placeholder="Tennis" class="modal_text_input" id="ne_modal_sport_input" type='text' name='ne_modal_sport'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Gender:</span>&nbsp;` +
+                    `<input placeholder="Womens" class="modal_text_input" id="ne_modal_gender_input" type='text' name='ne_modal_gender'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Playing:</span>&nbsp;` +
+                    `<input placeholder="UT Austin vs Texas A&M" class="modal_text_input" id="ne_modal_playing_input" type='text' name='ne_modal_playing'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Name:</span>&nbsp;` +
+                    `<input placeholder="All-American Championships" class="modal_text_input" id="ne_modal_name_input" type='text' name='ne_modal_name'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Venue:</span>&nbsp;` +
+                    `<input placeholder="Memorial Stadium" class="modal_text_input" id="ne_modal_venue_input" type='text' name='ne_modal_venue'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">City:</span>&nbsp;` +
+                    `<input placeholder="Berkeley" class="modal_text_input" id="ne_modal_city_input" type='text' name='ne_modal_city'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">State:</span>&nbsp;` +
+                    `<input placeholder="CA" class="modal_text_input" id="ne_modal_state_input" type='text' name='ne_modal_state'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Date:</span>&nbsp;` +
+                    `<input value="${utils.ts_to_string(Date.now())}" class="modal_text_input" id="ne_modal_date_input" type='date' name='ne_modal_date'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Time:</span>&nbsp;` +
+                    `<input class="modal_text_input" value="${utils.lpad((new Date()).getHours(), 2, '0')}:00" id="ne_modal_time_input" type='time' name='ne_modal_time'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Time Zone:</span>&nbsp;` +
+                    `<input placeholder="CST" value="${utils.get_current_timezone()}" class="modal_text_input" id="ne_modal_timezone_input" type='text' name='ne_modal_timezone'/></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Comments:</span>&nbsp;` +
+                    `<input placeholder="Lorem ipsum dolor sit amet..." class="modal_text_input" id="ne_modal_comments_input" type='text' name='ne_modal_comments'/></div>` +
+                    `<div style="height: 8px"></div></div>`,
+                callback: (result) => {
+                    if (result) {
+                        var sport = (`${$('#new_event_display_modal #ne_modal_sport_input')[0].value}`).trim();
+                        var playing = (`${$('#new_event_display_modal #ne_modal_playing_input')[0].value}`).trim();
+                        var gender = (`${$('#new_event_display_modal #ne_modal_gender_input')[0].value}`).trim();
+                        var name = (`${$('#new_event_display_modal #ne_modal_name_input')[0].value}`).trim();
+                        var city = (`${$('#new_event_display_modal #ne_modal_city_input')[0].value}`).trim();
+                        var state = (`${$('#new_event_display_modal #ne_modal_state_input')[0].value}`).trim();
+                        var venue = (`${$('#new_event_display_modal #ne_modal_venue_input')[0].value}`).trim();
+                        var date = (`${$('#new_event_display_modal #ne_modal_date_input')[0].value}`).trim();
+                        var time = (`${$('#new_event_display_modal #ne_modal_time_input')[0].value}`).trim();
+                        var timezone = (`${$('#new_event_display_modal #ne_modal_timezone_input')[0].value}`).trim();
+                        var comments = (`${$('#new_event_display_modal #ne_modal_comments_input')[0].value}`).trim();
+                        if (sport == "" || playing == "" || name == "" || city == "" || state == "" || venue == "" || date == "" || time == "" || timezone == "") return false;
+                        // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                        app.ws.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                    }
+                    return true;
+                }
+            });
+        },
+    },
+
     /* client api */
     api: {
         blockViewLoadDelay: 650,
@@ -180,6 +241,9 @@ ex = {
                 }
             });
         },
+        new_event: (sport, playing, gender, name, city, state, venue, date, time, timezone, comments) => {
+            // TODO: push event to backend/db
+        }
     }
 
 };

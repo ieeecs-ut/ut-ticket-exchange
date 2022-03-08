@@ -143,5 +143,10 @@ window.utils = {
         date_obj = new Date(date_obj.getTime() - (offset * 60 * 1000));
         return date_obj.toISOString().split('T')[0];
         // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
-    }
+    },
+    get_current_timezone: _ => {
+        var abbrev = new Date().toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ')[2];
+        if (abbrev && (`${abbrev}`).trim() != "") return abbrev;
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    },
 };
