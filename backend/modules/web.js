@@ -83,13 +83,43 @@ var init = _ => {
     });
     express_api.post("/api/auth_alt", (req, res) => {
         // authenticate token
-        req.user = web_verify_token(req.body.auth);
+        req.user = web_verify_token(req.body._auth);
         if (req.user == null) return return_error(req, res, 401, "Unauthorized");
         m.db.user_exists(req.user.email, null, (result) => {
             if (result === null) return return_error(req, res, 500, "Database error");
             if (result == false) return return_error(req, res, 400, "User not found");
             return return_data(req, res, {
                 email: req.user.email
+            });
+        });
+    });
+
+    /* event */
+    express_api.post("/api/event/create", (req, res) => {
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success, result) => {
+            if (success === null) return return_error(req, res, 500, "Database error");
+            if (success == false) return return_error(req, res, 400, "User not found");
+            var r = req.body;
+            if (r.sport == "" || r.playing == "" || r.name == "" || r.city == "" ||
+                r.state == "" || r.venue == "" || r.date == "" || r.time == "" || r.timezone == "")
+                return return_error(req, res, 400, "Invalid form input");
+            m.db.create_event(result._id, r.sport, r.playing, r.name, r.date, r.time, r.city, r.state, r.venue, r.gender, (success2, result2) => {
+                if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
+                return return_data(req, res, { id: result2 });
+            });
+        });
+    });
+    express_api.post("/api/event", (req, res) => {
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success1, result1) => {
+            if (success1 === null) return return_error(req, res, 500, "Database error");
+            if (success1 == false) return return_error(req, res, 400, "User not found");
+            m.db.get_events((success2, result2) => {
+                if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
+                return return_data(req, res, { events: result2 });
             });
         });
     });

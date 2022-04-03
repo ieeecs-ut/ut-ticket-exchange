@@ -7,6 +7,7 @@ ex = {
 
     /* client fields */
     api_url: `${window.location.protocol}//${window.location.hostname}:${window.location.port === '4200' ? '8000' : window.location.port}/api`, // `${window.location.protocol}//${window.location.host}/api`,
+    landing_url: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`,
     api_cookie_exp: '__indefinite__',
     ngroot: "exchange-ng-root",
     ui: Block('div', 'exchange'),
@@ -99,9 +100,11 @@ ex = {
                         var time = (`${$('#new_event_display_modal #ne_modal_time_input')[0].value}`).trim();
                         var timezone = (`${$('#new_event_display_modal #ne_modal_timezone_input')[0].value}`).trim();
                         var comments = (`${$('#new_event_display_modal #ne_modal_comments_input')[0].value}`).trim();
-                        if (sport == "" || playing == "" || name == "" || city == "" || state == "" || venue == "" || date == "" || time == "" || timezone == "") return false;
+                        if (sport == "" || playing == "" || name == "" || city == "" ||
+                            state == "" || venue == "" || date == "" || time == "" || timezone == "")
+                            return false;
                         // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
-                        app.ws.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                        ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
                     }
                     return true;
                 }
@@ -119,6 +122,8 @@ ex = {
                 }, 10);
             });
         },
+        get_api_url: _ => ex.api_url,
+        get_landing_url: _ => ex.landing_url,
         reload_view: next => {
             ex.load_view(next);
         },
@@ -211,7 +216,7 @@ ex = {
             var body = {};
             var headers = {};
             if (alt === false) headers = { "Authorization": `Bearer ${token}` };
-            else body = { 'auth': `${token}` };
+            else body = { _auth: `${token}` };
             $.ajax({
                 url: `${ex.api_url}/auth${alt === true ? '_alt' : ''}`,
                 method: 'post',
@@ -241,8 +246,85 @@ ex = {
                 }
             });
         },
-        new_event: (sport, playing, gender, name, city, state, venue, date, time, timezone, comments) => {
-            // TODO: push event to backend/db
+        new_event: (sport, playing, gender, name, city, state, venue, date, time, timezone, comments, resolve = null) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+                sport: sport,
+                playing: playing,
+                gender: gender,
+                name: name,
+                city: city,
+                state: state,
+                venue: venue,
+                date: date,
+                time: time,
+                timezone: timezone,
+                comments, comments,
+            };
+            $.ajax({
+                url: `${ex.api_url}/event/create`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
+        get_events: (date, resolve = null) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+                date: date,
+            };
+            $.ajax({
+                url: `${ex.api_url}/event`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
         }
     }
 

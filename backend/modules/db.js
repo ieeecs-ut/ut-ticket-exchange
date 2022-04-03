@@ -73,6 +73,17 @@ var api = {
             }
         });
     },
+    get_user_by_email: (email, resolve) => {
+        mongo_api.collection('user').findOne({ 'email': email }, (e, result1) => {
+            if (e) {
+                err(`error finding user ${email}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) resolve(true, result1);
+                else resolve(null, result1);
+            }
+        });
+    },
     update_user: (id, update, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('user').findOne({ _id: mongo_oid(id) }, (e, result1) => {
@@ -380,6 +391,17 @@ var api = {
         mongo_api.collection('event').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
             if (e) {
                 err(`error finding event ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) resolve(true, result1);
+                else resolve(null, result1);
+            }
+        });
+    },
+    get_events: (resolve) => {
+        mongo_api.collection('event').find({}).toArray((e, result1) => {
+            if (e) {
+                err("error finding events", e.message ? e.message : e);
                 resolve(false, e);
             } else {
                 if (result1) resolve(true, result1);

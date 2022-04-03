@@ -83,8 +83,8 @@
                         })
                         .add(Block('text', 1)
                             .css({
-                                paddingLeft: '65px',
-                                paddingRight: '44px',
+                                paddingLeft: '60px',
+                                paddingRight: '40px',
                                 cursor: 'pointer'
                             })
                             .html('_')
@@ -94,7 +94,7 @@
                             })
                         )
                         .on('update', (e, b, d) => {
-                            var event_summary_text = `<span style='font-weight: 600; font-size: ${block.key('date_text_size')};'>MM/YY</span>&nbsp;&nbsp;–&nbsp;&nbsp;G Sport Team vs Team @ City (Name)`;
+                            var event_summary_text = `<span style='font-weight: 600; font-size: ${block.key('date_text_size')};'>${block.key('date_short')}</span>&nbsp;&nbsp;–&nbsp;&nbsp;${block.key('gender_short')} ${block.key('sport')} ${block.key('playing')} @ ${block.key('location') && (block.key('location').city + ', ' + block.key('location').state)}`;
                             b.child('text').html(event_summary_text);
                         })
                         .on('update')
@@ -150,7 +150,11 @@
                         )
                         .add(Block('text', 1)
                             .data('G Sport (Name)')
+                            .css('font-size', '11px')
                         )
+                        .on('update', (e, b, d) => {
+                            b.child('text').html('').data(`${block.key('gender_short')} ${block.key('sport')} (${block.key('name')})`);
+                        })
                     )
                     .add(Block('div', 'who')
                         .add(Block('text', 'label')
@@ -159,6 +163,7 @@
                         )
                         .add(Block('text', 1)
                             .data('Team vs Team')
+                            .css('font-size', '12px')
                         )
                     )
                     .add(Block('div', 'where')
@@ -168,7 +173,11 @@
                         )
                         .add(Block('text', 1)
                             .data('City, ST (Venue)')
+                            .css('font-size', '11px')
                         )
+                        .on('update', (e, b, d) => {
+                            b.child('text').html('').data(`${block.key('location').city}, ${block.key('location').state} (${block.key('location').venue})`);
+                        })
                     )
                     .add(Block('div', 'when')
                         .add(Block('text', 'label')
@@ -177,7 +186,11 @@
                         )
                         .add(Block('text', 1)
                             .data('HH:MM @ MM/DD/YYYY')
+                            .css('font-size', '12px')
                         )
+                        .on('update', (e, b, d) => {
+                            b.child('text').html('').data(`${block.key('time_standard')} @ ${block.key('date')}`);
+                        })
                     )
                     .add(Block('div', 'price')
                         .css({
@@ -233,7 +246,7 @@
                                 fontStyle: 'italic'
                             })
                             .add(Block('text', 1)
-                                .data('$00.00')
+                                .data('$––.––')
                                 .css({
                                     fontSize: '19px',
                                     fontWeight: '500',
@@ -266,8 +279,8 @@
                                 letterSpacing: '2px',
                                 fontWeight: '400',
                             })
-                            .on('click', function (event, block, data) {
-                                console.log('select');
+                            .on('click', function (e, b, d) {
+                                console.log('select', block.key('id'));
                             })
                         )
                     )
@@ -300,7 +313,53 @@
         }
     load
         {
-            //data('');
+            data('_id', id => {
+                block.key('id', id);
+            });
+            data('date', date => {
+                block.key('date', date);
+                var date_short = date.split('-').slice(1).join('-');
+                block.key('date_short', date_short);
+                block.child('content/fill/text').on('update');
+                block.child('detail/when').on('update');
+            });
+            data('time', time => {
+                block.key('time', time);
+                var hrs = parseInt(time.split(':')[0]);
+                var min = parseInt(time.split(':')[1]);
+                var mode = 'am';
+                if (hrs >= 12) mode = 'pm';
+                hrs = hrs % 12 || 12;
+                var time_standard = `${hrs}:${min}`;
+                block.key('time_standard', time_standard);
+                block.child('detail/when').on('update');
+            });
+            data('gender', gender => {
+                block.key('gender', gender);
+                var gender_short = `${gender[0]}`;
+                block.key('gender_short', gender_short);
+                block.child('content/fill/text').on('update');
+                block.child('detail/what').on('update');
+            });
+            data('sport', sport => {
+                block.key('sport', sport);
+                block.child('content/fill/text').on('update');
+                block.child('detail/what').on('update');
+            });
+            data('playing', playing => {
+                block.key('playing', playing);
+                block.child('detail/who/text').html('').data(playing);
+                block.child('content/fill/text').on('update');
+            });
+            data('location', location => {
+                block.key('location', location);
+                block.child('content/fill/text').on('update');
+                block.child('detail/where/text').on('update');
+            });
+            data('name', name => {
+                block.key('name', name);
+                block.child('detail/what').on('update');
+            });
         }
 
 // exchange client ui view tree
@@ -516,11 +575,30 @@ exchange
                             cursor pointer
                         type date
                         {
-                            block.attribute('value', utils.ts_to_string(Date.now()));
+                            var ts_now = utils.ts_to_string(Date.now());
+                            block.key('date', ts_now);
+                            block.attribute('value', ts_now);
+                            setTimeout(_ => {
+                                block.on('get_events');
+                            }, 20);
                         }
                         :input
                             {
                                 console.log('select sell panel event search date: ' + block.node().value);
+                                event.stopPropagation();
+                            }
+                        :get_events
+                            {
+                                window.ex.api.get_events(block.key('date'), (result, e) => {
+                                    if (result) {
+                                        if (result.events) {
+                                            block.parent().sibling('content').data({
+                                                events: result.events
+                                            });
+                                        }
+                                    } else console.log(e);
+                                });
+                                event.stopPropagation();
                             }
                 div list_event_button
                     class exchange-orange_button
@@ -550,6 +628,13 @@ exchange
                             }
                 div content
                     class exchange-panel-content
+                    #events
+                        {
+                            block.html('');
+                            for (var e in events) {
+                                block.add(Block('event-item', `event_${events[e]._id}`).data(events[e]));
+                            }
+                        }
                     event-item item_example1
                         css
                             //

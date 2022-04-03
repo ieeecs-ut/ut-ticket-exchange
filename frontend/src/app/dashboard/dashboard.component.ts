@@ -37,7 +37,16 @@ export class DashboardComponent implements OnInit {
 			}
 		`;
     document.body.appendChild(preventScrolling)
-    this.getAllEvents()
+    this.getAllEvents();
+
+    this.globals.exc.authenticate((result, error) => {
+      if (error != null || !result.hasOwnProperty('email')) {
+        console.error('Authentication Error:', error.message ? error.message : error);
+        window.location = this.globals.exc.get_landing_url();
+      } else {
+        console.log("authenticated as " + result.email);
+      }
+    });
   }
 
   getAllEvents() {
