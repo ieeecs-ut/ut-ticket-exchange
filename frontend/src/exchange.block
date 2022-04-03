@@ -842,6 +842,15 @@ exchange
                         :click
                             {
                                 console.log("sell ticket");
+                                var form = block.parent().sibling('form_wrap').child('form_content');
+                                var event_id = '';
+                                var event_obj = form.child('event').key('event');
+                                if (event_obj) event_id = event_obj.id;
+                                var price = form.child('two_wrap/price/input').node().value;
+                                var seats = form.child('two_wrap/seats/input').node().value;
+                                var comments = form.child('two_wrap/comments/input').node().value;
+                                console.log(event_id, price, seats, comments);
+                                // TODO: send API post request
                             }
             div orders
                 css
