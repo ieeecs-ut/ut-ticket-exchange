@@ -281,6 +281,22 @@
                             })
                             .on('click', function (e, b, d) {
                                 console.log('select', block.key('id'));
+                                block.parent(1).sibling('sell_form').child('form_wrap/form_content/event').data({
+                                    event: {
+                                        id: block.key('id'),
+                                        sport: block.key('sport'),
+                                        playing: block.key('playing'),
+                                        location: block.key('location'),
+                                        date: block.key('date'),
+                                        date_short: block.key('date_short'),
+                                        time: block.key('time'),
+                                        time_standard: block.key('time_standard'),
+                                        timezone: block.key('timezone'),
+                                        name: block.key('name'),
+                                        gender: block.key('gender'),
+                                        gender_short: block.key('gender_short')
+                                    }
+                                });
                             })
                         )
                     )
@@ -668,6 +684,17 @@ exchange
                             css
                                 margin-top 2px
                                 text-align left
+                            #event
+                                {
+                                    block.key('event', event);
+                                    var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
+                                    block.child('value').html(`${event_summary_text}`);
+                                }
+                            :deselect
+                                {
+                                    block.key('event', null);
+                                    block.child('value').html('<span class="placeholder_text">Please select an event or list a new event above.</span>');
+                                }
                             text label
                                 html Event:&nbsp;&nbsp;
                                 css
@@ -682,28 +709,28 @@ exchange
                                     position relative
                                 @query window width > 1350
                                     css
-                                        font-size 14px
-                                        letter-spacing 1px
+                                        font-size 12px
+                                        letter-spacing 0.7px
                                 @query window width <= 1350
                                     css
-                                        font-size 12px
-                                        letter-spacing 0.8px
+                                        font-size 10px
+                                        letter-spacing 0.6px
                                 @query window width <= 1150
                                     css
                                         font-size 9px
-                                        letter-spacing 0.7px
+                                        letter-spacing 0.5px
                                 @query window width <= 935
                                     css
                                         font-size 12px
-                                        letter-spacing 0.8px
+                                        letter-spacing 0.7px
                                 @query window width <= 510
                                     css
                                         font-size 9px
-                                        letter-spacing 0.6px
+                                        letter-spacing 0.5px
                                 @query window width <= 430
                                     css
-                                        font-size 9px
-                                        letter-spacing 0.5px
+                                        font-size 7px
+                                        letter-spacing 0.4px
                         div two_wrap
                             css
                                 margin-top 12px
