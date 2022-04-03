@@ -582,6 +582,39 @@ exchange
                         css
                             font-size 24px
                             letter-spacing 2px
+                block date_all_selector
+                    css
+                        position absolute
+                        top -4px
+                        height 28px
+                        width 45px
+                    @query window width != 0
+                        {
+                            block.css('right', (block.sibling('date_selector').$().width() + 5 + block.sibling('list_event_button').$().width() + 44 + 5) + 'px');
+                        }
+                    div wrap
+                        css
+                            height 18px
+                            width 45px
+                            margin 0 auto
+                        label label
+                            for all_input
+                            html ALL&nbsp;
+                            css
+                                position relative
+                                top -1px
+                        input input
+                            type checkbox
+                            name all_input
+                            checked checked
+                            css
+                                cursor pointer
+                            :input
+                                {
+                                    var val = event.target.checked ? true : false;
+                                    block.parent(1).sibling('date_selector').child('input').key('select_all', val).on('input');
+                                    event.stopPropagation();
+                                }
                 block date_selector
                     css
                         position absolute
@@ -590,7 +623,7 @@ exchange
                         width 140px
                     @query window width != 0
                         {
-                            block.css('right', (block.sibling('list_event_button').$().width() + 44 + 10) + 'px');
+                            block.css('right', (block.sibling('list_event_button').$().width() + 44 + 5) + 'px');
                         }
                     input input
                         css
@@ -599,6 +632,7 @@ exchange
                             cursor pointer
                         type date
                         {
+                            block.key('select_all', true);
                             var ts_now = utils.ts_to_string(Date.now());
                             block.key('date', ts_now);
                             block.attribute('value', ts_now);
@@ -608,7 +642,10 @@ exchange
                         }
                         :input
                             {
-                                console.log('select sell panel event search date: ' + block.node().value);
+                                var select_date = block.node().value;
+                                if (block.key('select_all') === true)
+                                    select_date = 'all';
+                                console.log('select sell panel event search date: ' + select_date);
                                 event.stopPropagation();
                             }
                         :get_events
