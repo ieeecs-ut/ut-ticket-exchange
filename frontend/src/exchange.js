@@ -104,7 +104,11 @@ ex = {
                             state == "" || venue == "" || date == "" || time == "" || timezone == "")
                             return false;
                         // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
-                        ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                        ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments, _ => {
+                            setTimeout(_ => {
+                                ex.ui.child('right/panel/events').on('refresh');
+                            }, 100);
+                        });
                     }
                     return true;
                 }

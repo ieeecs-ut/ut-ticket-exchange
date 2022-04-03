@@ -361,7 +361,7 @@ var api = {
     },
 
     // event
-    create_event: (user_id, sport, playing, name, date, time, city, state, venue, gender, resolve) => {
+    create_event: (user_id, sport, playing, name, date, time, timezone, city, state, venue, gender, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('event').insertOne({
             creator: user_id,
@@ -371,6 +371,7 @@ var api = {
             gender: gender,
             date: date,
             time: time,
+            timezone: timezone,
             location: {
                 city: city,
                 state: state,

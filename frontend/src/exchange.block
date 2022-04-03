@@ -189,7 +189,7 @@
                             .css('font-size', '12px')
                         )
                         .on('update', (e, b, d) => {
-                            b.child('text').html('').data(`${block.key('time_standard')} @ ${block.key('date')}`);
+                            b.child('text').html('').data(`${block.key('time_standard')} ${block.key('timezone')} @ ${block.key('date')}`);
                         })
                     )
                     .add(Block('div', 'price')
@@ -330,7 +330,7 @@
                 var mode = 'am';
                 if (hrs >= 12) mode = 'pm';
                 hrs = hrs % 12 || 12;
-                var time_standard = `${hrs}:${min}`;
+                var time_standard = `${hrs}:${min < 10 ? '0' : ''}${min}${mode}`;
                 block.key('time_standard', time_standard);
                 block.child('detail/when').on('update');
             });
@@ -359,6 +359,10 @@
             data('name', name => {
                 block.key('name', name);
                 block.child('detail/what').on('update');
+            });
+            data('timezone', timezone => {
+                block.key('timezone', timezone);
+                block.child('detail/when').on('update');
             });
         }
 
@@ -545,6 +549,10 @@ exchange
                 });
             }
             div events
+                :refresh
+                    {
+                        block.child('date_selector/input').on('get_events');
+                    }
                 css
                     width 100%
                     height 58%

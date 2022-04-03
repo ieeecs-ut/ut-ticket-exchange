@@ -105,7 +105,7 @@ var init = _ => {
             if (r.sport == "" || r.playing == "" || r.name == "" || r.city == "" ||
                 r.state == "" || r.venue == "" || r.date == "" || r.time == "" || r.timezone == "")
                 return return_error(req, res, 400, "Invalid form input");
-            m.db.create_event(result._id, r.sport, r.playing, r.name, r.date, r.time, r.city, r.state, r.venue, r.gender, (success2, result2) => {
+            m.db.create_event(result._id, r.sport, r.playing, r.name, r.date, r.time, r.timezone, r.city, r.state, r.venue, r.gender, (success2, result2) => {
                 if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
                 return return_data(req, res, { id: result2 });
             });
