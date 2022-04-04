@@ -167,6 +167,55 @@ var init = _ => {
             });
         });
     });
+
+    /* buy_order */
+    express_api.post("/api/buy_order/create", (req, res) => {
+        var ts_now = Date.now();
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success, result) => {
+            if (success === null) return return_error(req, res, 500, "Database error");
+            if (success == false) return return_error(req, res, 400, "User not found");
+            var r = req.body;
+            if (r.event_id == "" || r.ts_click == "" || r.sell_order_id == "")
+                return return_error(req, res, 400, "Invalid form input");
+            m.db.get_sell_orders([r.event_id], (success3, result3) => {
+                if (success3 === null || success3 == false) return return_error(req, res, 500, "Database error");
+                // find sell order with lowest selling price for event
+                var sell_order_id = null;
+                var lowest_price = Number.MAX_SAFE_INTEGER;
+                for (var s in result3) {
+                    if (result3[s].event.toString() === r.event_id) {
+                        var price = parseFloat(result3[s].price) || 0;
+                        if (price > 0 && price <= lowest_price) {
+                            lowest_price = price;
+                            sell_order_id = result3[s]._id.toString();
+                        }
+                    }
+                }
+                if (sell_order_id === null || sell_order_id === undefined || !sell_order_id)
+                    return return_error(req, res, 400, "No tickets for sale on this event");
+                if (sell_order_id.toString().trim() != r.sell_order_id.toString().trim())
+                    return return_error(req, res, 400, "Last available price changed (please refresh events)");
+                m.db.create_buy_order(result._id, r.event_id, r.ts_click, r.comments, (success2, result2) => {
+                    if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
+                    m.db.update_sell_order(mongo_oid(sell_order_id.toString()), {
+                        locked: true,
+                        ts_locked: ts_now,
+                    }, (success4, result4) => {
+                        if (success4 === null || result4 == false) return return_error(req, res, 500, "Database error");
+                        m.db.update_buy_order(mongo_oid(result2.toString()), {
+                            sell_order_match: mongo_oid(sell_order_id.toString()),
+                            match_status: m.db.buy_order_match_status.loc,
+                        }, (success5, result5) => {
+                            if (success5 === null || result5 == false) return return_error(req, res, 500, "Database error");
+                            return return_data(req, res, { id: result2 });
+                        });
+                    });
+                });
+            });
+        });
+    });
 };
 var cors_handler = (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");

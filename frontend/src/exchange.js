@@ -153,6 +153,11 @@ ex = {
                             return false;
                         // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
                         ex.api.new_buy_order(event_id, ts_click, event.ticket.id, comments, (value = null, error = null) => {
+                            if (error) {
+                                ex.ui_modal.new_buy_order_response((error.message ? error.message.toString() : error.toString()) + '!');
+                            } else {
+                                // stuff
+                            }
                             setTimeout(_ => {
                                 // ex.ui.child('right/panel/events').on('refresh');
                                 // ex.ui.child('left/panel/events').on('refresh');
@@ -162,7 +167,22 @@ ex = {
                     return true;
                 }
             });
-        }
+        },
+        new_buy_order_response: (message) => {
+            bootbox.confirm({
+                centerVertical: true,
+                title: '<span class="modal_title">Buy Ticket</span>',
+                message: (`${message}`),
+                callback: (result) => {
+                    if (result) {
+                        // setTimeout(_ => {
+                        //     app.ws.api.get_resources();
+                        // }, 100);
+                        return true;
+                    }
+                }
+            })
+        },
     },
 
     /* client api */

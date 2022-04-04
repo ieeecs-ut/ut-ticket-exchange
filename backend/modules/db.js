@@ -167,6 +167,9 @@ var api = {
     },
 
     // buy_order
+    buy_order_match_status: {
+        pen: 'pending', loc: 'locked', com: 'complete', rej: 'rejected'
+    },
     create_buy_order: (user_id, event_id, ts_click, comments, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('buy_order').insertOne({
