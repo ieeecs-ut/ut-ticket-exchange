@@ -117,10 +117,36 @@ var init = _ => {
         m.db.get_user_by_email(req.user.email, (success1, result1) => {
             if (success1 === null) return return_error(req, res, 500, "Database error");
             if (success1 == false) return return_error(req, res, 400, "User not found");
-            var date = req.body.date ? req.body.date : 'all';
+            var date = req.body.date ? req.body.date.trim() : 'all';
             m.db.get_events(date === 'all' ? null : date, (success2, result2) => {
                 if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
-                return return_data(req, res, { events: result2 });
+                var event_ids = [];
+                for (var e in result2) event_ids.push(result2[e]._id);
+                m.db.get_sell_orders(event_ids, (success3, result3) => {
+                    if (success3 === null || success3 == false) return return_error(req, res, 500, "Database error");
+                    // find sell order with lowest selling price for event
+                    for (var e in result2) {
+                        var sell_order = null;
+                        var seats = null;
+                        var lowest_price = Number.MAX_SAFE_INTEGER;
+                        for (var s in result3) {
+                            if (result3[s].event.toString() === result2[e]._id.toString()) {
+                                var price = parseInt(result3[s].price) || 0;
+                                if (price > 0 && price <= lowest_price) {
+                                    lowest_price = price;
+                                    seats = result3[s].seats;
+                                    sell_order = result3[s]._id.toString();
+                                }
+                            }
+                        }
+                        result2[e].ticket = {
+                            sell_order: sell_order,
+                            price: sell_order == null ? 0 : lowest_price,
+                            seats: seats,
+                        };
+                    }
+                    return return_data(req, res, { events: result2 });
+                });
             });
         });
     });

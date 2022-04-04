@@ -270,7 +270,7 @@ var api = {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('sell_order').insertOne({
             user: user_id,
-            event: event_id,
+            event: mongo_oid(event_id),
             price: price,
             seats: seats,
             comments: comments,
@@ -291,6 +291,23 @@ var api = {
         mongo_api.collection('sell_order').findOne({ '_id': mongo_oid(id) }, (e, result1) => {
             if (e) {
                 err(`error finding sell_order ${id}`, e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) resolve(true, result1);
+                else resolve(null, result1);
+            }
+        });
+    },
+    get_sell_orders: (event_ids, resolve) => {
+        var _find = {};
+        if (event_ids != null) {
+            for (var e in event_ids)
+                event_ids[e] = mongo_oid(event_ids[e]);
+            _find.event = { $in: event_ids };
+        }
+        mongo_api.collection('sell_order').find(_find).toArray((e, result1) => {
+            if (e) {
+                err("error finding events", e.message ? e.message : e);
                 resolve(false, e);
             } else {
                 if (result1) resolve(true, result1);
@@ -403,7 +420,7 @@ var api = {
     get_events: (date, resolve) => {
         var _find = {};
         if (date != null) _find.date = date;
-        console.log(_find);
+        // console.log(_find);
         mongo_api.collection('event').find(_find).toArray((e, result1) => {
             if (e) {
                 err("error finding events", e.message ? e.message : e);
