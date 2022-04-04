@@ -21,32 +21,32 @@ ex = {
             ex.ui.fill(block_view_root);
             utils.delay(_ => {
                 ex.ui.on('show');
-            }, 100);
+            }, 5);
         }
         Block.queries();
         utils.delay(_ => {
             Block.queries();
             utils.delay(_ => {
                 Block.queries();
-            }, 200);
-        }, 50);
+            }, 100);
+        }, 20);
         if (next) next();
     },
     // init client
     init: next => {
         ex.log('loading...');
-        utils.delay(_ => {
+        // utils.delay(_ => {
+        ex.ui.load(_ => {
             ex.ui.load(_ => {
-                ex.ui.load(_ => {
-                    ex.log('ui blocks loaded');
-                    ex.load_view(_ => {
-                        ex.log('ready');
-                        setTimeout(ex.api.cookie_login, 100);
-                        if (next) next();
-                    });
-                }, 'exchange', 'jQuery');
-            }, 'lib/block-3.2.0', 'jQuery');
-        }, ex.api.blockViewLoadDelay);
+                ex.log('ui blocks loaded');
+                ex.load_view(_ => {
+                    ex.log('ready');
+                    setTimeout(ex.api.cookie_login, 100);
+                    if (next) next();
+                });
+            }, 'exchange', 'jQuery');
+        }, 'lib/block-3.2.0', 'jQuery');
+        // }, ex.api.blockViewLoadDelay);
     },
 
     // ui modal
@@ -107,6 +107,7 @@ ex = {
                         ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments, _ => {
                             setTimeout(_ => {
                                 ex.ui.child('right/panel/events').on('refresh');
+                                ex.ui.child('left/panel/events').on('refresh');
                             }, 100);
                         });
                     }
@@ -118,7 +119,7 @@ ex = {
 
     /* client api */
     api: {
-        blockViewLoadDelay: 650,
+        blockViewLoadDelay: 20, // 650,
         initialize: next => {
             ex.init(_ => {
                 utils.delay(_ => {
@@ -306,6 +307,44 @@ ex = {
             };
             $.ajax({
                 url: `${ex.api_url}/event`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
+        new_sell_order: (price, seats, event_id, comments, resolve = null) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+                price: price,
+                seats: seats,
+                event_id: event_id,
+                comments, comments,
+            };
+            $.ajax({
+                url: `${ex.api_url}/sell_order/create`,
                 method: 'post',
                 headers: {},
                 data: body,

@@ -380,14 +380,21 @@
                 block.key('timezone', timezone);
                 block.child('detail/when').on('update');
             });
+            block.key('mode', 'sell');
+            data('mode', mode => {
+                block.key('mode', mode);
+                var button_text = mode == 'buy' ? 'buy' : 'select';
+                block.child('detail/select_button/button').html(utils.capitalize(button_text));
+            });
         }
 
 // exchange client ui view tree
 
 exchange
     css
-        opacity 0
-        transition opacity 0.3s ease
+        opacity 1
+        //transition opacity 0.3s ease
+        transition none
         display block
         margin-top 80px
         width 100%
@@ -466,6 +473,10 @@ exchange
                 });
             }
             div events
+                :refresh
+                    {
+                        block.child('date_selector/input').on('get_events');
+                    }
                 css
                     width 100%
                     height 56%
@@ -479,28 +490,103 @@ exchange
                         css
                             font-size 24px
                             letter-spacing 2px
+                block date_all_selector
+                    css
+                        position absolute
+                        top -4px
+                        height 28px
+                        width 45px
+                    @query window width != 0
+                        {
+                            block.css('right', (block.sibling('date_selector').$().width() + 5 + 44) + 'px');
+                        }
+                    div wrap
+                        css
+                            height 18px
+                            width 45px
+                            margin 0 auto
+                        label label
+                            for all_input
+                            html ALL&nbsp;
+                            css
+                                position relative
+                                top -1px
+                        input input
+                            type checkbox
+                            name all_input
+                            checked checked
+                            css
+                                cursor pointer
+                            :input
+                                {
+                                    var val = event.target.checked ? true : false;
+                                    block.parent(1).sibling('date_selector').child('input').key('select_all', val).on('input');
+                                    event.stopPropagation();
+                                }
                 block date_selector
                     css
                         position absolute
                         top -4px
                         height 28px
-                        width 140px
+                        width 110px
                         right 42px
                     input input
                         css
                             height 22px
-                            width 140px
+                            width 110px
                             cursor pointer
                         type date
                         {
-                            block.attribute('value', utils.ts_to_string(Date.now()));
+                            block.key('select_all', true);
+                            var ts_now = utils.ts_to_string(Date.now());
+                            block.attribute('value', ts_now);
+                            setTimeout(_ => {
+                                block.key('select_date', 'all');
+                                block.on('get_events');
+                            }, 20);
                         }
                         :input
                             {
-                                console.log('select buy panel event search date: ' + block.node().value);
+                                var select_date = block.node().value;
+                                if (block.key('select_all') === true)
+                                    select_date = 'all';
+                                block.key('select_date', select_date);
+                                console.log('select buy panel event search date: ' + select_date);
+                                block.on('get_events');
+                                event.stopPropagation();
+                            }
+                        :get_events
+                            {
+                                window.ex.api.get_events(block.key('select_date'), (result, e) => {
+                                    if (result) {
+                                        if (result.events) {
+                                            console.log('reloaded events', result.events);
+                                            block.parent().sibling('content').data({
+                                                events: result.events
+                                            });
+                                            Block.queries();
+                                            setTimeout(_ => {
+                                                Block.queries();
+                                            }, 50);
+                                        }
+                                    } else console.log(e);
+                                });
+                                event.stopPropagation();
                             }
                 div content
                     class exchange-panel-content
+                    #events
+                        {
+                            block.html('');
+                            if (events.length == 0) {
+                                var no_events_placeholder_text = "No events listed.";
+                                block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_events_placeholder_text}`)));
+                            } else {
+                                for (var e in events) {
+                                    block.add(Block('event-item', `event_${events[e]._id}`).data({mode:'buy'}).data(events[e]));
+                                }
+                            }
+                        }
             div orders
                 css
                     width 100%
@@ -620,7 +706,7 @@ exchange
                         position absolute
                         top -4px
                         height 28px
-                        width 140px
+                        width 110px
                     @query window width != 0
                         {
                             block.css('right', (block.sibling('list_event_button').$().width() + 44 + 5) + 'px');
@@ -628,15 +714,15 @@ exchange
                     input input
                         css
                             height 22px
-                            width 140px
+                            width 110px
                             cursor pointer
                         type date
                         {
                             block.key('select_all', true);
                             var ts_now = utils.ts_to_string(Date.now());
-                            block.key('date', ts_now);
                             block.attribute('value', ts_now);
                             setTimeout(_ => {
+                                block.key('select_date', 'all');
                                 block.on('get_events');
                             }, 20);
                         }
@@ -645,17 +731,24 @@ exchange
                                 var select_date = block.node().value;
                                 if (block.key('select_all') === true)
                                     select_date = 'all';
+                                block.key('select_date', select_date);
                                 console.log('select sell panel event search date: ' + select_date);
+                                block.on('get_events');
                                 event.stopPropagation();
                             }
                         :get_events
                             {
-                                window.ex.api.get_events(block.key('date'), (result, e) => {
+                                window.ex.api.get_events(block.key('select_date'), (result, e) => {
                                     if (result) {
                                         if (result.events) {
+                                            console.log('reloaded events', result.events);
                                             block.parent().sibling('content').data({
                                                 events: result.events
                                             });
+                                            Block.queries();
+                                            setTimeout(_ => {
+                                                Block.queries();
+                                            }, 50);
                                         }
                                     } else console.log(e);
                                 });
@@ -692,16 +785,15 @@ exchange
                     #events
                         {
                             block.html('');
-                            for (var e in events) {
-                                block.add(Block('event-item', `event_${events[e]._id}`).data(events[e]));
+                            if (events.length == 0) {
+                                var no_events_placeholder_text = "No events listed.";
+                                block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_events_placeholder_text}`)));
+                            } else {
+                                for (var e in events) {
+                                    block.add(Block('event-item', `event_${events[e]._id}`).data(events[e]));
+                                }
                             }
                         }
-                    event-item item_example1
-                        css
-                            //
-                    event-item item_example2
-                        css
-                            //
             div sell_form
                 css
                     width calc(100% - 42px * 1.8)
@@ -712,6 +804,13 @@ exchange
                     css
                         width 100%
                         height calc(100% - 60px - 10px)
+                    :reset_fields
+                        {
+                            block.child('form_content/event').on('deselect');
+                            block.child('form_content/two_wrap/price/input').node().value = "";
+                            block.child('form_content/two_wrap/seats/input').node().value = "";
+                            block.child('form_content/two_wrap/comments/input').node().value = "";
+                        }
                     div form_content
                         css
                             width calc(100% - 40px)
@@ -887,7 +986,15 @@ exchange
                                 var seats = form.child('two_wrap/seats/input').node().value;
                                 var comments = form.child('two_wrap/comments/input').node().value;
                                 console.log(event_id, price, seats, comments);
-                                // TODO: send API post request
+                                if (event_id != '' && price != '' && seats != '') {
+                                    window.ex.api.new_sell_order(price, seats, event_id, comments, _ => {
+                                        setTimeout(_ => {
+                                            window.ex.ui.child('right/panel/events').on('refresh');
+                                            window.ex.ui.child('left/panel/events').on('refresh');
+                                            block.parent().sibling('form_wrap').on('reset_fields');
+                                        }, 100);
+                                    });
+                                }
                             }
             div orders
                 css

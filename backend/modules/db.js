@@ -361,7 +361,7 @@ var api = {
     },
 
     // event
-    create_event: (user_id, sport, playing, name, date, time, timezone, city, state, venue, gender, resolve) => {
+    create_event: (user_id, sport, playing, name, date, time, timezone, city, state, venue, gender, comments, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('event').insertOne({
             creator: user_id,
@@ -377,6 +377,7 @@ var api = {
                 state: state,
                 venue: venue,
             },
+            comments: comments,
             ts_updated: ts_now,
             ts_created: ts_now,
         }, (error1, result1) => {
@@ -399,8 +400,11 @@ var api = {
             }
         });
     },
-    get_events: (resolve) => {
-        mongo_api.collection('event').find({}).toArray((e, result1) => {
+    get_events: (date, resolve) => {
+        var _find = {};
+        if (date != null) _find.date = date;
+        console.log(_find);
+        mongo_api.collection('event').find(_find).toArray((e, result1) => {
             if (e) {
                 err("error finding events", e.message ? e.message : e);
                 resolve(false, e);

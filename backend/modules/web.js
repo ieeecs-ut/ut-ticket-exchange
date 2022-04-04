@@ -105,7 +105,7 @@ var init = _ => {
             if (r.sport == "" || r.playing == "" || r.name == "" || r.city == "" ||
                 r.state == "" || r.venue == "" || r.date == "" || r.time == "" || r.timezone == "")
                 return return_error(req, res, 400, "Invalid form input");
-            m.db.create_event(result._id, r.sport, r.playing, r.name, r.date, r.time, r.timezone, r.city, r.state, r.venue, r.gender, (success2, result2) => {
+            m.db.create_event(result._id, r.sport, r.playing, r.name, r.date, r.time, r.timezone, r.city, r.state, r.venue, r.gender, r.comments, (success2, result2) => {
                 if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
                 return return_data(req, res, { id: result2 });
             });
@@ -117,9 +117,27 @@ var init = _ => {
         m.db.get_user_by_email(req.user.email, (success1, result1) => {
             if (success1 === null) return return_error(req, res, 500, "Database error");
             if (success1 == false) return return_error(req, res, 400, "User not found");
-            m.db.get_events((success2, result2) => {
+            var date = req.body.date ? req.body.date : 'all';
+            m.db.get_events(date === 'all' ? null : date, (success2, result2) => {
                 if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
                 return return_data(req, res, { events: result2 });
+            });
+        });
+    });
+
+    /* sell_order */
+    express_api.post("/api/sell_order/create", (req, res) => {
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success, result) => {
+            if (success === null) return return_error(req, res, 500, "Database error");
+            if (success == false) return return_error(req, res, 400, "User not found");
+            var r = req.body;
+            if (r.seats == "" || r.price == "" || r.event_id == "")
+                return return_error(req, res, 400, "Invalid form input");
+            m.db.create_sell_order(result._id, r.event_id, r.price, r.seats, r.comments, (success2, result2) => {
+                if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
+                return return_data(req, res, { id: result2 });
             });
         });
     });
