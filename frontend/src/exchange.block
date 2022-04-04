@@ -657,7 +657,7 @@ exchange
                     }
                 css
                     width 100%
-                    height 58%
+                    height calc(58% - 25px)
                     position relative
                 div title
                     css
@@ -782,6 +782,8 @@ exchange
                             }
                 div content
                     class exchange-panel-content
+                    css
+                        height calc(100% - 24px - 10px)
                     #events
                         {
                             block.html('');
@@ -794,12 +796,98 @@ exchange
                                 }
                             }
                         }
+            block orders_selector
+                css
+                    width 100%
+                    height 30px
+                {
+                    block.key('selected', 'sell');
+                }
+                div selector
+                    css
+                        height 80%
+                        width 150px
+                        margin 0 auto
+                        margin-top 3px
+                    button left
+                        css
+                            width 50%
+                            height 100%
+                            text-transform lowercase
+                            border-radius 4px 0 0 4px
+                            cursor pointer
+                            border 0
+                            border-right 0.5px solid #e6e6e6
+                            letter-spacing 0.9px
+                            color #222
+                        html Sell
+                        class sell_tab_button_alt
+                        :click
+                            {
+                                block.parent(1).key('selected', 'sell');
+                                block.sibling('right').on('deactivate');
+                                block.on('activate');
+                            }
+                        :activate
+                            {
+                                block.node().classList.remove('sell_tab_button');
+                                block.class('sell_tab_button_alt');
+                                block.parent(1).sibling('sell_form').on('show');
+                                event.stopPropagation();
+                            }
+                        :deactivate
+                            {
+                                block.node().classList.remove('sell_tab_button_alt');
+                                block.class('sell_tab_button');
+                                block.parent(1).sibling('sell_form').on('hide');
+                                event.stopPropagation();
+                            }
+                    button right
+                        css
+                            width 50%
+                            height 100%
+                            text-transform lowercase
+                            border-radius 0 4px 4px 0
+                            cursor pointer
+                            border 0
+                            border-left 0.5px solid #e6e6e6
+                            letter-spacing 0.9px
+                            color #222
+                        html Orders
+                        class sell_tab_button
+                        :click
+                            {
+                                block.parent(1).key('selected', 'orders');
+                                block.sibling('left').on('deactivate');
+                                block.on('activate');
+                            }
+                        :activate
+                            {
+                                block.node().classList.remove('sell_tab_button');
+                                block.class('sell_tab_button_alt');
+                                block.parent(1).sibling('orders').on('show');
+                                event.stopPropagation();
+                            }
+                        :deactivate
+                            {
+                                block.node().classList.remove('sell_tab_button_alt');
+                                block.class('sell_tab_button');
+                                block.parent(1).sibling('orders').on('hide');
+                                event.stopPropagation();
+                            }
+
             div sell_form
                 css
                     width calc(100% - 42px * 1.8)
-                    height 42%
+                    height calc(42% - 10px)
                     position relative
                     margin 0 auto
+                :show
+                    css
+                        display block
+                :hide
+                    css
+                        display none
                 div form_wrap
                     css
                         width 100%
@@ -869,7 +957,7 @@ exchange
                                         letter-spacing 0.4px
                         div two_wrap
                             css
-                                margin-top 12px
+                                margin-top 8px
                                 vertical-align top
                             div price
                                 css
@@ -927,7 +1015,7 @@ exchange
                                         }
                             div comments
                                 css
-                                    margin-top 8px
+                                    margin-top 5px
                                     text-align left
                                 text label
                                     html Comments:&nbsp;&nbsp;
@@ -941,7 +1029,7 @@ exchange
                                         margin-top 5px
                                         display block
                                         width 100%
-                                        height 53px
+                                        height 44px
                                         resize none
                                         border 1px solid #eee
                                         padding 3px 8px
@@ -999,8 +1087,14 @@ exchange
             div orders
                 css
                     width 100%
-                    height 40%
+                    height 41%
                     display none
+                :show
+                    css
+                        display block
+                :hide
+                    css
+                        display none
                 div title
                     css
                         padding-left 42px

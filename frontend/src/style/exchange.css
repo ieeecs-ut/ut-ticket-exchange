@@ -56,3 +56,19 @@ span.event-detail-label {
   display: inline-block;
   width: 70px;
 }
+
+button.sell_tab_button {
+    font-size: 12.5px;
+    background-color: #f7f7f7;
+    transition: background-color 0.1s ease;
+}
+button.sell_tab_button:hover {
+    background-color: #f1f1f1;
+}
+button.sell_tab_button:active {
+    background-color: #ebebeb;
+}
+button.sell_tab_button_alt {
+    font-size: 12.5px;
+    background-color: #e7e7e7;
+}
