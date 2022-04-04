@@ -131,7 +131,7 @@ var init = _ => {
                         var lowest_price = Number.MAX_SAFE_INTEGER;
                         for (var s in result3) {
                             if (result3[s].event.toString() === result2[e]._id.toString()) {
-                                var price = parseInt(result3[s].price) || 0;
+                                var price = parseFloat(result3[s].price) || 0;
                                 if (price > 0 && price <= lowest_price) {
                                     lowest_price = price;
                                     seats = result3[s].seats;

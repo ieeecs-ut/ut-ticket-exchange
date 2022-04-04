@@ -292,22 +292,30 @@
                             })
                             .on('click', function (e, b, d) {
                                 console.log('select', block.key('id'));
-                                block.parent(1).sibling('sell_form').child('form_wrap/form_content/event').data({
-                                    event: {
-                                        id: block.key('id'),
-                                        sport: block.key('sport'),
-                                        playing: block.key('playing'),
-                                        location: block.key('location'),
-                                        date: block.key('date'),
-                                        date_short: block.key('date_short'),
-                                        time: block.key('time'),
-                                        time_standard: block.key('time_standard'),
-                                        timezone: block.key('timezone'),
-                                        name: block.key('name'),
-                                        gender: block.key('gender'),
-                                        gender_short: block.key('gender_short')
-                                    }
-                                });
+                                var ts_click = Date.now();
+                                var event = {
+                                    id: block.key('id'),
+                                    sport: block.key('sport'),
+                                    playing: block.key('playing'),
+                                    location: block.key('location'),
+                                    date: block.key('date'),
+                                    date_short: block.key('date_short'),
+                                    time: block.key('time'),
+                                    time_standard: block.key('time_standard'),
+                                    timezone: block.key('timezone'),
+                                    name: block.key('name'),
+                                    gender: block.key('gender'),
+                                    gender_short: block.key('gender_short'),
+                                    ticket: block.key('ticket')
+                                };
+                                if (block.key('mode') == 'buy') {
+                                    var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
+                                    window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
+                                } else {
+                                    block.parent(1).sibling('sell_form').child('form_wrap/form_content/event').data({
+                                        event: event
+                                    });
+                                }
                             })
                         )
                     )
@@ -316,7 +324,15 @@
                 .on('toggle_showing', (e, b, d) => {
                     if (block.key('showing') === 'yes')
                         block.on('hide');
-                    else block.on('show');
+                    else {
+                        block.on('show');
+                        setTimeout(_ => {
+                            var $parent = block.parent().$();
+                            //$parent.animate({
+                            //    scrollTop: block.$().offset().top - $parent.offset().top - 10
+                            //});
+                        }, 300);
+                    }
                     e.stopPropagation();
                 })
                 .on('hide', (e, b, d) => {
@@ -325,6 +341,7 @@
                     setTimeout(_ => { block.child('detail').css('display', 'none'); }, 170);
                     block.css('margin-bottom', '0.7px');
                     block.key('showing', 'no');
+                    block.parent(1).key('event_open').splice(block.parent(1).key('event_open').indexOf(block.key('id')), 1);
                     e.stopPropagation();
                 })
                 .on('show', (e, b, d) => {
@@ -333,6 +350,7 @@
                     setTimeout(_ => { block.child('detail').css('height', `${block.key('detail_height')}px`); }, 10);
                     block.css('margin-bottom', '4px');
                     block.key('showing', 'yes');
+                    block.parent(1).key('event_open').push(`${block.key('id')}`);
                     e.stopPropagation();
                 })
             ;
@@ -391,16 +409,13 @@
                 block.key('timezone', timezone);
                 block.child('detail/when').on('update');
             });
-            block.key('mode', 'sell');
             data('mode', mode => {
                 block.key('mode', mode);
                 var button_text = mode == 'buy' ? 'buy' : 'select';
                 block.child('detail/select_button/button').html(utils.capitalize(button_text));
                 block.child('detail/seats').css('display', (mode == 'buy' ? 'block' : 'none'));
                 block.key('detail_height', mode == 'buy' ? 134 : 115);
-                setTimeout(_ => {
-                    Block.queries();
-                }, 10);
+                setTimeout(_ => { Block.queries(); }, 10);
             });
             data('ticket', ticket => {
                 block.key('ticket', ticket);
@@ -499,6 +514,9 @@ exchange
                 });
             }
             div events
+                {
+                    block.key('event_open', []);
+                }
                 :refresh
                     {
                         block.child('date_selector/input').on('get_events');
@@ -677,6 +695,9 @@ exchange
                 });
             }
             div events
+                {
+                    block.key('event_open', []);
+                }
                 :refresh
                     {
                         block.child('date_selector/input').on('get_events');
@@ -775,6 +796,19 @@ exchange
                                             setTimeout(_ => {
                                                 Block.queries();
                                             }, 50);
+                                            setTimeout(_ => {
+                                                var events_open_prev = block.parent(1).key('event_open');
+                                                block.parent(1).key('event_open', []);
+                                                if (events_open_prev) {
+                                                    for (var e in events_open_prev) {
+                                                        var event_id = events_open_prev[e];
+                                                        var event_view = block.parent().sibling('content').child(`event_${event_id}`);
+                                                        if (event_view) {
+                                                            event_view.on('show');
+                                                        }
+                                                    }
+                                                }
+                                            }, 100);
                                         }
                                     } else console.log(e);
                                 });
@@ -818,7 +852,7 @@ exchange
                                 block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_events_placeholder_text}`)));
                             } else {
                                 for (var e in events) {
-                                    block.add(Block('event-item', `event_${events[e]._id}`).data(events[e]));
+                                    block.add(Block('event-item', `event_${events[e]._id}`).data({mode:'sell'}).data(events[e]));
                                 }
                             }
                         }
@@ -901,7 +935,6 @@ exchange
                                 block.parent(1).sibling('orders').on('hide');
                                 event.stopPropagation();
                             }
-
             div sell_form
                 css
                     width calc(100% - 42px * 1.8)

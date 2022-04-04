@@ -104,10 +104,21 @@ ex = {
                             state == "" || venue == "" || date == "" || time == "" || timezone == "")
                             return false;
                         // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
-                        ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments, _ => {
+                        ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments, (value = null, error = null) => {
                             setTimeout(_ => {
+                                if (!error && value && value.id)
+                                    ex.ui.child('right/panel/events').key('event_open').push(value.id);
                                 ex.ui.child('right/panel/events').on('refresh');
                                 ex.ui.child('left/panel/events').on('refresh');
+                                setTimeout(_ => {
+                                    var new_event_child = ex.ui.child('right/panel/events/content').child(`event_${value.id}`);
+                                    console.log(new_event_child);
+                                    if (new_event_child) {
+                                        new_event_child.parent().$().animate({
+                                            scrollTop: new_event_child.$().offset().top
+                                        });
+                                    }
+                                }, 200);
                             }, 100);
                         });
                     }
@@ -115,6 +126,43 @@ ex = {
                 }
             });
         },
+        new_buy_order: (ts_click, event_id, event_text, event = {}) => {
+            bootbox.confirm({
+                centerVertical: true,
+                title: '<span class="modal_title">Buy Ticket</span>',
+                message: `<div id='buy_order_display_modal'>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">What:</span>&nbsp;` +
+                    `<span class="modal_text_input">${event.gender_short} ${event.sport} (${event.name})</span></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Who:</span>&nbsp;` +
+                    `<span class="modal_text_input">${event.playing}</span></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Where:</span>&nbsp;` +
+                    `<span class="modal_text_input">${event.location.city}, ${event.location.state} (${event.location.venue})</span></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">When:</span>&nbsp;` +
+                    `<span class="modal_text_input">${event.time_standard} ${event.timezone} @ ${event.date}</span></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Seats:</span>&nbsp;` +
+                    `<span class="modal_text_input">${event.ticket.seats}</span></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Price:</span>&nbsp;` +
+                    `<span class="modal_text_input">$${parseFloat(event.ticket.price).toFixed(2)}</span></div>` +
+                    `<div style="margin: 3px 0;"><span class="modal_text_input_label">Comments:</span>&nbsp;` +
+                    `<input placeholder="Lorem ipsum dolor sit amet..." class="modal_text_input" id="bo_modal_comments_input" type='text' name='bo_modal_comments'/></div>` +
+                    `<div style="height: 8px"></div></div>`,
+                callback: (result) => {
+                    if (result) {
+                        var comments = (`${$('#buy_order_display_modal #bo_modal_comments_input')[0].value}`).trim();
+                        if (ts_click == 0 || event_id == "" || event_text == "")
+                            return false;
+                        // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                        ex.api.new_buy_order(event_id, ts_click, event.ticket.id, comments, (value = null, error = null) => {
+                            setTimeout(_ => {
+                                // ex.ui.child('right/panel/events').on('refresh');
+                                // ex.ui.child('left/panel/events').on('refresh');
+                            }, 100);
+                        });
+                    }
+                    return true;
+                }
+            });
+        }
     },
 
     /* client api */
@@ -345,6 +393,44 @@ ex = {
             };
             $.ajax({
                 url: `${ex.api_url}/sell_order/create`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
+        new_buy_order: (event_id, ts_click, sell_order_id, comments, resolve = null) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+                event_id: event_id,
+                sell_order_id: sell_order_id,
+                ts_click: ts_click,
+                comments, comments,
+            };
+            $.ajax({
+                url: `${ex.api_url}/buy_order/create`,
                 method: 'post',
                 headers: {},
                 data: body,
