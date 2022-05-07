@@ -4,7 +4,6 @@ UT Ticket Exchange project for IEEE Computer Society 2020-2021.
 
 &nbsp;  
 &nbsp;  
-&nbsp;  
 
 Built with:  
  -  MongoDB for database
@@ -12,7 +11,6 @@ Built with:
  -  (Block.js)[https://github.com/anuvgupta/block.js] for UI (exchange frontend)
  -  Angular for UI (landing page, initial components)
 
-&nbsp;  
 &nbsp;  
 &nbsp;  
 
