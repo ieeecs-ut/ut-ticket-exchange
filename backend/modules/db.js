@@ -24,6 +24,8 @@ var init = _ => {
 
 };
 var api = {
+    // mongo objectid utility
+    mongo_oid: mongo_oid,
     // create functions that allow other modules to interact with this one when necessary
     // (functions should take simple parameters, query the database, handle errors, and provide requested data)
     example: (table, resolve) => {
@@ -206,6 +208,41 @@ var api = {
             }
         });
     },
+    get_buy_orders: (user_id, resolve) => {
+        var _find = {};
+        if (user_id != null) _find.user = mongo_oid(user_id);
+        // console.log(_find);
+        mongo_api.collection('buy_order').find(_find).toArray((e, result1) => {
+            if (e) {
+                err("error finding buy orders", e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                // console.log(result1);
+                if (result1) {
+                    var event_ids = [];
+                    for (var b in result1)
+                        event_ids.push(mongo_oid(result1[b].event));
+                    mongo_api.collection('event').find({ _id: { $in: event_ids } }).toArray((e, result2) => {
+                        if (e) {
+                            err("error finding events", e.message ? e.message : e);
+                            resolve(false, e);
+                        } else {
+                            if (result2) {
+                                for (var b in result1) {
+                                    for (var e in result2) {
+                                        if (result1[b].event.toString() == result2[e]._id.toString()) {
+                                            result1[b].event_obj = JSON.parse(JSON.stringify(result2[e]));
+                                        }
+                                    }
+                                }
+                                resolve(true, result1);
+                            } else resolve(null, result2);
+                        }
+                    });
+                } else resolve(null, result1);
+            }
+        });
+    },
     update_buy_order: (id, update, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('buy_order').findOne({ _id: mongo_oid(id) }, (e, result1) => {
@@ -301,7 +338,25 @@ var api = {
             }
         });
     },
-    get_sell_orders: (event_ids, resolve) => {
+    get_sell_orders: (sell_order_ids, resolve) => {
+        var _find = {};
+        if (sell_order_ids != null) {
+            for (var e in sell_order_ids)
+                sell_order_ids[e] = mongo_oid(sell_order_ids[e]);
+            _find._id = { $in: sell_order_ids };
+        }
+        mongo_api.collection('sell_order').find(_find).toArray((e, result1) => {
+            if (e) {
+                err("error finding sell orders", e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) {
+                    resolve(true, result1);
+                } else resolve(null, result1);
+            }
+        });
+    },
+    get_sell_orders_for_events: (event_ids, resolve) => {
         var _find = {};
         if (event_ids != null) {
             for (var e in event_ids)
@@ -310,11 +365,50 @@ var api = {
         }
         mongo_api.collection('sell_order').find(_find).toArray((e, result1) => {
             if (e) {
-                err("error finding events", e.message ? e.message : e);
+                err("error finding sell orders", e.message ? e.message : e);
                 resolve(false, e);
             } else {
-                if (result1) resolve(true, result1);
-                else resolve(null, result1);
+                if (result1) {
+                    resolve(true, result1);
+                } else resolve(null, result1);
+            }
+        });
+    },
+    get_sell_orders_for_user_with_event: (user_id, resolve) => {
+        var _find = {};
+        if (user_id != null) {
+            _find.user = mongo_oid(user_id);
+        }
+        mongo_api.collection('sell_order').find(_find).toArray((e, result1) => {
+            if (e) {
+                err("error finding sell orders", e.message ? e.message : e);
+                resolve(false, e);
+            } else {
+                if (result1) {
+                    var event_ids = [];
+                    for (var b in result1)
+                        event_ids.push(mongo_oid(result1[b].event));
+                    mongo_api.collection('event').find({ _id: { $in: event_ids } }).toArray((e, result2) => {
+                        if (e) {
+                            err("error finding events", e.message ? e.message : e);
+                            resolve(false, e);
+                        } else {
+                            // console.log(result2);
+                            if (result2) {
+                                for (var s in result1) {
+                                    for (var e in result2) {
+                                        if (result1[s].event.toString() == result2[e]._id.toString()) {
+                                            result1[s].event_obj = JSON.parse(JSON.stringify(result2[e]));
+                                        }
+                                    }
+                                }
+                                // console.log(result1);
+                                resolve(true, result1);
+                            } else resolve(null, result2);
+                        }
+                    });
+                    // resolve(true, result1);
+                } else resolve(null, result1);
             }
         });
     },

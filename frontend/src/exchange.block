@@ -308,6 +308,7 @@
                                     gender_short: block.key('gender_short'),
                                     ticket: block.key('ticket')
                                 };
+                                console.log(event);
                                 if (block.key('mode') == 'buy') {
                                     var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
                                     window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
@@ -428,6 +429,462 @@
                 }
             });
         }
+
+!order-item
+    init
+        {
+            var block = Block('block');
+            block
+                .key('detail_height', '115')
+                .css({
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '3px',
+                    backgroundColor: 'white',
+                    border: '1px solid #f2f2f2',
+                    margin: '0 auto 0.7px auto',
+                })
+                .add(Block('div', 'content')
+                    .css({
+                        height: '45px',
+                        width: '100%',
+                        margin: '0 auto',
+                        boxSizing: 'border-box',
+                        position: 'relative',
+                        borderRadius: '3px'
+                    })
+                    .add(Block('block', 'img')
+                        .css({
+                            height: '45px',
+                            width: '45px',
+                            position: 'absolute',
+                            top: '-1px',
+                            left: '10px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                src: '/img/event_b.png',
+                                height: '24px',
+                                width: '24px',
+                                css: {
+                                    margin: '0 auto',
+                                    opacity: '0.75'
+                                }
+                            })
+                        )
+                    )
+                    .add(Block('block', 'fill')
+                        .__child('content')
+                            .css('text-align', 'left')
+                            .__parent()
+                        .css({
+                            fontSize: '15px',
+                            letterSpacing: '-0.1px',
+                            //fontWeight: '300',
+                            fontWeight: '400',
+                        })
+                        .key('date_text_size', '16px')
+                        .query('window width >= 1365', function (event, block, data) {
+                            block.css('font-size', '14px');
+                            block.key('date_text_size', '15px');
+                        })
+                        .query('window width < 1365', function (event, block, data) {
+                            block.css('font-size', '12px');
+                            block.key('date_text_size', '14px');
+                        })
+                        .query('window width < 1150', function (event, block, data) {
+                            block.css('font-size', '10px');
+                            block.key('date_text_size', '12px');
+                        })
+                        .query('window width < 935', function (event, block, data) {
+                            block.css('font-size', '14px');
+                            block.key('date_text_size', '15px');
+                        })
+                        .query('window width < 650', function (event, block, data) {
+                            block.css('font-size', '12px');
+                            block.key('date_text_size', '14px');
+                        })
+                        .query('window width < 500', function (event, block, data) {
+                            block.css('font-size', '10px');
+                            block.key('date_text_size', '12px');
+                        })
+                        .add(Block('text', 1)
+                            .css({
+                                paddingLeft: '60px',
+                                paddingRight: '40px',
+                                cursor: 'pointer'
+                            })
+                            .html('_')
+                            .on('click', (e, b, d) => {
+                                b.parent(2).on('toggle_showing');
+                                e.stopPropagation();
+                            })
+                        )
+                        .on('update', (e, b, d) => {
+                            var event_summary_text = `<span style='font-weight: 600; font-size: ${block.key('date_text_size')};'>${block.key('date_short')}</span>&nbsp;&nbsp;–&nbsp;&nbsp;${block.key('gender_short')} ${block.key('sport')} ${block.key('playing')} @ ${block.key('location') && (block.key('location').city + ', ' + block.key('location').state)}`;
+                            b.child('text').html(event_summary_text);
+                        })
+                        .on('update')
+                    )
+                    .add(Block('block', 'arrow')
+                        .css({
+                            height: '45px',
+                            width: '45px',
+                            position: 'absolute',
+                            top: '0px',
+                            right: '4px'
+                        })
+                        .add(Block('image', 1)
+                            .data({
+                                src: '/img/right_b.png',
+                                height: '28px',
+                                width: '28px',
+                                css: {
+                                    margin: '0 auto',
+                                    opacity: '0.75',
+                                    transform: 'rotate(180deg)',
+                                    transition: 'transform 0.15s ease',
+                                    cursor: 'pointer'
+                                }
+                            })
+                            .on('click', (e, b, d) => {
+                                b.parent(2).on('toggle_showing');
+                                e.stopPropagation();
+                            })
+                        )
+                    )
+                )
+                .add(Block('div', 'detail')
+                    .css({
+                        display: 'none',
+                        height: '1px',
+                        width: '100%',
+                        transition: 'height 0.15s ease',
+                        textAlign: 'left',
+                        boxSizing: 'border-box',
+                        padding: '0 35px',
+                        fontSize: '13px',
+                        letterSpacing: '0.8px',
+                        overflow: 'hidden',
+                        lineHeight: '18px',
+                        fontWeight: '300',
+                        position: 'relative'
+                    })
+                    .add(Block('div', 'what')
+                        .add(Block('text', 'label')
+                            .html('What:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('G Sport (Name)')
+                            .css('font-size', '11px')
+                        )
+                        .on('update', (e, b, d) => {
+                            b.child('text').html('').data(`${block.key('gender_short')} ${block.key('sport')} (${block.key('name')})`);
+                        })
+                    )
+                    .add(Block('div', 'who')
+                        .add(Block('text', 'label')
+                            .html('Who:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('Team vs Team')
+                            .css('font-size', '12px')
+                        )
+                    )
+                    .add(Block('div', 'where')
+                        .add(Block('text', 'label')
+                            .html('Where:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('City, ST (Venue)')
+                            .css('font-size', '11px')
+                        )
+                        .on('update', (e, b, d) => {
+                            b.child('text').html('').data(`${block.key('location').city}, ${block.key('location').state} (${block.key('location').venue})`);
+                        })
+                    )
+                    .add(Block('div', 'when')
+                        .add(Block('text', 'label')
+                            .html('When:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('HH:MM @ MM/DD/YYYY')
+                            .css('font-size', '12px')
+                        )
+                        .on('update', (e, b, d) => {
+                            b.child('text').html('').data(`${block.key('time_standard')} ${block.key('timezone')} @ ${block.key('date')}`);
+                        })
+                    )
+                    .add(Block('div', 'seats')
+                        .css('display', 'none')
+                        .add(Block('text', 'label')
+                            .html('Seats:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('text', 1)
+                            .data('00')
+                            .css('font-size', '12px')
+                        )
+                    )
+                    .add(Block('div', 'price')
+                        .css({
+                            marginTop: '5px',
+                            height: '24px',
+                        })
+                        .add(Block('div', 'label_wrap')
+                            .css({
+                                width: '50%',
+                                textAlign: 'left',
+                                verticalAlign: 'bottom',
+                                display: 'inline-block'
+                            })
+                            .add(Block('text', 'label')
+                                .key('text_val_long', 'Your Ticket Price:&nbsp;')
+                                .key('text_val_short', 'Your Price:&nbsp;')
+                                .html('Your Price:&nbsp;')
+                                .css({
+                                    width: 'auto',
+                                })
+                                .class('event-detail-label')
+                                .query('window width > 1300', function (event, block, data) {
+                                    block.html(block.key('text_val_long'));
+                                })
+                                .query('window width <= 1300', function (event, block, data) {
+                                    block.html(block.key('text_val_short'));
+                                })
+                                .query('window width <= 935', function (event, block, data) {
+                                    block.html(block.key('text_val_long'));
+                                })
+                                .query('window width <= 600', function (event, block, data) {
+                                    block.html(block.key('text_val_short'));
+                                })
+                            )
+                        )
+                        .add(Block('block', 'hr_wrap')
+                            .css({
+                                display: 'none'
+                            })
+                            .add(Block('hr', 1)
+                                .css({
+                                    width: '100%',
+                                    opacity: '0.5',
+                                })
+                            )
+                        )
+                        .add(Block('div', 'value_wrap')
+                            .css({
+                                textAlign: 'right',
+                                width: '50%',
+                                verticalAlign: 'bottom',
+                                display: 'inline-block',
+                                fontStyle: 'italic'
+                            })
+                            .add(Block('text', 1)
+                                .data('$––.––')
+                                .css({
+                                    fontSize: '19px',
+                                    fontWeight: '500',
+                                })
+                            )
+                        )
+                    )
+                    .add(Block('block', 'select_button')
+                        .class('exchange-orange_button')
+                        .css({
+                            position: 'absolute',
+                            top: '0',
+                            right: '35px',
+                            bottom: '55px',
+                            height: 'calc(100% - 55px)',
+                            width: 'auto',
+                            minWidth: '117px',
+                        })
+                        .on('enable', (e, b, d) => {
+                            b.child('button').css('opacity', '1').css('pointer-events', 'auto').html(d.title);
+                        })
+                        .on('disable', (e, b, d) => {
+                            b.child('button').css('opacity', '0.5').css('pointer-events', 'none').html(d.title);
+                        })
+                        .add(Block('button', 1)
+                            .html('Select')
+                            .css({
+                                textTransform: 'lowercase',
+                                height: '42px',
+                                width: '117px',
+                                fontSize: '20px',
+                                color: 'white',
+                                backgroundColor: 'rgb(191, 87, 0)',
+                                border: '1px solid rgb(186, 102, 47)',
+                                borderRadius: '4px',
+                                letterSpacing: '2px',
+                                fontWeight: '400',
+                            })
+                            .on('click', function (e, b, d) {
+                                console.log('select', block.key('id'));
+                                var ts_click = Date.now();
+                                var event = {
+                                    id: block.key('id'),
+                                    sport: block.key('sport'),
+                                    playing: block.key('playing'),
+                                    location: block.key('location'),
+                                    date: block.key('date'),
+                                    date_short: block.key('date_short'),
+                                    time: block.key('time'),
+                                    time_standard: block.key('time_standard'),
+                                    timezone: block.key('timezone'),
+                                    name: block.key('name'),
+                                    gender: block.key('gender'),
+                                    gender_short: block.key('gender_short'),
+                                    ticket: block.key('ticket')
+                                };
+                                if (block.key('mode') == 'buy') {
+                                    var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
+                                    //window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
+                                    console.log('show seller contact info', event_summary_text, event);
+                                    // TODO: show seller contact info
+                                    console.log('open modal for seller contact info');
+                                } else {
+                                    if (block.key('locked') === true) {
+                                        // TODO: manage ticket
+                                        // TODO: (contact buyer, confirm sale, and remove)
+                                        console.log('open modal to manage ticket (contact buyer, confirm sale, or remove)');
+                                    } else {
+                                        // TODO: add option to remove the listing
+                                        // do nothing
+                                    }
+                                }
+                            })
+                        )
+                    )
+                )
+                .key('showing', 'no')
+                .on('toggle_showing', (e, b, d) => {
+                    if (block.key('showing') === 'yes')
+                        block.on('hide');
+                    else {
+                        block.on('show');
+                        setTimeout(_ => {
+                            var $parent = block.parent().$();
+                            //$parent.animate({
+                            //    scrollTop: block.$().offset().top - $parent.offset().top - 10
+                            //});
+                        }, 300);
+                    }
+                    e.stopPropagation();
+                })
+                .on('hide', (e, b, d) => {
+                    block.child('content/arrow/image').css('transform', 'rotate(180deg)');
+                    block.child('detail').css('height', '1px');
+                    setTimeout(_ => { block.child('detail').css('display', 'none'); }, 170);
+                    block.css('margin-bottom', '0.7px');
+                    block.key('showing', 'no');
+                    //block.parent(1).key('event_open').splice(block.parent(1).key('event_open').indexOf(block.key('id')), 1);
+                    e.stopPropagation();
+                })
+                .on('show', (e, b, d) => {
+                    block.child('content/arrow/image').css('transform', 'rotate(90deg)');
+                    block.child('detail').css('display', 'block');
+                    setTimeout(_ => { block.child('detail').css('height', `${block.key('detail_height')}px`); }, 10);
+                    block.css('margin-bottom', '4px');
+                    block.key('showing', 'yes');
+                    //block.parent(1).key('event_open').push(`${block.key('id')}`);
+                    e.stopPropagation();
+                })
+            ;
+            return block;
+        }
+    load
+        {
+            data('_id', id => {
+                block.key('id', id);
+            });
+            data('event_id', event_id => {
+                block.key('event_id', event_id);
+            });
+            data('date', date => {
+                block.key('date', date);
+                var date_short = date.split('-').slice(1).join('-');
+                block.key('date_short', date_short);
+                block.child('content/fill/text').on('update');
+                block.child('detail/when').on('update');
+            });
+            data('time', time => {
+                block.key('time', time);
+                var hrs = parseInt(time.split(':')[0]);
+                var min = parseInt(time.split(':')[1]);
+                var mode = 'am';
+                if (hrs >= 12) mode = 'pm';
+                hrs = hrs % 12 || 12;
+                var time_standard = `${hrs}:${min < 10 ? '0' : ''}${min}${mode}`;
+                block.key('time_standard', time_standard);
+                block.child('detail/when').on('update');
+            });
+            data('gender', gender => {
+                block.key('gender', gender);
+                var gender_short = `${gender[0]}`;
+                block.key('gender_short', gender_short);
+                block.child('content/fill/text').on('update');
+                block.child('detail/what').on('update');
+            });
+            data('sport', sport => {
+                block.key('sport', sport);
+                block.child('content/fill/text').on('update');
+                block.child('detail/what').on('update');
+            });
+            data('playing', playing => {
+                block.key('playing', playing);
+                block.child('detail/who/text').html('').data(playing);
+                block.child('content/fill/text').on('update');
+            });
+            data('location', location => {
+                block.key('location', location);
+                block.child('content/fill/text').on('update');
+                block.child('detail/where/text').on('update');
+            });
+            data('name', name => {
+                block.key('name', name);
+                block.child('detail/what').on('update');
+            });
+            data('timezone', timezone => {
+                block.key('timezone', timezone);
+                block.child('detail/when').on('update');
+            });
+            data('mode', mode => {
+                block.key('mode', mode);
+                var button_text = mode == 'buy' ? 'get' : 'next';
+                block.child('detail/select_button/button').html(utils.capitalize(button_text));
+                block.child('detail/seats').css('display', (mode == 'buy' ? 'block' : 'none'));
+                block.key('detail_height', mode == 'buy' ? 134 : 115);
+                setTimeout(_ => { Block.queries(); }, 10);
+            });
+            data('ticket', ticket => {
+                block.key('ticket', ticket);
+                if (ticket.price === 0 || ticket.sell_order === null) {
+                    block.child('detail/seats/text').html('').data('00');
+                    block.child('detail/price/value_wrap/text').html('').data(`$––.––`);
+                } else {
+                    block.child('detail/seats/text').html('').data(`${ticket.seats}`);
+                    block.child('detail/price/value_wrap/text').html('').data(`$${ticket.price.toFixed(2)}`);
+                }
+            });
+            data('locked', locked => {
+                block.key('locked', locked);
+                if (locked) {
+                    block.child('detail/select_button').on('enable', {
+                        title: 'manage'
+                    });
+                } else {
+                    block.child('detail/select_button').on('disable', {
+                        title: 'waiting'
+                    });
+                }
+            });
+        }
+
 
 // exchange client ui view tree
 
@@ -627,7 +1084,8 @@ exchange
                                 block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_events_placeholder_text}`)));
                             } else {
                                 for (var e in events) {
-                                    block.add(Block('event-item', `event_${events[e]._id}`).data({mode:'buy'}).data(events[e]));
+                                    if (events[e].ticket.sell_order != null) 
+                                        block.add(Block('event-item', `event_${events[e]._id}`).data({mode:'buy'}).data(events[e]));
                                 }
                             }
                         }
@@ -635,6 +1093,30 @@ exchange
                 css
                     width 100%
                     height 44%
+                {
+                    setTimeout(_ => {
+                        block.on('refresh');
+                    }, 20);
+                }
+                :refresh
+                    {
+                        console.log('loading buy orders');
+                        window.ex.api.get_buy_orders((result, e) => {
+                            if (result) {
+                                if (result.orders) {
+                                    console.log('reloaded buy_orders', result.orders);
+                                    block.child('content').data({
+                                        orders: result.orders
+                                    });
+                                    Block.queries();
+                                    setTimeout(_ => {
+                                        Block.queries();
+                                    }, 50);
+                                }
+                            } else console.log(e);
+                        });
+                        event.stopPropagation();
+                    }
                 div title
                     css
                         padding-left 42px
@@ -646,6 +1128,34 @@ exchange
                             letter-spacing 2px
                 div content
                     class exchange-panel-content
+                    #orders
+                        {
+                            block.html('');
+                            if (orders.length == 0) {
+                                var no_orders_placeholder_text = "No buy orders.";
+                                block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_orders_placeholder_text}`)));
+                            } else {
+                                for (var o in orders) {
+                                    var order_obj = JSON.parse(JSON.stringify(orders[o]));
+                                    var event_obj = JSON.parse(JSON.stringify(order_obj.event_obj));
+                                    delete order_obj['event_obj'];
+
+                                    event_obj.event_id = event_obj._id;
+                                    delete event_obj['_id'];
+                                    event_obj.event_creator = event_obj.creator;
+                                    delete event_obj['creator'];
+                                    event_obj.event_ts_created = event_obj.ts_created;
+                                    delete event_obj['ts_created'];
+                                    event_obj.event_ts_updated = event_obj.ts_updated;
+                                    delete event_obj['ts_updated'];
+                                    event_obj.event_comments = event_obj.comments;
+                                    delete event_obj['comments'];
+
+                                    block.add(Block('order-item', `order_${orders[o]._id}`).data({mode:'buy'}).data(order_obj).data(event_obj));
+                                }
+                            }
+                        }
+                    
     block right
         css
             height 95%
@@ -1138,6 +1648,8 @@ exchange
                                         setTimeout(_ => {
                                             window.ex.ui.child('right/panel/events').on('refresh');
                                             window.ex.ui.child('left/panel/events').on('refresh');
+                                            window.ex.ui.child('right/panel/orders').on('refresh');
+                                            window.ex.ui.child('left/panel/orders').on('refresh');
                                             block.parent().sibling('form_wrap').on('reset_fields');
                                         }, 100);
                                     });
@@ -1154,6 +1666,30 @@ exchange
                 :hide
                     css
                         display none
+                :refresh
+                    {
+                        console.log('loading sell orders');
+                        window.ex.api.get_sell_orders((result, e) => {
+                            if (result) {
+                                if (result.orders) {
+                                    console.log('reloaded sell_orders', result.orders);
+                                    block.child('content').data({
+                                        orders: result.orders
+                                    });
+                                    Block.queries();
+                                    setTimeout(_ => {
+                                        Block.queries();
+                                    }, 50);
+                                }
+                            } else console.log(e);
+                        });
+                        event.stopPropagation();
+                    }
+                {
+                    setTimeout(_ => {
+                        block.on('refresh');
+                    }, 20);
+                }
                 div title
                     css
                         padding-left 42px
@@ -1165,3 +1701,34 @@ exchange
                             letter-spacing 2px
                 div content
                     class exchange-panel-content
+                    #orders
+                        {
+                            block.html('');
+                            if (orders.length == 0) {
+                                var no_orders_placeholder_text = "No sell orders.";
+                                block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_orders_placeholder_text}`)));
+                            } else {
+                                for (var o in orders) {
+                                    var order_obj = JSON.parse(JSON.stringify(orders[o]));
+                                    var event_obj = JSON.parse(JSON.stringify(order_obj.event_obj));
+                                    delete order_obj['event_obj'];
+
+                                    event_obj.event_id = event_obj._id;
+                                    delete event_obj['_id'];
+                                    event_obj.event_creator = event_obj.creator;
+                                    delete event_obj['creator'];
+                                    event_obj.event_ts_created = event_obj.ts_created;
+                                    delete event_obj['ts_created'];
+                                    event_obj.event_ts_updated = event_obj.ts_updated;
+                                    delete event_obj['ts_updated'];
+                                    event_obj.event_comments = event_obj.comments;
+                                    delete event_obj['comments'];
+
+                                    block.add(Block('order-item', `order_${orders[o]._id}`).data({mode:'sell'}).data(order_obj).data(event_obj));
+                                }
+                            }
+                        }
+
+
+
+                    

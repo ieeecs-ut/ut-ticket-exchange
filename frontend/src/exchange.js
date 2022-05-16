@@ -152,16 +152,17 @@ ex = {
                         if (ts_click == 0 || event_id == "" || event_text == "")
                             return false;
                         // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
-                        ex.api.new_buy_order(event_id, ts_click, event.ticket.id, comments, (value = null, error = null) => {
+                        // console.log(event);
+                        ex.api.new_buy_order(event_id, ts_click, event.ticket.sell_order, comments, (value = null, error = null) => {
                             if (error) {
                                 ex.ui_modal.new_buy_order_response((error.message ? error.message.toString() : error.toString()) + '!');
                             } else {
-                                // stuff
+                                console.log(value);
+                                setTimeout(_ => {
+                                    ex.ui.child('right/panel/orders').on('refresh');
+                                    ex.ui.child('left/panel/orders').on('refresh');
+                                }, 100);
                             }
-                            setTimeout(_ => {
-                                // ex.ui.child('right/panel/events').on('refresh');
-                                // ex.ui.child('left/panel/events').on('refresh');
-                            }, 100);
                         });
                     }
                     return true;
@@ -451,6 +452,74 @@ ex = {
             };
             $.ajax({
                 url: `${ex.api_url}/buy_order/create`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
+        get_buy_orders: (resolve) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+            };
+            $.ajax({
+                url: `${ex.api_url}/buy_order`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
+        get_sell_orders: (resolve) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+            };
+            $.ajax({
+                url: `${ex.api_url}/sell_order`,
                 method: 'post',
                 headers: {},
                 data: body,
