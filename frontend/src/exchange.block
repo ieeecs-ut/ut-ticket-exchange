@@ -291,7 +291,7 @@
                                 fontWeight: '400',
                             })
                             .on('click', function (e, b, d) {
-                                console.log('select', block.key('id'));
+                                ex.log('select', block.key('id'));
                                 var ts_click = Date.now();
                                 var event = {
                                     id: block.key('id'),
@@ -308,10 +308,10 @@
                                     gender_short: block.key('gender_short'),
                                     ticket: block.key('ticket')
                                 };
-                                console.log(event);
+                                ex.log(event);
                                 if (block.key('mode') == 'buy') {
                                     var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
-                                    window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
+                                    ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
                                 } else {
                                     block.parent(1).sibling('sell_form').child('form_wrap/form_content/event').data({
                                         event: event
@@ -739,7 +739,7 @@
                                 fontWeight: '400',
                             })
                             .on('click', function (e, b, d) {
-                                console.log('select', block.key('id'));
+                                ex.log('select', block.key('id'));
                                 var ts_click = Date.now();
                                 var event = {
                                     id: block.key('id'),
@@ -758,25 +758,25 @@
                                 };
                                 var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
                                 if (block.key('mode') == 'buy') {
-                                    console.log(`this button shouldn't exist`);
+                                    ex.log(`this button shouldn't exist`);
                                 } else {
                                     if (block.key('locked') !== true) {
-                                        console.log(`this button shouldn't exist`);
+                                        ex.log(`this button shouldn't exist`);
                                         return;
                                     }
-                                    console.log(`confirm sale for sell order: ${block.key('id')}`);
+                                    ex.log(`confirm sale for sell order: ${block.key('id')}`);
                                     /*
-                                    window.ex.ui_modal.generic_confirm(`Confirm Sale`, `Are you sure you want to confirm your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will complete the order and unlist your ticket from the exchange—<i>please make sure <a href='mailto:${block.key('buyer_email')}'>${block.key('buyer_email')}</a> <b>received your ticket</b> and <b>paid you $${block.key('ticket').price} in full</b>!</i>`, (confirmed) => {
+                                    ex.ui_modal.generic_confirm(`Confirm Sale`, `Are you sure you want to confirm your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will complete the order and unlist your ticket from the exchange—<i>please make sure <a href='mailto:${block.key('buyer_email')}'>${block.key('buyer_email')}</a> <b>received your ticket</b> and <b>paid you $${block.key('ticket').price} in full</b>!</i>`, (confirmed) => {
                                         if (confirmed) {
-                                            window.ex.api.cancel_sell_order(block.key('id'), (response, error) => {
+                                            ex.api.cancel_sell_order(block.key('id'), (response, error) => {
                                                 if (error) {
                                                     ex.ui_modal.generic_confirm('Cancel Sell Order', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
                                                 } else {
                                                     setTimeout(_ => {
-                                                        window.ex.ui.child('right/panel/events').on('refresh');
-                                                        window.ex.ui.child('left/panel/events').on('refresh');
-                                                        window.ex.ui.child('right/panel/orders').on('refresh');
-                                                        window.ex.ui.child('left/panel/orders').on('refresh');
+                                                        ex.ui.child('right/panel/events').on('refresh');
+                                                        ex.ui.child('left/panel/events').on('refresh');
+                                                        ex.ui.child('right/panel/orders').on('refresh');
+                                                        ex.ui.child('left/panel/orders').on('refresh');
                                                     }, 100);
                                                 }
                                             });
@@ -818,7 +818,7 @@
                                 fontWeight: '400',
                             })
                             .on('click', function (e, b, d) {
-                                console.log('select', block.key('id'));
+                                ex.log('select', block.key('id'));
                                 var ts_click = Date.now();
                                 var event = {
                                     id: block.key('id'),
@@ -837,38 +837,38 @@
                                 };
                                 var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
                                 if (block.key('mode') == 'buy') {
-                                    // //window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
-                                    // console.log('show seller contact info', event_summary_text, event);
+                                    // //ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
+                                    // ex.log('show seller contact info', event_summary_text, event);
                                     // // TODO show seller contact info, cancel button too
-                                    // console.log('open modal for seller contact info');
-                                    window.ex.ui_modal.generic_confirm(`Cancel Buy Order`, `Are you sure you want to cancel your buy order for: <b>${event_summary_text}</b>?<br/><br/>This will allow others to buy the ticket, so you may lose your reserved price & seats. If you are no longer interested or able to attend, or <i>if your seller is not responding</i>, continue.`, (confirmed) => {
+                                    // ex.log('open modal for seller contact info');
+                                    ex.ui_modal.generic_confirm(`Cancel Buy Order`, `Are you sure you want to cancel your buy order for: <b>${event_summary_text}</b>?<br/><br/>This will allow others to buy the ticket, so you may lose your reserved price & seats. If you are no longer interested or able to attend, or <i>if your seller is not responding</i>, continue.`, (confirmed) => {
                                         if (confirmed) {
-                                            window.ex.api.cancel_buy_order(block.key('id'), (response, error) => {
+                                            ex.api.cancel_buy_order(block.key('id'), (response, error) => {
                                                 if (error) {
                                                     ex.ui_modal.generic_confirm('Cancel Buy Order', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
                                                 } else {
                                                     setTimeout(_ => {
-                                                        window.ex.ui.child('right/panel/events').on('refresh');
-                                                        window.ex.ui.child('left/panel/events').on('refresh');
-                                                        window.ex.ui.child('right/panel/orders').on('refresh');
-                                                        window.ex.ui.child('left/panel/orders').on('refresh');
+                                                        ex.ui.child('right/panel/events').on('refresh');
+                                                        ex.ui.child('left/panel/events').on('refresh');
+                                                        ex.ui.child('right/panel/orders').on('refresh');
+                                                        ex.ui.child('left/panel/orders').on('refresh');
                                                     }, 100);
                                                 }
                                             });
                                         }
                                     });
                                 } else {
-                                    window.ex.ui_modal.generic_confirm(`Unlist Sell Order`, `Are you sure you want to unlist your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will reject any buy orders for your ticket. If you sold the ticket to the selected buyer, hit "confirm" (not "unlist"). If the buyer is not responding, or you sold to someone else, or cannot sell it anymore, continue.`, (confirmed) => {
+                                    ex.ui_modal.generic_confirm(`Unlist Sell Order`, `Are you sure you want to unlist your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will reject any buy orders for your ticket. If you sold the ticket to the selected buyer, hit "confirm" (not "unlist"). If the buyer is not responding, or you sold to someone else, or cannot sell it anymore, continue.`, (confirmed) => {
                                         if (confirmed) {
-                                            window.ex.api.cancel_sell_order(block.key('id'), (response, error) => {
+                                            ex.api.cancel_sell_order(block.key('id'), (response, error) => {
                                                 if (error) {
                                                     ex.ui_modal.generic_confirm('Cancel Sell Order', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
                                                 } else {
                                                     setTimeout(_ => {
-                                                        window.ex.ui.child('right/panel/events').on('refresh');
-                                                        window.ex.ui.child('left/panel/events').on('refresh');
-                                                        window.ex.ui.child('right/panel/orders').on('refresh');
-                                                        window.ex.ui.child('left/panel/orders').on('refresh');
+                                                        ex.ui.child('right/panel/events').on('refresh');
+                                                        ex.ui.child('left/panel/events').on('refresh');
+                                                        ex.ui.child('right/panel/orders').on('refresh');
+                                                        ex.ui.child('left/panel/orders').on('refresh');
                                                     }, 100);
                                                 }
                                             });
@@ -1175,16 +1175,16 @@ exchange
                                 if (block.key('select_all') === true)
                                     select_date = 'all';
                                 block.key('select_date', select_date);
-                                console.log('select buy panel event search date: ' + select_date);
+                                ex.log('select buy panel event search date: ' + select_date);
                                 block.on('get_events');
                                 event.stopPropagation();
                             }
                         :get_events
                             {
-                                window.ex.api.get_events(block.key('select_date'), (result, e) => {
+                                ex.api.get_events(block.key('select_date'), (result, e) => {
                                     if (result) {
                                         if (result.events) {
-                                            console.log('reloaded events', result.events);
+                                            ex.log('reloaded events', result.events);
                                             block.parent().sibling('content').data({
                                                 events: result.events
                                             });
@@ -1193,7 +1193,7 @@ exchange
                                                 Block.queries();
                                             }, 50);
                                         }
-                                    } else console.log(e);
+                                    } else ex.log(e);
                                 });
                                 event.stopPropagation();
                             }
@@ -1230,11 +1230,11 @@ exchange
                 }
                 :refresh
                     {
-                        console.log('loading buy orders');
-                        window.ex.api.get_buy_orders((result, e) => {
+                        ex.log('loading buy orders');
+                        ex.api.get_buy_orders((result, e) => {
                             if (result) {
                                 if (result.orders) {
-                                    console.log('reloaded buy_orders', result.orders);
+                                    ex.log('reloaded buy_orders', result.orders);
                                     block.child('content').data({
                                         orders: result.orders
                                     });
@@ -1243,7 +1243,7 @@ exchange
                                         Block.queries();
                                     }, 50);
                                 }
-                            } else console.log(e);
+                            } else ex.log(e);
                         });
                         event.stopPropagation();
                     }
@@ -1419,16 +1419,16 @@ exchange
                                 if (block.key('select_all') === true)
                                     select_date = 'all';
                                 block.key('select_date', select_date);
-                                console.log('select sell panel event search date: ' + select_date);
+                                ex.log('select sell panel event search date: ' + select_date);
                                 block.on('get_events');
                                 event.stopPropagation();
                             }
                         :get_events
                             {
-                                window.ex.api.get_events(block.key('select_date'), (result, e) => {
+                                ex.api.get_events(block.key('select_date'), (result, e) => {
                                     if (result) {
                                         if (result.events) {
-                                            console.log('reloaded events', result.events);
+                                            ex.log('reloaded events', result.events);
                                             block.parent().sibling('content').data({
                                                 events: result.events
                                             });
@@ -1450,7 +1450,7 @@ exchange
                                                 }
                                             }, 100);
                                         }
-                                    } else console.log(e);
+                                    } else ex.log(e);
                                 });
                                 event.stopPropagation();
                             }
@@ -1478,7 +1478,7 @@ exchange
                         html List Event
                         :click
                             {
-                                window.ex.ui_modal.new_event();
+                                ex.ui_modal.new_event();
                             }
                 div content
                     class exchange-panel-content
@@ -1764,7 +1764,7 @@ exchange
                             font-weight 400
                         :click
                             {
-                                console.log("sell ticket");
+                                ex.log("sell ticket");
                                 var form = block.parent().sibling('form_wrap').child('form_content');
                                 var event_id = '';
                                 var event_obj = form.child('event').key('event');
@@ -1772,14 +1772,14 @@ exchange
                                 var price = form.child('two_wrap/price/input').node().value;
                                 var seats = form.child('two_wrap/seats/input').node().value;
                                 var comments = form.child('two_wrap/comments/input').node().value;
-                                console.log(event_id, price, seats, comments);
+                                ex.log(event_id, price, seats, comments);
                                 if (event_id != '' && price != '' && seats != '') {
-                                    window.ex.api.new_sell_order(price, seats, event_id, comments, _ => {
+                                    ex.api.new_sell_order(price, seats, event_id, comments, _ => {
                                         setTimeout(_ => {
-                                            window.ex.ui.child('right/panel/events').on('refresh');
-                                            window.ex.ui.child('left/panel/events').on('refresh');
-                                            window.ex.ui.child('right/panel/orders').on('refresh');
-                                            window.ex.ui.child('left/panel/orders').on('refresh');
+                                            ex.ui.child('right/panel/events').on('refresh');
+                                            ex.ui.child('left/panel/events').on('refresh');
+                                            ex.ui.child('right/panel/orders').on('refresh');
+                                            ex.ui.child('left/panel/orders').on('refresh');
                                             block.parent().sibling('form_wrap').on('reset_fields');
                                         }, 100);
                                     });
@@ -1798,11 +1798,11 @@ exchange
                         display none
                 :refresh
                     {
-                        console.log('loading sell orders');
-                        window.ex.api.get_sell_orders((result, e) => {
+                        ex.log('loading sell orders');
+                        ex.api.get_sell_orders((result, e) => {
                             if (result) {
                                 if (result.orders) {
-                                    console.log('reloaded sell_orders', result.orders);
+                                    ex.log('reloaded sell_orders', result.orders);
                                     block.child('content').data({
                                         orders: result.orders
                                     });
@@ -1811,7 +1811,7 @@ exchange
                                         Block.queries();
                                     }, 50);
                                 }
-                            } else console.log(e);
+                            } else ex.log(e);
                         });
                         event.stopPropagation();
                     }

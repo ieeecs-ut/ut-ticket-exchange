@@ -103,7 +103,7 @@ ex = {
                         if (sport == "" || playing == "" || name == "" || city == "" ||
                             state == "" || venue == "" || date == "" || time == "" || timezone == "")
                             return false;
-                        // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                        // ex.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
                         ex.api.new_event(sport, playing, gender, name, city, state, venue, date, time, timezone, comments, (value = null, error = null) => {
                             setTimeout(_ => {
                                 if (!error && value && value.id)
@@ -112,7 +112,7 @@ ex = {
                                 ex.ui.child('left/panel/events').on('refresh');
                                 setTimeout(_ => {
                                     var new_event_child = ex.ui.child('right/panel/events/content').child(`event_${value.id}`);
-                                    console.log(new_event_child);
+                                    ex.log(new_event_child);
                                     if (new_event_child) {
                                         new_event_child.parent().$().animate({
                                             scrollTop: new_event_child.$().offset().top
@@ -151,13 +151,13 @@ ex = {
                         var comments = (`${$('#buy_order_display_modal #bo_modal_comments_input')[0].value}`).trim();
                         if (ts_click == 0 || event_id == "" || event_text == "")
                             return false;
-                        // console.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
-                        // console.log(event);
+                        // ex.log(sport, playing, gender, name, city, state, venue, date, time, timezone, comments);
+                        // ex.log(event);
                         ex.api.new_buy_order(event_id, ts_click, event.ticket.sell_order, comments, (value = null, error = null) => {
                             if (error) {
                                 ex.ui_modal.new_buy_order_response((error.message ? error.message.toString() : JSON.stringify(error)) + '!');
                             } else {
-                                console.log(value);
+                                ex.log(value);
                             }
                             setTimeout(_ => {
                                 ex.ui.child('right/panel/orders').on('refresh');
