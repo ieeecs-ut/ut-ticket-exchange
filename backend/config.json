@@ -1,6 +1,9 @@
 {
     "http_port": 80,
-    "mdb_port": 27017,
+    "mdb_port": 80,
     "mdb_db": "ticket-xc",
+	"mdb_host": "lightsail-cloud.q1toy.mongodb.net",
+	"mdb_user": "heroku",
+	"mdb_pass": "mp6bSDo65euKNbuU",
     "secret": "exchange!"
 }

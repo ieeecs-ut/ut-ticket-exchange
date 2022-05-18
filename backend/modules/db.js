@@ -16,6 +16,9 @@ var err = null;
 // declare database-related variables (ie. states, data fields)
 var mongo_port = null;
 var mongo_dbname = null;
+var mongo_host = null;
+var mongo_username = null;
+var mongo_password = null;
 var mongo_client = null;
 var mongo_api = null;
 var mongo_oid = mongodb.ObjectId;
@@ -605,11 +608,14 @@ module.exports = {
         log("initializing");
         mongo_port = global.mdb_port;
         mongo_dbname = global.mdb_db;
+		mongo_host = global.config.mdb_host;
+		mongo_username = global.config.mdb_user;
+		mongo_password = global.config.mdb_pass;
         mongo_client = mongodb.MongoClient;
-        mongo_client.connect("mongodb://localhost:" + mongo_port, { useUnifiedTopology: true }, (e, client) => {
+        mongo_client.connect(`mongodb${mongo_host=='localhost'?"":"+srv"}://${mongo_username}:${mongo_password}@${mongo_host}${mongo_host=='localhost'?":"+mongo_port:""}/?retryWrites=true&w=majority`, { useUnifiedTopology: true }, (e, client) => {
             if (e) err("connection error", e);
             else {
-                log("connected to", mongo_port);
+                log("connected to", mongo_host);
                 mongo_api = client.db(mongo_dbname);
             }
         });
