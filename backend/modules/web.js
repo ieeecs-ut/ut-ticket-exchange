@@ -26,7 +26,7 @@ var http_port = null;
 var init = _ => {
 
     // initialize module variables as well as express web server
-    express_api.get("/example1", (req, res) => {
+    express_api.get("/api/example1", (req, res) => {
         res.send("get requests work");
     });
 
