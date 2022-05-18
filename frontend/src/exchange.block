@@ -708,13 +708,88 @@
                             )
                         )
                     )
+                    .add(Block('block', 'select_button_prior')
+                        .class('exchange-orange_button')
+                        .css({
+                            position: 'absolute',
+                            right: '10px',
+                            bottom: '75px',
+                            height: '50px',
+                            width: 'auto',
+                            minWidth: '117px',
+                        })
+                        .on('enable', (e, b, d) => {
+                            b.child('button').css('opacity', '1').css('pointer-events', 'auto').html(d.title);
+                        })
+                        .on('disable', (e, b, d) => {
+                            b.child('button').css('opacity', '0.5').css('pointer-events', 'none').html(d.title);
+                        })
+                        .add(Block('button', 1)
+                            .html('Confirm')
+                            .css({
+                                textTransform: 'lowercase',
+                                height: '30px',
+                                width: '80px',
+                                fontSize: '14px',
+                                color: 'white',
+                                backgroundColor: 'rgb(191, 87, 0)',
+                                border: '1px solid rgb(186, 102, 47)',
+                                borderRadius: '4px',
+                                letterSpacing: '2px',
+                                fontWeight: '400',
+                            })
+                            .on('click', function (e, b, d) {
+                                console.log('select', block.key('id'));
+                                var ts_click = Date.now();
+                                var event = {
+                                    id: block.key('id'),
+                                    sport: block.key('sport'),
+                                    playing: block.key('playing'),
+                                    location: block.key('location'),
+                                    date: block.key('date'),
+                                    date_short: block.key('date_short'),
+                                    time: block.key('time'),
+                                    time_standard: block.key('time_standard'),
+                                    timezone: block.key('timezone'),
+                                    name: block.key('name'),
+                                    gender: block.key('gender'),
+                                    gender_short: block.key('gender_short'),
+                                    ticket: block.key('ticket')
+                                };
+                                var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
+                                if (block.key('mode') == 'buy') {
+                                    console.log(`this button shouldn't exist`);
+                                } else {
+                                    console.log(`confirm sale for sell order: ${block.key('id')}`);
+                                    /*
+                                    window.ex.ui_modal.generic_confirm(`Unlist Sell Order`, `Are you sure you want to unlist your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will reject any buy orders for your ticket. If you sold the ticket to the selected buyer, hit "confirm" (not "unlist"). If the buyer is not responding, or you sold to someone else, or cannot sell it anymore, continue.`, (confirmed) => {
+                                        if (confirmed) {
+                                            window.ex.api.cancel_sell_order(block.key('id'), (response, error) => {
+                                                if (error) {
+                                                    ex.ui_modal.generic_confirm('Cancel Sell Order', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
+                                                } else {
+                                                    setTimeout(_ => {
+                                                        window.ex.ui.child('right/panel/events').on('refresh');
+                                                        window.ex.ui.child('left/panel/events').on('refresh');
+                                                        window.ex.ui.child('right/panel/orders').on('refresh');
+                                                        window.ex.ui.child('left/panel/orders').on('refresh');
+                                                    }, 100);
+                                                }
+                                            });
+                                        }
+                                    });
+                                    */
+                                }
+                            })
+                        )
+                    )
                     .add(Block('block', 'select_button')
                         .class('exchange-orange_button')
                         .css({
                             position: 'absolute',
                             right: '10px',
-                            bottom: '20px',
-                            height: 'calc(100% - 55px)',
+                            bottom: '42px',
+                            height: '50px',
                             width: 'auto',
                             minWidth: '117px',
                         })
@@ -902,6 +977,7 @@
                 block.key('detail_height', mode == 'buy' ? 153 : 153);
                 block.child('detail/email').child('label').html((mode == 'buy' ? 'Seller' : 'Buyer') + ':&nbsp;');
                 block.child('detail/email/text').html((mode == 'buy' ? 'Rejected' : 'Waiting...'));
+                block.child('detail/select_button_prior').css('display', mode == 'buy' ? 'none' : 'table');
                 setTimeout(_ => { Block.queries(); }, 10);
             });
             data('ticket', ticket => {
