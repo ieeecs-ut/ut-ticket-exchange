@@ -161,6 +161,8 @@ ex = {
                                 setTimeout(_ => {
                                     ex.ui.child('right/panel/orders').on('refresh');
                                     ex.ui.child('left/panel/orders').on('refresh');
+                                    ex.ui.child('right/panel/events').on('refresh');
+                                    ex.ui.child('left/panel/events').on('refresh');
                                 }, 100);
                             }
                         });
