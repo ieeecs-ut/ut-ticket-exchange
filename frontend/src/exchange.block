@@ -311,7 +311,19 @@
                                 ex.log(event);
                                 if (block.key('mode') == 'buy') {
                                     var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
-                                    ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
+                                    b.html('').add(Block('image')
+                                        .data({
+                                            height: '22px',
+                                            width: '22px',
+                                            src: 'img/loading_gear_w.svg',
+                                            css: { margin: '0 auto' }
+                                        })
+                                    );
+                                    ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event, confirm_val => {
+                                        if (!confirm_val) {
+                                            b.html('Buy');
+                                        }
+                                    });
                                 } else {
                                     block.parent(1).sibling('sell_form').child('form_wrap/form_content/event').data({
                                         event: event

@@ -127,7 +127,7 @@ ex = {
                 }
             });
         },
-        new_buy_order: (ts_click, event_id, event_text, event = {}) => {
+        new_buy_order: (ts_click, event_id, event_text, event = {}, next = null) => {
             bootbox.confirm({
                 centerVertical: true,
                 title: '<span class="modal_title">Buy Ticket</span>',
@@ -161,13 +161,14 @@ ex = {
                                 ex.log(value);
                             }
                             setTimeout(_ => {
+                                next(true);
                                 ex.ui.child('right/panel/orders').on('refresh');
                                 ex.ui.child('left/panel/orders').on('refresh');
                                 ex.ui.child('right/panel/events').on('refresh');
                                 ex.ui.child('left/panel/events').on('refresh');
                             }, 100);
                         });
-                    }
+                    } else next(false)
                     return true;
                 }
             });
