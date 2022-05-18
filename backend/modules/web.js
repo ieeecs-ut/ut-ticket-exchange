@@ -299,7 +299,7 @@ var init = _ => {
                     if (success3 == false) return return_error(req, res, 400, "Sell orders not found");
                     for (var b in result2) {
                         for (var s in result3) {
-                            if (result3[s]._id.toString() == result2[b].sell_order_match.toString()) {
+                            if (result2[b].sell_order_match && result3[s]._id.toString() == result2[b].sell_order_match.toString()) {
                                 result2[b].event_obj.ticket = {
                                     price: parseInt(result3[s].price),
                                     seats: result3[s].seats,
