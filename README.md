@@ -15,4 +15,4 @@ Built with:
 &nbsp;  
 &nbsp;
 
-Hosted on AWS/Heroku
+Hosted on AWS & in-office Nvidia Jetson Nano
