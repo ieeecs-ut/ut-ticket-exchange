@@ -155,7 +155,7 @@ ex = {
                         // console.log(event);
                         ex.api.new_buy_order(event_id, ts_click, event.ticket.sell_order, comments, (value = null, error = null) => {
                             if (error) {
-                                ex.ui_modal.new_buy_order_response((error.message ? error.message.toString() : error.toString()) + '!');
+                                ex.ui_modal.new_buy_order_response((error.message ? error.message.toString() : JSON.stringify(error)) + '!');
                             } else {
                                 console.log(value);
                             }
@@ -545,7 +545,43 @@ ex = {
                     resolve(null, errorData);
                 }
             });
-        }
+        },
+        cancel_buy_order: (buy_order_id, resolve = null) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+                buy_order_id: buy_order_id,
+            };
+            $.ajax({
+                url: `${ex.api_url}/buy_order/cancel`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
+
     }
 
 };

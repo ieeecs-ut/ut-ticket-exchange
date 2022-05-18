@@ -757,21 +757,34 @@
                                     gender_short: block.key('gender_short'),
                                     ticket: block.key('ticket')
                                 };
+                                var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
                                 if (block.key('mode') == 'buy') {
-                                    var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
-                                    //window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
-                                    console.log('show seller contact info', event_summary_text, event);
-                                    // TODO: show seller contact info, cancel button too
-                                    console.log('open modal for seller contact info');
+                                    // //window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
+                                    // console.log('show seller contact info', event_summary_text, event);
+                                    // // TODO show seller contact info, cancel button too
+                                    // console.log('open modal for seller contact info');
+                                    window.ex.ui_modal.generic_confirm(`Cancel Buy Order`, `Are you sure you want to cancel your buy order for: <b>${event_summary_text}</b>?<br/><br/>This will allow others to buy the ticket, so you may lose your reserved price & seats. If you are no longer interested or able to attend, or <i>if your seller is not responding</i>, continue.`, (confirmed) => {
+                                        if (confirmed) {
+                                            window.ex.api.cancel_buy_order(block.key('id'), (response, error) => {
+                                                if (error) {
+                                                    ex.ui_modal.generic_confirm('Cancel Buy Order', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
+                                                } else {
+                                                    setTimeout(_ => {
+                                                        window.ex.ui.child('right/panel/events').on('refresh');
+                                                        window.ex.ui.child('left/panel/events').on('refresh');
+                                                        window.ex.ui.child('right/panel/orders').on('refresh');
+                                                        window.ex.ui.child('left/panel/orders').on('refresh');
+                                                    }, 100);
+                                                }
+                                            });
+                                        }
+                                    });
                                 } else {
-                                    if (block.key('locked') === true) {
-                                        // TODO: manage ticket
-                                        // TODO: (contact buyer, confirm sale, and remove)
-                                        console.log('open modal to manage ticket (contact buyer, confirm sale, or remove)');
-                                    } else {
-                                        // TODO: add option to remove the listing
-                                        // do nothing
-                                    }
+                                    window.ex.ui_modal.generic_confirm(`Unlist Sell Order`, `Are you sure you want to unlist your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will reject any buy orders for your ticket. If you sold the ticket to the selected buyer, hit "confirm" (not "unlist"). If the buyer is not responding, or you sold to someone else, or cannot sell it anymore, continue.`, (confirmed) => {
+                                        if (confirmed) {
+                                            console.log('cancel sell order');
+                                        }
+                                    });
                                 }
                             })
                         )

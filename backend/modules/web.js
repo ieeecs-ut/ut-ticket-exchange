@@ -189,6 +189,34 @@ var init = _ => {
             });
         });
     });
+    express_api.post("/api/sell_order/cancel", (req, res) => {
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success1, result1) => {
+            if (success1 === null) return return_error(req, res, 500, "Database error");
+            if (success1 == false) return return_error(req, res, 400, "User not found");
+            var buy_order_id = req.body.buy_order_id;
+            m.db.get_buy_order(buy_order_id, (success2, result2) => {
+                if (success2 === null) return return_error(req, res, 500, "Database error");
+                if (success2 == false) return return_error(req, res, 400, "Buy order not found");
+                var sell_order_id = result2.sell_order_match.toString();
+                m.db.update_sell_order(sell_order_id, {
+                    locked: false,
+                    buy_order_match: null,
+                    buy_order_match_email: null,
+                    ts_locked: 0,
+                }, (success3, result3) => {
+                    if (success3 === null) return return_error(req, res, 500, "Database error");
+                    if (success3 == false) return return_error(req, res, 400, "Sell order not found");
+                    m.db.delete_buy_order(buy_order_id, (success4, result4) => {
+                        if (success4 === null) return return_error(req, res, 500, "Database error");
+                        if (success4 == false) return return_error(req, res, 400, "Buy order not found");
+                        return return_data(req, res, {});
+                    });
+                });
+            });
+        });
+    });
 
     /* buy_order */
     express_api.post("/api/buy_order/create", (req, res) => {
@@ -203,7 +231,8 @@ var init = _ => {
                 return return_error(req, res, 400, "Invalid form input");
             m.db.get_sell_orders_for_events([r.event_id], (success3, result3) => {
                 if (success3 === null || success3 == false) return return_error(req, res, 500, "Database error");
-                // find sell order with lowest selling price for event
+                // ALGORITHM: find sell order with lowest selling price for event
+                var sell_order_s = '';
                 var sell_order_id = null;
                 var lowest_price = Number.MAX_SAFE_INTEGER;
                 for (var s in result3) {
@@ -213,6 +242,7 @@ var init = _ => {
                             if (price > 0 && price <= lowest_price) {
                                 lowest_price = price;
                                 sell_order_id = result3[s]._id.toString();
+                                sell_order_s = s;
                             }
                         }
                     }
@@ -221,6 +251,8 @@ var init = _ => {
                     return return_error(req, res, 400, "No tickets for sale on this event");
                 if (sell_order_id.toString().trim() != r.sell_order_id.toString().trim())
                     return return_error(req, res, 400, "Last available price changed (please refresh events)");
+                if (result3[sell_order_s].locked == true)
+                    return return_error(req, res, 400, "Ticket availability changed (please refresh events)");
                 m.db.create_buy_order(result._id, r.event_id, r.ts_click, r.comments, req.user.email.trim(), (success2, result2) => {
                     if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
                     m.db.update_sell_order(m.db.mongo_oid(sell_order_id.toString()), {
@@ -251,7 +283,7 @@ var init = _ => {
             if (success1 == false) return return_error(req, res, 400, "User not found");
             m.db.get_buy_orders(result1._id.toString(), (success2, result2) => {
                 if (success2 === null) return return_error(req, res, 500, "Database error");
-                if (success2 == false) return return_error(req, res, 400, "Buy order not found");
+                if (success2 == false) return return_error(req, res, 400, "Buy orders not found");
                 var sell_order_ids = [];
                 for (var b in result2)
                     sell_order_ids.push((result2[b].sell_order_match.toString()));
@@ -270,6 +302,34 @@ var init = _ => {
                         }
                     }
                     return return_data(req, res, { orders: result2 });
+                });
+            });
+        });
+    });
+    express_api.post("/api/buy_order/cancel", (req, res) => {
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success1, result1) => {
+            if (success1 === null) return return_error(req, res, 500, "Database error");
+            if (success1 == false) return return_error(req, res, 400, "User not found");
+            var buy_order_id = req.body.buy_order_id;
+            m.db.get_buy_order(buy_order_id, (success2, result2) => {
+                if (success2 === null) return return_error(req, res, 500, "Database error");
+                if (success2 == false) return return_error(req, res, 400, "Buy order not found");
+                var sell_order_id = result2.sell_order_match.toString();
+                m.db.update_sell_order(sell_order_id, {
+                    locked: false,
+                    buy_order_match: null,
+                    buy_order_match_email: null,
+                    ts_locked: 0,
+                }, (success3, result3) => {
+                    if (success3 === null) return return_error(req, res, 500, "Database error");
+                    if (success3 == false) return return_error(req, res, 400, "Sell order not found");
+                    m.db.delete_buy_order(buy_order_id, (success4, result4) => {
+                        if (success4 === null) return return_error(req, res, 500, "Database error");
+                        if (success4 == false) return return_error(req, res, 400, "Buy order not found");
+                        return return_data(req, res, {});
+                    });
                 });
             });
         });
