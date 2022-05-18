@@ -183,7 +183,8 @@ var api = {
             event: event_id,
             comments: comments,
             sell_order_match: null,
-            match_status: 'pending',
+            sell_order_match_email: null,
+            match_status: "pending",
             /*  "pending"  (unmatched)
                 "locked"   (matched to sell order)
                 "complete" (seller or buyer confirmed sale)
@@ -319,7 +320,10 @@ var api = {
             price: price,
             seats: seats,
             comments: comments,
+            buy_order_match: null,
+            buy_order_match_email: null,
             locked: false, // set to true when matched with buy order, set to false if buy order rejected/expires
+            complete: false, // set to true when complete
             ts_locked: -1,
             ts_updated: ts_now,
             ts_created: ts_now,
