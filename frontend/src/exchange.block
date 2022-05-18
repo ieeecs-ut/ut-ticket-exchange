@@ -760,9 +760,13 @@
                                 if (block.key('mode') == 'buy') {
                                     console.log(`this button shouldn't exist`);
                                 } else {
+                                    if (block.key('locked') !== true) {
+                                        console.log(`this button shouldn't exist`);
+                                        return;
+                                    }
                                     console.log(`confirm sale for sell order: ${block.key('id')}`);
                                     /*
-                                    window.ex.ui_modal.generic_confirm(`Unlist Sell Order`, `Are you sure you want to unlist your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will reject any buy orders for your ticket. If you sold the ticket to the selected buyer, hit "confirm" (not "unlist"). If the buyer is not responding, or you sold to someone else, or cannot sell it anymore, continue.`, (confirmed) => {
+                                    window.ex.ui_modal.generic_confirm(`Confirm Sale`, `Are you sure you want to confirm your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will complete the order and unlist your ticket from the exchange—<i>please make sure <a href='mailto:${block.key('buyer_email')}'>${block.key('buyer_email')}</a> <b>received your ticket</b> and <b>paid you $${block.key('ticket').price} in full</b>!</i>`, (confirmed) => {
                                         if (confirmed) {
                                             window.ex.api.cancel_sell_order(block.key('id'), (response, error) => {
                                                 if (error) {
@@ -977,7 +981,7 @@
                 block.key('detail_height', mode == 'buy' ? 153 : 153);
                 block.child('detail/email').child('label').html((mode == 'buy' ? 'Seller' : 'Buyer') + ':&nbsp;');
                 block.child('detail/email/text').html((mode == 'buy' ? 'Rejected' : 'Waiting...'));
-                block.child('detail/select_button_prior').css('display', mode == 'buy' ? 'none' : 'table');
+                block.child('detail/select_button_prior').css('display', mode !== 'sell' || block.key('locked') !== true ? 'none' : 'table');
                 setTimeout(_ => { Block.queries(); }, 10);
             });
             data('ticket', ticket => {
@@ -992,17 +996,7 @@
             });
             data('locked', locked => {
                 block.key('locked', locked);
-                /*
-                if (locked) {
-                    block.child('detail/select_button').on('enable', {
-                        title: 'manage'
-                    });
-                } else {
-                    block.child('detail/select_button').on('disable', {
-                        title: 'waiting'
-                    });
-                }
-                */
+                block.child('detail/select_button_prior').css('display', block.key('mode') !== 'sell' || locked !== true ? 'none' : 'table');
             });
             data('sell_order_match_email', seller_email => {
                 block.key('seller_email', seller_email);
