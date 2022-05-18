@@ -132,7 +132,7 @@ var init = _ => {
                         var lowest_price = Number.MAX_SAFE_INTEGER;
                         for (var s in result3) {
                             if (result3[s].event.toString() === result2[e]._id.toString()) {
-                                if (!result3[s].locked) {
+                                if (!result3[s].locked && !result3[s].complete) {
                                     var price = parseFloat(result3[s].price) || 0;
                                     if (price > 0 && price <= lowest_price) {
                                         lowest_price = price;
@@ -222,6 +222,34 @@ var init = _ => {
             });
         });
     });
+    express_api.post("/api/sell_order/confirm", (req, res) => {
+        req.user = web_verify_token(req.body._auth);
+        if (req.user == null) return return_error(req, res, 401, "Unauthorized");
+        m.db.get_user_by_email(req.user.email, (success1, result1) => {
+            if (success1 === null) return return_error(req, res, 500, "Database error");
+            if (success1 == false) return return_error(req, res, 400, "User not found");
+            var sell_order_id = req.body.sell_order_id;
+            m.db.get_sell_order(sell_order_id, (success2, result2) => {
+                if (success2 === null) return return_error(req, res, 500, "Database error");
+                if (success2 == false) return return_error(req, res, 400, "Sell order not found");
+                var locked = result2.locked;
+                var buy_order_id = result2.buy_order_match;
+                if (locked === false || (!buy_order_id || buy_order_id.toString().trim() == ''))
+                    return return_error(req, res, 400, "Sell order not matched to a buy order: cannot confirm!");
+                m.db.update_buy_order(buy_order_id.toString(), {
+                    match_status: m.db.buy_order_match_status.com,
+                }, (success3, result3) => {
+                    if (success3 === null) return return_error(req, res, 500, "Database error");
+                    if (success3 == false) return return_error(req, res, 400, "Buy order not found");
+                    m.db.update_sell_order(sell_order_id, { complete: true }, (success4, result4) => {
+                        if (success4 === null) return return_error(req, res, 500, "Database error");
+                        if (success4 == false) return return_error(req, res, 400, "Sell order not found");
+                        return return_data(req, res, {});
+                    });
+                });
+            });
+        });
+    });
 
     /* buy_order */
     express_api.post("/api/buy_order/create", (req, res) => {
@@ -242,7 +270,7 @@ var init = _ => {
                 var lowest_price = Number.MAX_SAFE_INTEGER;
                 for (var s in result3) {
                     if (result3[s].event.toString() === r.event_id) {
-                        if (!result3[s].locked) {
+                        if (!result3[s].locked && !result3[s].complete) {
                             var price = parseFloat(result3[s].price) || 0;
                             if (price > 0 && price <= lowest_price) {
                                 lowest_price = price;

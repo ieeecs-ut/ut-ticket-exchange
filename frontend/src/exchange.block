@@ -765,12 +765,11 @@
                                         return;
                                     }
                                     ex.log(`confirm sale for sell order: ${block.key('id')}`);
-                                    /*
-                                    ex.ui_modal.generic_confirm(`Confirm Sale`, `Are you sure you want to confirm your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will complete the order and unlist your ticket from the exchange—<i>please make sure <a href='mailto:${block.key('buyer_email')}'>${block.key('buyer_email')}</a> <b>received your ticket</b> and <b>paid you $${block.key('ticket').price} in full</b>!</i>`, (confirmed) => {
+                                    ex.ui_modal.generic_confirm('Confirm Sale', `Are you sure you want to confirm your sell order for: <b>${event_summary_text}</b>?<br/><br/>This will complete the order and unlist your ticket from the exchange—<i>please make sure <a href='mailto:${block.key('buyer_email')}'>${block.key('buyer_email')}</a> <b>received your ticket</b> and <b>paid you $${block.key('ticket').price} in full</b>!</i>`, (confirmed) => {
                                         if (confirmed) {
-                                            ex.api.cancel_sell_order(block.key('id'), (response, error) => {
+                                            ex.api.confirm_sell_order(block.key('id'), (response, error) => {
                                                 if (error) {
-                                                    ex.ui_modal.generic_confirm('Cancel Sell Order', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
+                                                    ex.ui_modal.generic_confirm('Confirm Sale', 'Error: ' + (error.message ? error.message.toString() : JSON.stringify(error)) + '!', (r) => {});
                                                 } else {
                                                     setTimeout(_ => {
                                                         ex.ui.child('right/panel/events').on('refresh');
@@ -782,7 +781,6 @@
                                             });
                                         }
                                     });
-                                    */
                                 }
                             })
                         )
@@ -912,6 +910,24 @@
                     //block.parent(1).key('event_open').push(`${block.key('id')}`);
                     e.stopPropagation();
                 })
+                .on('update_complete', (e, b, d) => {
+                    var mode = block.key('mode');
+                    var complete = block.key('complete');
+                    if (mode === 'buy' && complete === true) {
+                        block.child('detail/email/text').html('Complete&nbsp;&nbsp;').add(Block('a', 'text2')
+                            .html('(info)')
+                            .css({fontWeight:'300',cursor:'pointer'})
+                            .attribute('href', 'javascript:void(0)')
+                            .on('click', (e, b, d) => {
+                                ex.ui_modal.generic_confirm('Complete Buy Order', `This buy order was confirmed complete by the seller. If there are any issues with your sale (ie. seller did not send you the ticket), please email us at <a href='mailto:${ex.admin_email}. Enjoy the game!'>${ex.admin_email}</a>`, (confirmed) => {
+                                    if (confirmed) {
+                                        // pass
+                                    }
+                                });
+                            })
+                        );
+                    }
+                })
             ;
             return block;
         }
@@ -982,6 +998,7 @@
                 block.child('detail/email').child('label').html((mode == 'buy' ? 'Seller' : 'Buyer') + ':&nbsp;');
                 block.child('detail/email/text').html((mode == 'buy' ? 'Rejected' : 'Waiting...'));
                 block.child('detail/select_button_prior').css('display', mode !== 'sell' || block.key('locked') !== true ? 'none' : 'table');
+                block.on('update_complete');
                 setTimeout(_ => { Block.queries(); }, 10);
             });
             data('ticket', ticket => {
@@ -1005,6 +1022,33 @@
             data('buy_order_match_email', buyer_email => {
                 block.key('buyer_email', buyer_email);
                 block.child('detail/email/text').html(buyer_email).attribute('href', `mailto:${buyer_email}`);
+            });
+            data('complete', complete => {
+                block.key('complete', complete);
+                if (complete === true || complete === 'rejected') {
+                    block.css({
+                        //pointerEvents: 'none',
+                        opacity: '0.5'
+                    });
+                    block.child('detail/select_button_prior').css({
+                        pointerEvents: 'none',
+                        opacity: '0'
+                    }).sibling('select_button').css({
+                        pointerEvents: 'none',
+                        opacity: '0'
+                    });
+                    if (complete != 'rejected') 
+                        block.child('detail/email/text').html('Complete').node().removeAttribute('href');
+                    block.on('update_complete');
+                }
+            });
+            data('match_status', match_status => {
+                block.key('match_status', match_status);
+                if (match_status === 'complete') {
+                    block.data({ complete: true });
+                } else if (match_status === 'rejected') {
+                    block.data({ complete: 'rejected' });
+                }
             });
         }
 

@@ -6,6 +6,7 @@ var ex = null;
 ex = {
 
     /* client fields */
+    admin_email: "projectmanager@ieeecs.ece.utexas.edu",
     api_url: `${window.location.protocol}//${window.location.hostname}:${window.location.port === '4200' ? '8000' : window.location.port}/api`, // `${window.location.protocol}//${window.location.host}/api`,
     landing_url: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/`,
     api_cookie_exp: '__indefinite__',
@@ -616,7 +617,41 @@ ex = {
                 }
             });
         },
-
+        confirm_sell_order: (sell_order_id, resolve = null) => {
+            if (!resolve) resolve = _ => { };
+            var token = ex.api.get_token();
+            if (!token || token.trim().length <= 0)
+                return resolve(null, { message: "Invalid token" });
+            var body = {
+                _auth: `${token}`,
+                sell_order_id: sell_order_id,
+            };
+            $.ajax({
+                url: `${ex.api_url}/sell_order/confirm`,
+                method: 'post',
+                headers: {},
+                data: body,
+                success: (response, status, xhr) => {
+                    if (!response /*|| !response.hasOwnProperty('email')*/) {
+                        ex.err(response);
+                        return resolve(null, { message: "Invalid response" });
+                    }
+                    return resolve(response, null);
+                },
+                error: (xhr, status, error) => {
+                    var errorData = {
+                        error: error,
+                        message: null
+                    };
+                    if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message') && (`${xhr.responseJSON.message}`).trim().length > 0) {
+                        errorData.message = (`${xhr.responseJSON.message}`).trim();
+                        ex.err(errorData.message);
+                    }
+                    ex.err(error);
+                    resolve(null, errorData);
+                }
+            });
+        },
     }
 
 };
