@@ -158,13 +158,13 @@ ex = {
                                 ex.ui_modal.new_buy_order_response((error.message ? error.message.toString() : error.toString()) + '!');
                             } else {
                                 console.log(value);
-                                setTimeout(_ => {
-                                    ex.ui.child('right/panel/orders').on('refresh');
-                                    ex.ui.child('left/panel/orders').on('refresh');
-                                    ex.ui.child('right/panel/events').on('refresh');
-                                    ex.ui.child('left/panel/events').on('refresh');
-                                }, 100);
                             }
+                            setTimeout(_ => {
+                                ex.ui.child('right/panel/orders').on('refresh');
+                                ex.ui.child('left/panel/orders').on('refresh');
+                                ex.ui.child('right/panel/events').on('refresh');
+                                ex.ui.child('left/panel/events').on('refresh');
+                            }, 100);
                         });
                     }
                     return true;

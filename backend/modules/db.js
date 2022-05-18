@@ -175,10 +175,11 @@ var api = {
     buy_order_match_status: {
         pen: 'pending', loc: 'locked', com: 'complete', rej: 'rejected'
     },
-    create_buy_order: (user_id, event_id, ts_click, comments, resolve) => {
+    create_buy_order: (user_id, event_id, ts_click, comments, email, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('buy_order').insertOne({
             user: user_id,
+            email: email,
             event: event_id,
             comments: comments,
             sell_order_match: null,
@@ -309,10 +310,11 @@ var api = {
     },
 
     // sell_order
-    create_sell_order: (user_id, event_id, price, seats, comments, resolve) => {
+    create_sell_order: (user_id, event_id, price, seats, comments, email, resolve) => {
         var ts_now = (new Date()).getTime();
         mongo_api.collection('sell_order').insertOne({
             user: user_id,
+            email: email,
             event: mongo_oid(event_id),
             price: price,
             seats: seats,
@@ -608,11 +610,11 @@ module.exports = {
         log("initializing");
         mongo_port = global.mdb_port;
         mongo_dbname = global.mdb_db;
-		mongo_host = global.config.mdb_host;
-		mongo_username = global.config.mdb_user;
-		mongo_password = global.config.mdb_pass;
+        mongo_host = global.config.mdb_host;
+        mongo_username = global.config.mdb_user;
+        mongo_password = global.config.mdb_pass;
         mongo_client = mongodb.MongoClient;
-        mongo_client.connect(`mongodb${mongo_host=='localhost'?"":"+srv"}://${mongo_username}:${mongo_password}@${mongo_host}${mongo_host=='localhost'?":"+mongo_port:""}/?retryWrites=true&w=majority`, { useUnifiedTopology: true }, (e, client) => {
+        mongo_client.connect(`mongodb${mongo_host == 'localhost' ? "" : "+srv"}://${mongo_username}:${mongo_password}@${mongo_host}${mongo_host == 'localhost' ? ":" + mongo_port : ""}/?retryWrites=true&w=majority`, { useUnifiedTopology: true }, (e, client) => {
             if (e) err("connection error", e);
             else {
                 log("connected to", mongo_host);

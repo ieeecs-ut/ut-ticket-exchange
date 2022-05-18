@@ -627,7 +627,24 @@
                         )
                         .add(Block('text', 1)
                             .data('00')
-                            .css('font-size', '12px')
+                            .css({
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                            })
+                        )
+                    )
+                    .add(Block('div', 'email')
+                        .add(Block('text', 'label')
+                            .html('Email:&nbsp;')
+                            .class('event-detail-label')
+                        )
+                        .add(Block('a', 'text')
+                            .html('email@utexas.edu')
+                            .attribute('href', '#')
+                            .css({
+                                fontSize: '12px',
+                                fontWeight: 'bold',
+                            })
                         )
                     )
                     .add(Block('div', 'price')
@@ -696,9 +713,8 @@
                         .class('exchange-orange_button')
                         .css({
                             position: 'absolute',
-                            top: '0',
-                            right: '35px',
-                            bottom: '55px',
+                            right: '10px',
+                            bottom: '20px',
                             height: 'calc(100% - 55px)',
                             width: 'auto',
                             minWidth: '117px',
@@ -713,9 +729,9 @@
                             .html('Select')
                             .css({
                                 textTransform: 'lowercase',
-                                height: '42px',
-                                width: '117px',
-                                fontSize: '20px',
+                                height: '30px',
+                                width: '80px',
+                                fontSize: '14px',
                                 color: 'white',
                                 backgroundColor: 'rgb(191, 87, 0)',
                                 border: '1px solid rgb(186, 102, 47)',
@@ -745,7 +761,7 @@
                                     var event_summary_text = `${event.date_short} ${event.gender_short} ${event.sport} ${event.playing} @ ${event.location.city + ', ' + event.location.state}`;
                                     //window.ex.ui_modal.new_buy_order(ts_click, event.id, event_summary_text, event);
                                     console.log('show seller contact info', event_summary_text, event);
-                                    // TODO: show seller contact info
+                                    // TODO: show seller contact info, cancel button too
                                     console.log('open modal for seller contact info');
                                 } else {
                                     if (block.key('locked') === true) {
@@ -855,10 +871,13 @@
             });
             data('mode', mode => {
                 block.key('mode', mode);
-                var button_text = mode == 'buy' ? 'get' : 'next';
+                var button_text = mode == 'buy' ? 'cancel' : 'unlist';
                 block.child('detail/select_button/button').html(utils.capitalize(button_text));
-                block.child('detail/seats').css('display', (mode == 'buy' ? 'block' : 'none'));
-                block.key('detail_height', mode == 'buy' ? 134 : 115);
+                //block.child('detail/seats').css('display', (mode == 'buy' ? 'block' : 'none'));
+                //block.key('detail_height', mode == 'buy' ? 134 : 115);
+                block.child('detail/seats').css('display', (mode == 'buy' ? 'block' : 'block'));
+                block.key('detail_height', mode == 'buy' ? 153 : 153);
+                block.child('detail/email').child('label').html((mode == 'buy' ? 'Seller' : 'Buyer') + ':&nbsp;');
                 setTimeout(_ => { Block.queries(); }, 10);
             });
             data('ticket', ticket => {
@@ -873,6 +892,7 @@
             });
             data('locked', locked => {
                 block.key('locked', locked);
+                /*
                 if (locked) {
                     block.child('detail/select_button').on('enable', {
                         title: 'manage'
@@ -882,6 +902,15 @@
                         title: 'waiting'
                     });
                 }
+                */
+            });
+            data('sell_order_match_email', seller_email => {
+                block.key('seller_email', seller_email);
+                block.child('detail/email/text').html(seller_email).attribute('href', `mailto:${seller_email}`);
+            });
+            data('buy_order_match_email', buyer_email => {
+                block.key('buyer_email', buyer_email);
+                block.child('detail/email/text').html(buyer_email).attribute('href', `mailto:${buyer_email}`);
             });
         }
 
@@ -1079,13 +1108,20 @@ exchange
                     #events
                         {
                             block.html('');
+                            var events_filtered = [];
+                            for (var e in events) {
+                                if (events[e].ticket.sell_order != null) 
+                                    events_filtered.push(events[e]);
+                            }
                             if (events.length == 0) {
                                 var no_events_placeholder_text = "No events listed.";
                                 block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_events_placeholder_text}`)));
+                            } else if (events_filtered.length == 0) {
+                                var no_events_placeholder_text = "No events available.";
+                                block.add(Block('div', 'placeholder_wrap').css({fontStyle:'italic',paddingTop:'10px',opacity:'0.9'}).add(Block('text', 1).data(`${no_events_placeholder_text}`)));
                             } else {
-                                for (var e in events) {
-                                    if (events[e].ticket.sell_order != null) 
-                                        block.add(Block('event-item', `event_${events[e]._id}`).data({mode:'buy'}).data(events[e]));
+                                for (var e in events_filtered) {
+                                    block.add(Block('event-item', `event_${events_filtered[e]._id}`).data({mode:'buy'}).data(events_filtered[e]));
                                 }
                             }
                         }

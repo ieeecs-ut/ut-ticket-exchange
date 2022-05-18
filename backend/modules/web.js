@@ -163,7 +163,7 @@ var init = _ => {
             var r = req.body;
             if (r.seats == "" || r.price == "" || r.event_id == "")
                 return return_error(req, res, 400, "Invalid form input");
-            m.db.create_sell_order(result._id, r.event_id, r.price, r.seats, r.comments, (success2, result2) => {
+            m.db.create_sell_order(result._id, r.event_id, r.price, r.seats, r.comments, req.user.email, (success2, result2) => {
                 if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
                 return return_data(req, res, { id: result2 });
             });
@@ -221,15 +221,18 @@ var init = _ => {
                     return return_error(req, res, 400, "No tickets for sale on this event");
                 if (sell_order_id.toString().trim() != r.sell_order_id.toString().trim())
                     return return_error(req, res, 400, "Last available price changed (please refresh events)");
-                m.db.create_buy_order(result._id, r.event_id, r.ts_click, r.comments, (success2, result2) => {
+                m.db.create_buy_order(result._id, r.event_id, r.ts_click, r.comments, req.user.email.trim(), (success2, result2) => {
                     if (success2 === null || success2 == false) return return_error(req, res, 500, "Database error");
                     m.db.update_sell_order(m.db.mongo_oid(sell_order_id.toString()), {
                         locked: true,
+                        buy_order_match: result2.toString().trim(),
+                        buy_order_match_email: req.user.email.trim(),
                         ts_locked: ts_now,
                     }, (success4, result4) => {
                         if (success4 === null || result4 == false) return return_error(req, res, 500, "Database error");
                         m.db.update_buy_order(m.db.mongo_oid(result2.toString()), {
                             sell_order_match: m.db.mongo_oid(sell_order_id.toString()),
+                            sell_order_match_email: result4['email'],
                             match_status: m.db.buy_order_match_status.loc,
                         }, (success5, result5) => {
                             if (success5 === null || result5 == false) return return_error(req, res, 500, "Database error");
@@ -257,12 +260,13 @@ var init = _ => {
                     if (success3 == false) return return_error(req, res, 400, "Sell orders not found");
                     for (var b in result2) {
                         for (var s in result3) {
-                            if (result3[s]._id.toString() == result2[b].sell_order_match.toString())
+                            if (result3[s]._id.toString() == result2[b].sell_order_match.toString()) {
                                 result2[b].event_obj.ticket = {
                                     price: parseInt(result3[s].price),
                                     seats: result3[s].seats,
-                                    sell_order: result3[s]._id.toString()
+                                    sell_order: result3[s]._id.toString(),
                                 };
+                            }
                         }
                     }
                     return return_data(req, res, { orders: result2 });
